@@ -1,0 +1,67 @@
+:root {
+    --bg-dark: rgb(27, 33, 44);
+    --light-brand-color: rgb(232,245,238); 
+    --brand-color: #82c7a5;
+    --light-grey: #9e9e9e;
+    --dark-grey: #4e5567;
+}
+
+html, body, .login-container {
+    height: 100%;
+}
+
+body.bg-dark {
+    background-color: var(--bg-dark)!important;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.company-name {
+    font-size: 500%;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.login-logo {
+    color: var(--brand-color);
+    font-family: 'Roboto Mono', monospace;
+    height: 40%;
+}
+
+div.login-logo div.logo-line {
+    margin: 3.2em 0;
+    border-top: solid var(--brand-color) 3px;
+}
+
+div.login-fields {
+    margin-top: 4%;
+}
+
+div.login-fields input {
+    background-color: inherit;
+    border-color: var(--light-grey);
+    text-align: center;
+    color: var(--dark-grey);
+    font-size: 20px;
+}
+
+button.btn.btn-secondary {
+    background-color: var(--brand-color);
+    border-color: var(--dark-grey);
+    color: var(--bg-dark);
+    font-size: 20px;
+    padding: 4px 25px;
+}
+
+button.btn.btn-secondary:hover {
+    background-color: var(--bg-dark);
+    border-color: var(--light-grey);
+    color: var(--brand-color);
+    font-size: 20px;
+}
+
+button.btn.btn-secondary:active {
+    background-color: var(--bg-dark);
+    border-color: var(--light-grey);
+    color: var(--brand-color);
+    font-size: 20px;
+}
