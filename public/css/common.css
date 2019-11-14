@@ -1,6 +1,7 @@
 :root {
     --bg-dark: rgb(27, 33, 44);
-    --light-brand-color: #82c7a515; 
+    --transparent-brand-color: #82c7a515;
+    --semi-transparent-brand-color: #82c7a52f;
     --brand-color: #82c7a5;
     --light-grey: #9e9e9e;
     --dark-grey: #4e5567;
@@ -142,7 +143,7 @@ div.main-container > .row {
 }
 
 div.sub-container {
-    background-color: var(--light-brand-color);
+    background-color: var(--transparent-brand-color);
     border-bottom: solid var(--dark-grey) 2px;
     font-size: 18px;
 }
@@ -151,4 +152,9 @@ div.sub-container .sub-header {
     font-style: italic;
     font-weight: bold;
     font-size: 14px;
+}
+
+div.double-sub-container {
+    background-color: var(--semi-transparent-brand-color);
+    font-size: 18px;
 }
