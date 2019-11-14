@@ -96,7 +96,7 @@ button.btn.btn-secondary {
     border-color: var(--dark-grey);
     color: var(--bg-dark);
     font-style: italic;
-    font-size: 20px;
+    font-size: x-large;
     padding: 4px 25px;
 }
 
@@ -110,7 +110,6 @@ button.btn.btn-secondary:hover {
 button.btn.btn-outline-secondary {
     background-color: var(--bg-dark);
     border-color: var(--brand-color);
-    font-size: 20px;
     padding: 0;
     height: 25px;
     width: 25px;

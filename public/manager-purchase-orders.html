@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>TIP - Sales Orders</title>
+    <title>TIP - Purchase Orders</title>
 
     <link rel="stylesheet" href="./css/common.css">
 
@@ -38,8 +38,8 @@
         </button>
         <div class="collapse navbar-collapse justify-content-center" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="manager-sales-orders.html">Sales Orders</a>
-                <a class="nav-item nav-link" href="manager-purchase-orders.html">Purchase Orders</a>
+                <a class="nav-item nav-link" href="manager-sales-orders.html">Sales Orders</a>
+                <a class="nav-item nav-link active" href="manager-purchase-orders.html">Purchase Orders</a>
                 <a class="nav-item nav-link" href="manager-picking-waves.html">Picking Waves</a>
                 <a class="nav-item nav-link" href="manager-replenishment.html">Replenishment</a>
             </div>
@@ -50,7 +50,7 @@
         <div class="header row text-center pb-2">
             <div class="col-2">Document ID</div>
             <div class="col-4">Order ID</div>
-            <div class="col-2">Client ID</div>
+            <div class="col-2">Supplier ID</div>
             <div class="col-3">Date</div>
             <div class="col-1"></div>
         </div>
@@ -69,25 +69,7 @@
             <div class="col-2">S0009</div>
             <div class="col-3">2019-08-24</div>
             <div class="col-1">
-                <button class="btn btn-outline-secondary checked"></button>
-            </div>
-        </div>
-        <div class="sub-container row">
-            <div class="container ml-5">
-                <div class="sub-header row text-center py-2">
-                    <div class="col-2">Product ID</div>
-                    <div class="col-4">Name</div>
-                    <div class="col-2">Zone</div>
-                    <div class="col-2">Quantity</div>
-                    <div class="col-2">Stock</div>
-                </div>
-                <div class="row text-center py-2">
-                    <div class="col-2">56</div>
-                    <div class="col-4">AK-47</div>
-                    <div class="col-2">D4</div>
-                    <div class="col-2">2</div>
-                    <div class="col-2">9</div>
-                </div>
+                <button class="btn btn-outline-secondary"></button>
             </div>
         </div>
         <div class="row text-center py-2">
@@ -132,10 +114,10 @@
             </div>
         </div>
         <div class="text-right my-4">
-            <button type="submit" class="btn btn-secondary">Create Wave</button>
+            <button type="submit" class="btn btn-secondary">Allocate</button>
         </div>
     </div>
-    
+
 </body>
 
 </html>
