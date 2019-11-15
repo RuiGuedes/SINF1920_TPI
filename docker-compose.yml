@@ -1,0 +1,50 @@
+version: '3'
+networks:
+ app-network:
+services:
+  webserver:
+    build:
+      context: .
+      dockerfile: ./Docker/nginx-php/Dockerfile
+    container_name: webserver
+    expose:
+      - "9000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ".:/var/www/"
+    depends_on:
+      - postgres
+    restart: always
+    networks:
+      - app-network
+  postgres:
+    image: postgres:9.4
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pg!lol!2019
+    ports:
+      - 5432:5432
+    logging:
+      driver: "none"
+    # volumes:
+    #   - "./postgres/data:/var/lib/postgresql/data"
+    networks:
+      - app-network
+  pgadmin:
+    image: thajeztah/pgadmin4
+    container_name: pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres
+      PGADMIN_DEFAULT_PASSWORD: pg!lol!2019
+      PGADMIN_ENABLE_TLS: "False"
+    ports:
+      - 5050:5050
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
