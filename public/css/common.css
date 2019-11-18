@@ -109,6 +109,19 @@ button.btn.btn-secondary:hover {
     color: var(--brand-color);
 }
 
+button.btn.btn-outline-danger {
+    background-color: var(--semi-transparent-brand-color);
+    border-color: var(--semi-transparent-brand-color);
+    color: var(--light-grey);
+    font-size: x-large;
+    font-style: italic;
+    padding: 4px 25px;
+}
+
+button.btn.btn-outline-danger:hover {
+    background-color: var(--bg-dark);
+}
+
 /* Button Checkbox */
 button.btn.btn-outline-secondary {
     background-color: var(--bg-dark);
