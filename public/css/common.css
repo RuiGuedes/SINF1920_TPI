@@ -80,11 +80,13 @@ nav.sub-navbar button.navbar-toggler, span.navbar-toggler-icon {
 }
 
 nav.sub-navbar a {
+    text-align: center;
     color: var(--dark-grey);
     border: solid var(--dark-grey) 1px;
     border-radius: 5px;
     margin: 10px;
     padding: 4px 10px;
+    min-width: 190px;
 }
 
 nav.sub-navbar a.active {
@@ -178,4 +180,10 @@ div.qnt-input input, div.qnt-input input:active, div.qnt-input input:focus {
     border-color: var(--light-grey);
     background-color: var(--semi-transparent-brand-color);
     box-shadow: none;
+}
+
+
+div.arrow {
+    font-size: 150px;
+    color: var(--brand-color);
 }
