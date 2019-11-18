@@ -142,6 +142,20 @@ div.main-container > .row {
     border-bottom: solid var(--dark-grey) 2px;
 }
 
+div.main-container.with-ground > .row:first-child {
+    background-color: var(--bg-dark);
+    border-bottom: solid var(--dark-grey) 2px;
+}
+
+div.main-container.with-ground > .row {
+    background-color: var(--transparent-brand-color);
+    border-bottom: none;
+}
+
+div.main-container.with-ground > .row:nth-last-child(-n+2) {
+    border-bottom: solid var(--dark-grey) 2px;
+}
+
 div.sub-container {
     background-color: var(--transparent-brand-color);
     border-bottom: solid var(--dark-grey) 2px;
@@ -157,4 +171,11 @@ div.sub-container .sub-header {
 div.double-sub-container {
     background-color: var(--semi-transparent-brand-color);
     font-size: 18px;
+}
+
+div.qnt-input input, div.qnt-input input:active, div.qnt-input input:focus {
+    color: white;
+    border-color: var(--light-grey);
+    background-color: var(--semi-transparent-brand-color);
+    box-shadow: none;
 }
