@@ -200,3 +200,36 @@ div.arrow {
     font-size: 150px;
     color: var(--brand-color);
 }
+
+div.route-line {
+    border-top: solid 2px;
+    border-color: inherit;
+    position: relative;
+    top: 25px;
+    z-index: 0;
+}
+
+div.route-boxes {
+    color: var(--brand-color);
+    border-color: var(--brand-color);
+    font-size: x-large;
+}
+
+div.route-box {
+    background-color: var(--bg-dark);
+    border: solid 2px;
+    border-color: inherit;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    transform: rotate(45deg);
+    text-align: center;
+    position: relative;
+    bottom: 25px;
+}
+
+div.route-text {
+    transform: rotate(-45deg);
+    position: relative;
+    top: 4px;
+}
