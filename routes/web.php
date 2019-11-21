@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('login');
 });
+
+
+Route::view('manager/salesorders','manager.salesOrders',['sales' => []])->name('manager-sales-orders');
