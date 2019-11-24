@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('title', 'Sales Orders')
+@section('title', 'Purchase Orders')
 
 @section('body')
     @include('partials.mainNavbar')
@@ -9,12 +9,12 @@
         'tabs' => [
             [
                 'route' => 'manager-sales-orders',
-                'name' => 'Sales Orders',
-                'active' => true
+                'name' => 'Sales Orders'
             ],
             [
                 'route' => 'manager-purchase-orders',
-                'name' => 'Purchase Orders'
+                'name' => 'Purchase Orders',
+                'active' => true
             ],
             [
                 'route' => 'manager-picking-waves',
@@ -30,16 +30,15 @@
     <div class="main-container container pt-5">
         @include('partials.tableHeader', [
             'page' => 'orders',
-            'type' => 'Client'
+            'type' => 'Supplier'
         ])
         
-
-        @include('partials.tableContent', [         
+        @include('partials.tableContent', [
             'orders' => [
                 [
                     'id' => '4',
                     'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                    'owner' => 'C0004',
+                    'owner' => 'S0095',
                     'date' => '2019-07-24',
                     'items' => [
                         [
@@ -54,7 +53,7 @@
                 [
                     'id' => '7',
                     'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                    'owner' => 'C0004',
+                    'owner' => 'S0039',
                     'date' => '2019-07-24',
                     'items' => [
                         [
@@ -76,7 +75,7 @@
                 [
                     'id' => '8',
                     'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                    'owner' => 'C0004',
+                    'owner' => 'S0007',
                     'date' => '2019-07-24',
                     'items' => [
                         [
@@ -91,23 +90,24 @@
                             'description'=>'AK-48',
                             'zone'=>'D4',
                             'quantity' => '2',
-                            'stock' => '90'
+                            'stock' => '0'
                         ],
                         [
                             'id'=>'58',
                             'description'=>'Desert Eagle',
                             'zone'=>'B3',
                             'quantity' => '40',
-                            'stock' => '300'
+                            'stock' => '2'
                         ]
                     ]
                 ]
             ]
         ])
-        
+
         @include('partials.mainButton', [
-            'text' => 'Create Wave',
+            'text' => 'Allocate', 
             'action' => ''
         ])
     </div>
+    
 @endsection
