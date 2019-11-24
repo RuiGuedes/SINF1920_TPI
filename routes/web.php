@@ -16,4 +16,7 @@ Route::get('/', function () {
 });
 
 
-Route::view('manager/salesorders','manager.salesOrders',['sales' => []])->name('manager-sales-orders');
+Route::view('manager/salesOrders','manager.salesOrders')->name('manager-sales-orders');
+Route::view('manager/purchaseOrders','manager.purchaseOrders')->name('manager-purchase-orders');
+Route::view('manager/pickingWaves','manager.pickingWaves')->name('manager-picking-waves');
+Route::view('manager/replenishment','manager.replenishment')->name('manager-replenishment');

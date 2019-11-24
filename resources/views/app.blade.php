@@ -29,7 +29,7 @@
     @yield('body')
 </body>
 
-<footer class="fixed-bottom">
+<footer class="fixed-bottom mx-3">
     COPYRIGHT © TPI 2019
 </footer>
 

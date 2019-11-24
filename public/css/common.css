@@ -58,10 +58,11 @@ nav .logo-line {
     border-bottom: solid var(--brand-color) 3px;
 }
 
-.company-name {
+nav.main-navbar a.company-name {
     font-size: 50px;
     font-weight: bold;
     font-style: italic;
+    text-decoration: none;
 }
 
 nav.main-navbar a {
@@ -153,7 +154,12 @@ div.main-container .header {
     font-size: 16px;
 }
 
-div.main-container > .row {
+div.main-container > a {
+    text-decoration: inherit;
+    color: inherit;
+}
+
+div.main-container > a > .row {
     border-bottom: solid var(--dark-grey) 2px;
 }
 
