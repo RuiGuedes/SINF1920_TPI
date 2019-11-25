@@ -27,12 +27,14 @@
         ]
     ])
 
-    <div class="main-container container pt-5">
+    <div class="main-container container py-5">
         @include('partials.tableHeader', [
+            'clerk' => false,
             'page' => 'waves'
         ])
 
         @include('partials.tableContent', [
+            'clerk' => false,
             'waves' => [
                 [
                     'id' => '2',

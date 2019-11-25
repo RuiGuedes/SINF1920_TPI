@@ -12,7 +12,7 @@
 
 		<div class="login-fields row justify-content-center">
 			<div class="col-10 col-sm-6 col-md-4 col-xl-3">
-				<form id="login-form" action="{{ route('manager-sales-orders') }}">
+				<form id="login-form" action="{{ route($route) }}">
 					<div class="form-group">
 						<label for="username" hidden>Username</label>
 						<input type="text" class="form-control" id="username" placeholder="Username">

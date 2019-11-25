@@ -13,8 +13,7 @@
         </a>
         @include('partials.subTableContent', [
             'items' => $order['items'],
-            'id' => $order['id'],
-            'items_type' => 'products'
+            'id' => $order['id']
         ])
     @endforeach
 @endisset
@@ -23,16 +22,29 @@
     @foreach ($waves as $wave)
         <a href="#row-id-{{$wave['id']}}" data-toggle="collapse" role="button" aria-expanded="false">
             <div class="row text-center py-2">
-                <div class="col-3">{{$wave['id']}}</div>
+                <div class="col-{{ $clerk? '2' : '3'}}">{{$wave['id']}}</div>
                 <div class="col-3">{{$wave['num_orders']}}</div>
                 <div class="col-3">{{$wave['num_products']}}</div>
                 <div class="col-3">{{$wave['date']}}</div>
+                @if ($clerk)
+                    <div class="col-1">
+                        <button class="btn btn-outline-secondary"></button>
+                    </div>
+                @endif
             </div>
         </a>
-        @include('partials.subTableContent', [
-            'id' => $wave['id'],
-            'orders' => $wave['orders']
-        ])
-        
+        @isset($wave['orders'])
+            @include('partials.subTableContent', [
+                'id' => $wave['id'],
+                'list_orders' => $wave['orders']
+            ])
+        @endisset
+
+        @isset($wave['items'])
+            @include('partials.subTableContent', [
+                'id' => $wave['id'],
+                'items' => $wave['items']
+            ])
+        @endisset
     @endforeach
 @endisset

@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('login');
+    return view('login', ['route' => 'picking-waves']);
 });
 
 
@@ -50,3 +50,9 @@ Route::view('manager/replenishment','manager.replenishment',
             ]
         ]
     ])->name('manager-replenishment');
+
+Route::view('clerk/packingWaves','clerk.packingWaves')->name('packing-waves');
+Route::view('clerk/packing','clerk.packing')->name('packing');
+Route::view('clerk/pickingWaves','clerk.pickingWaves')->name('picking-waves');
+Route::view('clerk/pickingRoute','clerk.pickingRoute')->name('picking-route');
+Route::view('clerk/dispatching','clerk.dispatching')->name('dispatching');

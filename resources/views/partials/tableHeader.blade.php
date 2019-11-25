@@ -6,7 +6,7 @@
         <div class="col-3">Date</div>
 
     @elseif ($page == 'waves')
-        <div class="col-3">Wave ID</div>
+        <div class="col-{{ $clerk? '2' : '3' }}">Wave ID</div>
         <div class="col-3">No. Orders</div>
         <div class="col-3">No. Products</div>
         <div class="col-3">Date</div>
