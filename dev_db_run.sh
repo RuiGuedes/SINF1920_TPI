@@ -1,0 +1,1 @@
+docker-compose exec web-app php artisan migrate:refresh
