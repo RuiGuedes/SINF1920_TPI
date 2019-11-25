@@ -2,6 +2,8 @@
 <html lang="{{ app()->getLocale() }}">
 
 <head>
+
+    <link href="{{ asset('img/logo.png') }}" rel="shortcut icon">
     <link rel="stylesheet" href="{{ asset('css/common.css') }}">
 
 
