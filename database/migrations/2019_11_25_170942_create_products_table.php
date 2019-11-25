@@ -19,7 +19,8 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('warehouse_id');
             $table->foreign('warehouse_id')
                 ->references('id')
-                ->on('warehouses');
+                ->on('warehouse')
+                ->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

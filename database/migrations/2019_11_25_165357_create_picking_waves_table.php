@@ -15,9 +15,11 @@ class CreatePickingWavesTable extends Migration
     {
         Schema::create('picking_waves', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('worker_id');
-            $table->foreign('worker_id')->references('id')
-                ->on('users');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

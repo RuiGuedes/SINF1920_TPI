@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePackingsStateTable extends Migration
+class CreatePackingTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,18 @@ class CreatePackingsStateTable extends Migration
      */
     public function up()
     {
-        Schema::create('packings', function (Blueprint $table) {
+        Schema::create('packing', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('picking_wave_id');
             $table->foreign('picking_wave_id')
                 ->references('id')
-                ->on('picking_waves');
+                ->on('picking_waves')
+                ->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')
-                ->on('users');
+                ->on('users')
+                ->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -35,6 +37,6 @@ class CreatePackingsStateTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('packings');
+        Schema::dropIfExists('packing');
     }
 }

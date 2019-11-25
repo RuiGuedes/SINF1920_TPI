@@ -18,11 +18,13 @@ class CreatePickingWavesStateTable extends Migration
             $table->unsignedBigInteger('picking_wave_id');
             $table->foreign('picking_wave_id')
                 ->references('id')
-                ->on('picking_waves');
+                ->on('picking_waves')
+                ->onDelete('cascade');
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')
                 ->references('id')
-                ->on('products');
+                ->on('products')
+                ->onDelete('cascade');
             $table->unsignedBigInteger('desired_qnt');
             $table->unsignedBigInteger('picked_qnt')->nullable();
             $table->boolean('exception')->default(false);

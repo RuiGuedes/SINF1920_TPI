@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDispatchingsStateTable extends Migration
+class CreateDispatchingTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,18 @@ class CreateDispatchingsStateTable extends Migration
      */
     public function up()
     {
-        Schema::create('dispatchings', function (Blueprint $table) {
+        Schema::create('dispatching', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('sales_order_id');
             $table->foreign('sales_order_id')
                 ->references('id')
-                ->on('sales_orders');
+                ->on('sales_orders')
+                ->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')
-                ->on('users');
+                ->on('users')
+                ->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -35,6 +37,6 @@ class CreateDispatchingsStateTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dispatchings');
+        Schema::dropIfExists('dispatching');
     }
 }

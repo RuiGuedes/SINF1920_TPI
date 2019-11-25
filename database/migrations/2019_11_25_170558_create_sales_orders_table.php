@@ -16,8 +16,10 @@ class CreateSalesOrdersTable extends Migration
         Schema::create('sales_orders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('picking_wave_id');
-            $table->foreign('picking_wave_id')->references('id')
-                ->on('picking_waves');
+            $table->foreign('picking_wave_id')
+                ->references('id')
+                ->on('picking_waves')
+                ->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
