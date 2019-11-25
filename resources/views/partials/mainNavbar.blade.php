@@ -6,6 +6,6 @@
         <a class="company-name" href="{{route('manager-sales-orders')}}">TPI</a>
     </div>
     <div class="logo-line col text-right align-self-start">
-        <a href="login.html">Logout</a>
+        <a href="{{route('login')}}">Logout</a>
     </div>
 </nav>

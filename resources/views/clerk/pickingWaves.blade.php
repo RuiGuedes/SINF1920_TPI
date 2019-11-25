@@ -94,7 +94,7 @@
         ])
         @include('partials.mainButton', [
             'text' => 'Next',
-            'action' => '../manager/pickingWaves'
+            'action' => 'picking-route'
         ])
     </div>
 

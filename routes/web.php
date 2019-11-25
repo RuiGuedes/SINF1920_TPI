@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('login', ['route' => 'picking-waves']);
 });
 
+Route::view('/','login', ['route' => 'picking-waves'])->name('login');
+Route::view('layout','layout')->name('layout');
 
 Route::view('manager/salesOrders','manager.salesOrders')->name('manager-sales-orders');
 Route::view('manager/purchaseOrders','manager.purchaseOrders')->name('manager-purchase-orders');
