@@ -15,7 +15,7 @@ class Users extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'username', 'email', 'password', 'manager',
     ];
 
     /**
@@ -35,4 +35,11 @@ class Users extends Model
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
 }

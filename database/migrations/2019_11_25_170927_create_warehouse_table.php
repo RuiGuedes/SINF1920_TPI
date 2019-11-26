@@ -17,7 +17,6 @@ class CreateWarehouseTable extends Migration
             $table->bigIncrements('id');
             $table->string('section')->unique();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
