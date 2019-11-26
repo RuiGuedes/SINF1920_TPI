@@ -24,7 +24,7 @@
     ])
 
     <div class="container-fluid">
-        <div class="container-fluid my-5">            
+        <div class="container-fluid my-4">            
             <div class="row route-boxes justify-content-center">
                 @foreach ($zones_list as $item)
                     <div class="route-line pr-md-2 pr-xl-5"><div class="route-box mr-3 mr-md-5"><div class="route-text">{{$item['zone']}}</div></div></div>
@@ -33,7 +33,7 @@
             </div>                
         </div>
 
-        <div class="container route-zone pt-4 justify-content-center">
+        <div class="container route-zone my-5 justify-content-center">
             @foreach ($zones_list as $item)      
 
                 <div class="row route-boxes justify-content-center">
@@ -60,7 +60,7 @@
                             </div>
                         </div>
                         <div class="col-2">
-                            <select class="custom-select">
+                            <select>
                                 <option value="0" selected>No Picked</option>
                                 <option value="1">Picked</option>
                                 <option value="2">Lack of Stock</option>
@@ -71,11 +71,12 @@
                 @endforeach
                 
             @endforeach
+
+            @include('partials.mainButton', [
+                'text' => 'Complete',
+                'action' => 'picking-waves'
+            ])
         </div>
-
-
-        
     </div>
-    
     
 @endsection

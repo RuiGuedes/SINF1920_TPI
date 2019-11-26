@@ -11,7 +11,7 @@ html, body, .login-container {
     height: 100%;
 }
 
-body.bg-dark {
+body.bg-dark, footer {
     background-color: var(--bg-dark)!important;
     color: var(--light-grey);
     font-family: 'Roboto Mono', monospace;
@@ -203,6 +203,7 @@ div.qnt-input input, div.qnt-input input:active, div.qnt-input input:focus {
     border-color: var(--light-grey);
     background-color: var(--semi-transparent-brand-color);
     box-shadow: none;
+    height: 30px;
 }
 
 /* PICKING ROUTE */
@@ -251,10 +252,14 @@ div.route-zone .header {
 }
 
 /* DROPDOWN */
-select.custom-select {
+select {
     color: white;
     border-color: var(--light-grey);
     background-color: var(--semi-transparent-brand-color);
+    border-radius: 0.25rem;
+    height: 30px;
+    width: 100%;
+    padding: 2px 6px;
 }
 
 option:not(selected) {
