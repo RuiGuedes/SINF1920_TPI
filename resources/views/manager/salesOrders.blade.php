@@ -32,7 +32,6 @@
             'page' => 'orders',
             'type' => 'Client'
         ])
-        
 
         @include('partials.tableContent', [         
             'orders' => [

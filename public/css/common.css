@@ -163,6 +163,10 @@ div.main-container > a > .row {
     border-bottom: solid var(--dark-grey) 2px;
 }
 
+div.main-container.dispatch > a > .row {
+    cursor: default;
+}
+
 div.main-container.with-ground > .row:first-child {
     background-color: var(--bg-dark);
     border-bottom: solid var(--dark-grey) 2px;

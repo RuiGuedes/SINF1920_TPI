@@ -1,6 +1,6 @@
 <nav class="main-navbar navbar navbar-expand stick-top pt-3">
     <div class="logo-line col align-self-start">
-        <a href="layout.html">Layout</a>
+        <a href="{{route('layout')}}">Layout</a>
     </div>
     <div class="col-5 col-sm-3 col-md-3 col-xl-2 text-center">
         <a class="company-name" href="{{route('manager-sales-orders')}}">TPI</a>

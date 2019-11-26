@@ -1,6 +1,6 @@
 @isset($orders)
     @foreach ($orders as $order)
-        <a href="#row-id-{{ $order['id'] }}" data-toggle="collapse" role="button" aria-expanded="false">
+        <a @empty($dispatch) href="#row-id-{{ $order['id'] }}" @endempty data-toggle="collapse" role="button" aria-expanded="false">
             <div class="row text-center py-2">
                 <div class="col-2">{{ $order['id'] }}</div>
                 <div class="col-4">{{ $order['order_id'] }}</div>
@@ -11,10 +11,12 @@
                 </div>
             </div>
         </a>
-        @include('partials.subTableContent', [
-            'items' => $order['items'],
-            'id' => $order['id']
-        ])
+        @empty($dispatch)
+            @include('partials.subTableContent', [
+                'items' => $order['items'],
+                'id' => $order['id']
+            ])
+        @endempty
     @endforeach
 @endisset
 
