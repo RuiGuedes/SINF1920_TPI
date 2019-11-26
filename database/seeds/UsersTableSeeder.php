@@ -1,5 +1,6 @@
 <?php
 
+use App\Users;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -14,7 +15,7 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         // Create manager(s)
-        DB::table('users')->insert([
+        Users::insertManager([
             'username' => "admin",
             'email' => "admin@tpi.com",
             'email_verified_at' => now(),

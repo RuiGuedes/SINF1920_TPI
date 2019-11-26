@@ -43,4 +43,22 @@ class Users extends Model
      */
     protected $table = 'users';
 
+    /**
+     * Inserts a new manager
+     *
+     * @param array $array
+     */
+    public static function insertManager(array $array) {
+        $user = new Users();
+
+        $user->username = $array["username"];
+        $user->email = $array["email"];
+        $user->email_verified_at = $array["email_verified_at"];
+        $user->manager = $array["manager"];
+        $user->password = $array["password"];
+        $user->remember_token = $array["remember_token"];
+
+        $user->save();
+    }
+
 }
