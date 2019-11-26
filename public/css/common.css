@@ -205,10 +205,11 @@ div.qnt-input input, div.qnt-input input:active, div.qnt-input input:focus {
     box-shadow: none;
 }
 
-
-div.arrow {
-    font-size: 150px;
+/* PICKING ROUTE */
+div.route-boxes {
     color: var(--brand-color);
+    border-color: var(--brand-color);
+    font-size: x-large;
 }
 
 div.route-line {
@@ -217,12 +218,6 @@ div.route-line {
     position: relative;
     top: 25px;
     z-index: 0;
-}
-
-div.route-boxes {
-    color: var(--brand-color);
-    border-color: var(--brand-color);
-    font-size: x-large;
 }
 
 div.route-box {
@@ -242,4 +237,28 @@ div.route-text {
     transform: rotate(-45deg);
     position: relative;
     top: 4px;
+}
+
+div.separ-line {
+    border-top: solid 2px;
+    border-color: inherit;
+    position: relative;
+    top: 20px;
+}
+
+div.route-zone .header {
+    border-bottom: solid var(--dark-grey) 2px;
+}
+
+/* DROPDOWN */
+select.custom-select {
+    color: white;
+    border-color: var(--light-grey);
+    background-color: var(--semi-transparent-brand-color);
+}
+
+option:not(selected) {
+    color: var(--dark-grey);
+    border-color: var(--light-grey);
+    background-color: #82c7a5;
 }

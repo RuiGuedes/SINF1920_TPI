@@ -42,7 +42,7 @@
                 <div class="col-2">
                     <div class="qnt-input input-group">
                         <input type="number" min="0" aria-label="Quantity" 
-                            class="form-control text-center" @isset($product['status']) hidden @endisset>
+                            class="form-control text-center" @empty($product['status']) hidden @endempty>
                     </div>
                 </div>
                 <div class="col-1">

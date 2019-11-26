@@ -20,6 +20,14 @@
             <div class="col-2">Status</div>
             <div class="col-2">Quantity</div>
             @break
+        @case('picking-route')
+            <div class="col-2">Section</div>
+            <div class="col-3">Product</div>
+            <div class="col-2"></div>
+            <div class="col-1">Qnt. Desired</div>
+            <div class="col-2">Qnt. Picked</div>
+            <div class="col-2">Status</div>
+            @break
         @default
             
     @endswitch

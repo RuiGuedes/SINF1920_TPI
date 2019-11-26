@@ -56,5 +56,93 @@ Route::view('manager/replenishment','manager.replenishment',
 Route::view('clerk/packingWaves','clerk.packingWaves')->name('packing-waves');
 Route::view('clerk/packing','clerk.packing')->name('packing');
 Route::view('clerk/pickingWaves','clerk.pickingWaves')->name('picking-waves');
-Route::view('clerk/pickingRoute','clerk.pickingRoute')->name('picking-route');
 Route::view('clerk/dispatching','clerk.dispatching')->name('dispatching');
+Route::view('clerk/pickingRoute','clerk.pickingRoute',[
+    'zones_list' => [
+        [
+            'zone' => 'A',
+            'products' => [
+                [
+                    'section' => 'A3',
+                    'product' => 'Desert Eagle',
+                    'quantity' => '4'
+                ],
+                [
+                    'section' => 'A4',
+                    'product' => 'M1911',
+                    'quantity' => '2'
+                ]
+            ]
+        ],
+        [
+            'zone' => 'B',
+            'products' => [
+                [
+                    'section' => 'B1',
+                    'product' => 'Desert Eagle',
+                    'quantity' => '4'
+                ],
+                [
+                    'section' => 'B6',
+                    'product' => 'M1911',
+                    'quantity' => '2'
+                ]
+            ]
+        ],
+        [
+            'zone' => 'C',
+            'products' => [
+                [
+                    'section' => 'C3',
+                    'product' => 'C4',
+                    'quantity' => '4'
+                ],
+                [
+                    'section' => 'C8',
+                    'product' => 'M1911',
+                    'quantity' => '2'
+                ]
+            ]
+        ],
+        [
+            'zone' => 'D',
+            'products' => [
+                [
+                    'section' => 'D2',
+                    'product' => 'MP7',
+                    'quantity' => '4'
+                ]
+            ]
+        ],
+        [
+            'zone' => 'E',
+            'products' => [
+                [
+                    'section' => 'E2',
+                    'product' => 'MP7',
+                    'quantity' => '4'
+                ]
+            ]
+        ],
+        [
+            'zone' => 'F',
+            'products' => [
+                [
+                    'section' => 'F8',
+                    'product' => 'MP7',
+                    'quantity' => '4'
+                ]
+            ]
+        ]
+    ],
+    'last_zone' => [
+        'zone' => 'G',
+        'products' => [
+            [
+                'section' => 'G8',
+                'product' => 'P2',
+                'quantity' => '9'
+            ]
+        ]
+    ]
+])->name('picking-route');
