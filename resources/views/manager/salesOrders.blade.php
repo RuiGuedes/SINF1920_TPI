@@ -106,7 +106,7 @@
         
         @include('partials.mainButton', [
             'text' => 'Create Wave',
-            'action' => ''
+            'action' => 'manager-sales-orders'
         ])
     </div>
 @endsection

@@ -106,7 +106,7 @@
 
         @include('partials.mainButton', [
             'text' => 'Allocate', 
-            'action' => ''
+            'action' => 'manager-purchase-orders'
         ])
     </div>
     
