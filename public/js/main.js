@@ -3,13 +3,23 @@ let checkboxes = document.querySelectorAll("button.btn.btn-outline-secondary");
 checkboxes.forEach(checkbox => {
     checkbox.addEventListener('click', function(event) {
         let className = checkbox.className;
+        let parent_row = checkbox.parentElement.parentElement;
 
-        if(className === "btn btn-outline-secondary")
+        if(className === "btn btn-outline-secondary"){
             checkbox.setAttribute('class', 'btn btn-outline-secondary checked');
-        else 
+
+            if(parent_row.className.search('replenishment') != -1) 
+                parent_row.children[5].firstElementChild.firstElementChild.removeAttribute('hidden');
+            
+        } else {
             checkbox.setAttribute('class', 'btn btn-outline-secondary');
+
+            if(parent_row.className.search('replenishment') != -1) 
+                parent_row.children[5].firstElementChild.firstElementChild.setAttribute('hidden','true');                
+        }
     })
 })
+
 
 
 

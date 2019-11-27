@@ -33,7 +33,7 @@
         ])
 
         @foreach ($products as $product)
-            <div class="row text-center py-2">
+            <div class="row text-center py-2 replenishment">
                 <div class="col-2">{{$product['id']}}</div>
                 <div class="col-3">{{$product['description']}}</div>
                 <div class="col-1">{{$product['zone']}}</div>
@@ -42,7 +42,7 @@
                 <div class="col-2">
                     <div class="qnt-input input-group">
                         <input type="number" min="0" aria-label="Quantity" 
-                            class="form-control text-center" @empty($product['status']) hidden @endempty>
+                            class="form-control text-center" hidden>
                     </div>
                 </div>
                 <div class="col-1">
