@@ -4,7 +4,7 @@ services:
   web-app:
     build:
       context: .
-      dockerfile: ./docker/Dockerfile
+      dockerfile: ./docker/alpine/Dockerfile
     container_name: web-app
     expose:
       - "9000"
