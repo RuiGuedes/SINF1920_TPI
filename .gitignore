@@ -251,4 +251,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.gitignore.io/api/intellij,webstorm,laravel,linux,windows
+./vendor
