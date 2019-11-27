@@ -18,40 +18,10 @@ Route::get('/', function () {
 Route::view('/','login', ['route' => 'picking-waves'])->name('login');
 Route::view('layout','layout')->name('layout');
 
-Route::view('manager/salesOrders','manager.salesOrders')->name('manager-sales-orders');
-Route::view('manager/purchaseOrders','manager.purchaseOrders')->name('manager-purchase-orders');
-Route::view('manager/pickingWaves','manager.pickingWaves')->name('manager-picking-waves');
-Route::view('manager/replenishment','manager.replenishment', 
-    [
-        'products' => [
-            [
-                'id'=>'56',
-                'description'=>'AK-47',
-                'zone'=>'D4',
-                'stock' => '9',
-                'status' => 'Last Units'
-            ],
-            [
-                'id'=>'56',
-                'description'=>'AK-47',
-                'zone'=>'D4',
-                'stock' => '9'
-            ],
-            [
-                'id'=>'58',
-                'description'=>'AK-48',
-                'zone'=>'D4',
-                'stock' => '0',
-                'status' => 'Out of Stock'
-            ],
-            [
-                'id'=>'58',
-                'description'=>'Desert Eagle',
-                'zone'=>'B3',
-                'stock' => '300'
-            ]
-        ]
-    ])->name('manager-replenishment');
+Route::get('manager/salesOrders','ManagerController@showSalesOrders')->name('manager-sales-orders');
+Route::get('manager/purchaseOrders','ManagerController@showPurchaseOrders')->name('manager-purchase-orders');
+Route::get('manager/pickingWaves','ManagerController@showPickingWaves')->name('manager-picking-waves');
+Route::get('manager/replenishment','ManagerController@showReplenishment')->name('manager-replenishment');
 
 Route::view('clerk/packingWaves','clerk.packingWaves')->name('packing-waves');
 Route::view('clerk/packing','clerk.packing')->name('packing');

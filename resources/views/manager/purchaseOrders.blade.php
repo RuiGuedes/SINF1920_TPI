@@ -34,74 +34,7 @@
         ])
         
         @include('partials.tableContent', [
-            'orders' => [
-                [
-                    'id' => '4',
-                    'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                    'owner' => 'S0095',
-                    'date' => '2019-07-24',
-                    'items' => [
-                        [
-                            'id'=>'56',
-                            'description'=>'AK-47',
-                            'zone'=>'D4',
-                            'quantity' => '2',
-                            'stock' => '9'
-                        ]
-                    ]
-                ],
-                [
-                    'id' => '7',
-                    'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                    'owner' => 'S0039',
-                    'date' => '2019-07-24',
-                    'items' => [
-                        [
-                            'id'=>'56',
-                            'description'=>'AK-47',
-                            'zone'=>'D4',
-                            'quantity' => '2',
-                            'stock' => '9'
-                        ],
-                        [
-                            'id'=>'58',
-                            'description'=>'AK-48',
-                            'zone'=>'D4',
-                            'quantity' => '2',
-                            'stock' => '9'
-                        ]
-                    ]
-                ],
-                [
-                    'id' => '8',
-                    'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                    'owner' => 'S0007',
-                    'date' => '2019-07-24',
-                    'items' => [
-                        [
-                            'id'=>'56',
-                            'description'=>'AK-47',
-                            'zone'=>'D4',
-                            'quantity' => '2',
-                            'stock' => '9'
-                        ],
-                        [
-                            'id'=>'58',
-                            'description'=>'AK-48',
-                            'zone'=>'D4',
-                            'quantity' => '2',
-                            'stock' => '0'
-                        ],
-                        [
-                            'id'=>'58',
-                            'description'=>'Desert Eagle',
-                            'zone'=>'B3',
-                            'quantity' => '40',
-                            'stock' => '2'
-                        ]
-                    ]
-                ]
-            ]
+            'orders' => $purchases
         ])
 
         @include('partials.mainButton', [

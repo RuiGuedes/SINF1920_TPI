@@ -31,6 +31,7 @@
 
         @include('partials.tableContent', [
             'clerk' => true,
+            'packing' => true,
             'waves' => [
                 [
                     'id' => '2',
