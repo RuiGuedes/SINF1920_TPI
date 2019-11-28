@@ -32,20 +32,7 @@
         @include('partials.tableContent', [
             'clerk' => true,
             'packing' => true,
-            'waves' => [
-                [
-                    'id' => '2',
-                    'num_orders' => '2',
-                    'num_products' => '7',
-                    'date' => '2019-10-24',
-                ],
-                [
-                    'id' => '1',
-                    'num_orders' => '1',
-                    'num_products' => '9',
-                    'date' => '2019-10-24',
-                ]
-            ]
+            'waves' => $waves
         ])
 
         @include('partials.mainButton', [

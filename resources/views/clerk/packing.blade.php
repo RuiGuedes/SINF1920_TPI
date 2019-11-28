@@ -30,45 +30,7 @@
         ])
 
         @include('partials.tableContent', [
-            'orders' => [
-                [
-                    'id' => '4',
-                    'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                    'owner' => 'C0004',
-                    'date' => '2019-07-24',
-                    'items' => [
-                        [
-                            'id'=>'56',
-                            'description'=>'AK-47',
-                            'zone'=>'D4',
-                            'quantity' => '2',
-                            'stock' => '9'
-                        ]
-                    ]
-                ],
-                [
-                    'id' => '7',
-                    'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                    'owner' => 'C0004',
-                    'date' => '2019-07-24',
-                    'items' => [
-                        [
-                            'id'=>'56',
-                            'description'=>'AK-47',
-                            'zone'=>'D4',
-                            'quantity' => '2',
-                            'stock' => '9'
-                        ],
-                        [
-                            'id'=>'58',
-                            'description'=>'AK-48',
-                            'zone'=>'D4',
-                            'quantity' => '2',
-                            'stock' => '9'
-                        ]
-                    ]
-                ]
-            ]
+            'orders' => $orders
         ])
         <div class="container my-4">
             <div class="row justify-content-end">
