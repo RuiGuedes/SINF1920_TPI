@@ -10,7 +10,7 @@
                 </div>
             </a>
             <div class="col-1">
-                <button class="btn btn-outline-secondary"></button>
+                <button class="btn btn-outline-secondary select-multiple"></button>
             </div>
         </div>
         @empty($dispatch)
@@ -35,7 +35,7 @@
             </a>
             @if ($clerk)
                 <div class="col-1">
-                    <button class="btn btn-outline-secondary"></button>
+                    <button class="btn btn-outline-secondary select-one"></button>
                 </div>
             @endif
         </div>

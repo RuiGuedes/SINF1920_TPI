@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('title', 'Sales Orders')
+@section('title', 'Picking Waves')
 
 @section('body')
     @include('partials.mainNavbar')

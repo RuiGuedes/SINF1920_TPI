@@ -1,24 +1,44 @@
-let checkboxes = document.querySelectorAll("button.btn.btn-outline-secondary");
+let checkboxes = document.querySelectorAll("button.btn.btn-outline-secondary.select-multiple");
 
 checkboxes.forEach(checkbox => {
     checkbox.addEventListener('click', function(event) {
         let className = checkbox.className;
         let parent_row = checkbox.parentElement.parentElement;
 
-        if(className === "btn btn-outline-secondary"){
-            checkbox.setAttribute('class', 'btn btn-outline-secondary checked');
+        if(className === "btn btn-outline-secondary select-multiple"){
+            checkbox.setAttribute('class', 'btn btn-outline-secondary select-multiple checked');
 
             if(parent_row.className.search('replenishment') != -1) 
                 parent_row.children[5].firstElementChild.firstElementChild.removeAttribute('hidden');
             
         } else {
-            checkbox.setAttribute('class', 'btn btn-outline-secondary');
+            checkbox.setAttribute('class', 'btn btn-outline-secondary select-multiple');
 
             if(parent_row.className.search('replenishment') != -1) 
                 parent_row.children[5].firstElementChild.firstElementChild.setAttribute('hidden','true');                
         }
     })
 })
+
+let radioboxes = document.querySelectorAll("button.btn.btn-outline-secondary.select-one");
+
+radioboxes.forEach(radiobox => {
+    radiobox.addEventListener('click', function(event) {
+        let className = radiobox.className;
+
+        if(className === "btn btn-outline-secondary select-one"){
+            radiobox.setAttribute('class', 'btn btn-outline-secondary checked select-one');
+
+            radioboxes.forEach(r => { 
+                if (r != radiobox)
+                    r.setAttribute('class', 'btn btn-outline-secondary select-one'); 
+                })
+        } else {
+            radiobox.setAttribute('class', 'btn btn-outline-secondary select-one');
+        }
+    })
+})
+
 
 
 
