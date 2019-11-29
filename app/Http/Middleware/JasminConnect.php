@@ -12,9 +12,11 @@ class JasminConnect
 {
 
     /**
+     * Calls jasmin
+     *
      * @param String $path
      * @param String $query
-     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @return \Exception|ClientException|GuzzleException|RequestException|mixed|\Psr\Http\Message\ResponseInterface
      */
     public static function callJasmin(String $path, String $query='')
     {
@@ -39,6 +41,11 @@ class JasminConnect
         }
     }
 
+    /**
+     * Retrieves the access token. It generates a new one if the current token expired
+     *
+     * @return \Exception|ClientException|GuzzleException|RequestException|mixed
+     */
     private static function getAccessToken() {
 
         $activeToken = JasminToken::getActiveToken();
@@ -52,6 +59,8 @@ class JasminConnect
     }
 
     /**
+     * Generates a new token
+     *
      * @return \Exception|ClientException|GuzzleException|RequestException|mixed
      */
     private static function generateNewToken()
@@ -86,6 +95,13 @@ class JasminConnect
         return json_decode($resultToken->getBody(), true);
     }
 
+    /**
+     * Builds an Uri through the path and query parameters
+     *
+     * @param String $path
+     * @param String $query
+     * @return string
+     */
     private static function getUri(String $path, String $query = '') {
         $scheme = 'https://';
         $authority = 'my.jasminsoftware.com/api/';

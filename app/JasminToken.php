@@ -15,6 +15,13 @@ class JasminToken extends Model
      */
     protected $table = 'jasmin_tokens';
 
+    /**
+     * Adds new token to the database
+     *
+     * @param string $token
+     * @param string $type
+     * @param int $expiresIn
+     */
     public static function addNewToken(string $token, string $type, int $expiresIn) {
        $jasminToken = new JasminToken();
        $jasminToken->access_token = $token;
@@ -24,6 +31,10 @@ class JasminToken extends Model
        $jasminToken->save();
     }
 
+    /**
+     * Retrieves the active token
+     * @return mixed
+     */
     public static function getActiveToken() {
         $activeToken = self::where('expires_in', '>', 60)->first();
 
@@ -34,6 +45,9 @@ class JasminToken extends Model
         return $activeToken;
     }
 
+    /**
+     * Updates token expiration date
+     */
     public static function updateExpiryDate() {
         $activeToken = self::where('expires_in', '>', 0)->first();
         if (empty($activeToken)) {
