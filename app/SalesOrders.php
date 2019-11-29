@@ -17,4 +17,9 @@ class SalesOrders extends Model
      * @var string
      */
     protected $table = 'sales_orders';
+
+    public static function getSalesOrderId(String $serieId) {
+
+        return self::where('serie_id', $serieId)->first()['id'];
+    }
 }

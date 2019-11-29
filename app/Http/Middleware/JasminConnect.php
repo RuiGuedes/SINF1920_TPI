@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\SalesOrders;
+use App\JasminToken;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\GuzzleException;
@@ -40,8 +40,24 @@ class JasminConnect
     }
 
     private static function getAccessToken() {
+
+        $activeToken = JasminToken::getActiveToken();
+
+        if (empty($activeToken)) {
+            $activeToken = self::generateNewToken();
+            JasminToken::addNewToken($activeToken['access_token'], $activeToken['token_type'], $activeToken['expires_in']);
+        }
+
+        return $activeToken;
+    }
+
+    /**
+     * @return \Exception|ClientException|GuzzleException|RequestException|mixed
+     */
+    private static function generateNewToken()
+    {
         $user = "TPI-APP";
-        $client_secret="44ea59c6-68bf-4638-af54-b39620a1cbf1";
+        $client_secret = "44ea59c6-68bf-4638-af54-b39620a1cbf1";
         $client_id = '22478-0001';
         $url = "https://identity.primaverabss.com/core/connect/token";
 

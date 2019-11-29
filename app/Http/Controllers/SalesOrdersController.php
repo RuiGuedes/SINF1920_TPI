@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\JasminToken;
 use App\SalesOrders;
 use App\Http\Middleware\JasminConnect;
 
@@ -20,7 +21,7 @@ class SalesOrdersController extends Controller
         $added = false;
 
         foreach ($salesOrders as $saleOrder) {
-            $order = SalesOrders::where('serie_id', $saleOrder['serieId'])->first()['id'];
+            $order = SalesOrders::getSalesOrderId($saleOrder['serieId']);
             if (empty($order)) {
                 try {
                     $newSaleOrder = new SalesOrders();
