@@ -35,7 +35,8 @@
         ])
         @include('partials.mainButton', [
             'text' => 'Next',
-            'action' => 'picking-route'
+            'action' => 'picking-route',
+            'param' => '1'
         ])
     </div>
 

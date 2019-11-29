@@ -37,7 +37,8 @@
 
         @include('partials.mainButton', [
             'text' => 'Next',
-            'action' => 'packing'
+            'action' => 'packing',
+            'param' => '1',
         ])
     </div>
 

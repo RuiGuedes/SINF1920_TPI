@@ -26,5 +26,5 @@ Route::get('manager/replenishment','ManagerController@showReplenishment')->name(
 Route::get('clerk/packingWaves','ClerkController@showPackingWaves')->name('packing-waves');
 Route::get('clerk/packing/{id_wave}','ClerkController@showPacking')->name('packing');
 Route::get('clerk/pickingWaves','ClerkController@showPickingWaves')->name('picking-waves');
-Route::get('clerk/dispatching','ClerkController@showDispatching')->name('dispatching');
+Route::get('clerk/dispatching','ClerkController@showDispatchOrders')->name('dispatching');
 Route::get('clerk/pickingRoute/{id_wave}','ClerkController@showPickingRoute')->name('picking-route');
