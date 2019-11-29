@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 //    return $request->user();
 //});
 
-Route::get('jasmin-getsalesorders', 'JasminConnect@allSalesOrders');
-Route::get('jasmin-getsalesorders/{serieId}', 'JasminConnect@saleOrderBySerieId');
-Route::get('jasmin-getpurchaseorders', 'JasminConnect@allPurchaseOrders');
-Route::get('jasmin-getstock', 'JasminConnect@allStock');
+Route::get('jasmin-getsalesorders', 'SalesOrdersController@allSalesOrders');
+Route::get('jasmin-getsalesorders/{serieId}', 'SalesOrdersController@saleOrderBySerieId');
+Route::get('jasmin-getpurchaseorders', 'PurchaseOrdersController@allPurchaseOrders');
+Route::get('jasmin-getstock', 'InventoryController@allStock');
