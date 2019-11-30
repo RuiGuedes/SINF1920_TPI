@@ -13,6 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+Route::get('jasmin-getsalesorders', 'SalesOrdersController@allSalesOrders');
+Route::get('jasmin-getsalesorders/{serieId}', 'SalesOrdersController@saleOrderBySerieId');
+Route::get('jasmin-getpurchaseorders', 'PurchaseOrdersController@allPurchaseOrders');
+Route::get('jasmin-getstock', 'InventoryController@allStock');

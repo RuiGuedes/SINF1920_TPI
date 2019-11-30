@@ -13,16 +13,13 @@ services:
     volumes:
       - ".:/var/www/"
     command: bash -c 
-       "php artisan cache:clear 
-        && php artisan config:clear 
-        && php artisan route:clear
-        && php artisan config:cache 
-        && php artisan serve --host 0.0.0.0"
+       "echo '* * * * * cd /var/www && php artisan schedule:run >> /dev/null 2>&1' > /etc/crontabs/root && crond"
     depends_on:
       - postgres
     restart: always
     networks:
       - app-network
+
   postgres:
     image: postgres:9.4
     container_name: postgres
@@ -32,10 +29,11 @@ services:
       POSTGRES_PASSWORD: pg!lol!2019
     ports:
       - 5432:5432
-    volumes:
-      - "./postgres/dbdata:/var/lib/postgresql/data"
+#   volumes:
+#       - "./postgres/dbdata:/var/lib/postgresql/data"
     networks:
       - app-network
+
   pgadmin:
     image: thajeztah/pgadmin4
     container_name: pgadmin

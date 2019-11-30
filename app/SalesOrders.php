@@ -9,10 +9,17 @@ class SalesOrders extends Model
 {
     use SoftDeletes;
 
+    protected $fillable = ['serie_id'];
+
     /**
      * The table associated with the model.
      *
      * @var string
      */
     protected $table = 'sales_orders';
+
+    public static function getSalesOrderId(String $serieId) {
+
+        return self::where('serie_id', $serieId)->first()['id'];
+    }
 }
