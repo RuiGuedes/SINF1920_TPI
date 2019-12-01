@@ -27,6 +27,8 @@ class JasminToken extends Model
             $new_token = JasminConnect::generateNewToken();
             JasminToken::create(['access_token' => $new_token['access_token'], 'token_type' => $new_token['token_type']]);
         }
+        else
+            return $activeToken;
 
         return self::find(1);
     }
