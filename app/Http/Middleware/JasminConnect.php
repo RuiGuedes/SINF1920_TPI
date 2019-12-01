@@ -3,10 +3,12 @@
 namespace App\Http\Middleware;
 
 use App\JasminToken;
+use Exception;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 
 class JasminConnect
 {
@@ -16,11 +18,11 @@ class JasminConnect
      *
      * @param String $path
      * @param String $query
-     * @return \Exception|ClientException|GuzzleException|RequestException|mixed|\Psr\Http\Message\ResponseInterface
+     * @return Exception|ClientException|GuzzleException|RequestException|mixed|ResponseInterface
      */
-    public static function callJasmin(String $path, String $query='')
+    public static function callJasmin(String $path, String $query = '')
     {
-        $token = self::getAccessToken();
+        $token = JasminToken::getToken();
 
         $client = new Client();
         try {
@@ -42,28 +44,11 @@ class JasminConnect
     }
 
     /**
-     * Retrieves the access token. It generates a new one if the current token expired
-     *
-     * @return \Exception|ClientException|GuzzleException|RequestException|mixed
-     */
-    private static function getAccessToken() {
-
-        $activeToken = JasminToken::getActiveToken();
-
-        if (empty($activeToken)) {
-            $activeToken = self::generateNewToken();
-            JasminToken::addNewToken($activeToken['access_token'], $activeToken['token_type'], $activeToken['expires_in']);
-        }
-
-        return $activeToken;
-    }
-
-    /**
      * Generates a new token
      *
-     * @return \Exception|ClientException|GuzzleException|RequestException|mixed
+     * @return Exception|ClientException|GuzzleException|RequestException|mixed
      */
-    private static function generateNewToken()
+    public static function generateNewToken()
     {
         $user = "TPI-APP";
         $client_secret = "44ea59c6-68bf-4638-af54-b39620a1cbf1";

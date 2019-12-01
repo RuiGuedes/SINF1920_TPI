@@ -13,11 +13,10 @@ class CreateJasminTokensTable extends Migration
      */
     public function up()
     {
-        Schema::create('jasmin_tokens', function (Blueprint $table) {
+        Schema::create('jasmin_token', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->longText('access_token');
             $table->string('token_type');
-            $table->integer('expires_in');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateJasminTokensTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jasmin_tokens');
+        Schema::dropIfExists('jasmin_token');
     }
 }
