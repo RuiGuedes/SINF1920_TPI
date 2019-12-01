@@ -12,8 +12,12 @@ services:
       - "8000:8000"
     volumes:
       - ".:/var/www/"
-    command: bash -c 
-       "echo '* * * * * cd /var/www && php artisan schedule:run >> /dev/null 2>&1' > /etc/crontabs/root && crond"
+    command: bash -c
+      "php artisan cache:clear
+      && php artisan config:clear
+      && php artisan route:clear
+      && php artisan config:cache
+      && php artisan serve --host 0.0.0.0"
     depends_on:
       - postgres
     restart: always
@@ -29,8 +33,8 @@ services:
       POSTGRES_PASSWORD: pg!lol!2019
     ports:
       - 5432:5432
-#   volumes:
-#       - "./postgres/dbdata:/var/lib/postgresql/data"
+    volumes:
+      - "./postgres/dbdata:/var/lib/postgresql/data"
     networks:
       - app-network
 

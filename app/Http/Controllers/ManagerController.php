@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\JasminConnect;
 use Facade\FlareClient\View;
 
 class ManagerController extends Controller
