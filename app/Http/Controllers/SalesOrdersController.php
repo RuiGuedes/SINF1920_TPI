@@ -17,8 +17,6 @@ class SalesOrdersController extends Controller
             return $e->getMessage();
         }
 
-        echo $result;
-
         $salesOrders = json_decode($result->getBody(), true);
         $added = false;
 

@@ -12,16 +12,6 @@ class ManagerController extends Controller
      */
     public function showSalesOrders()
     {
-
-        try {
-            $result = JasminConnect::callJasmin('sales/orders');
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-
-        var_dump($result);
-        return;
-
         $orders = [
             [
                 'id' => '4',
