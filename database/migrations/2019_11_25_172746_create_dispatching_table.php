@@ -15,7 +15,7 @@ class CreateDispatchingTable extends Migration
     {
         Schema::create('dispatching', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('sales_order_id');
+            $table->string('sales_order_id');
             $table->foreign('sales_order_id')
                 ->references('id')
                 ->on('sales_orders')

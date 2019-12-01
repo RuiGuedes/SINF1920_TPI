@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\JasminConnect;
 use Facade\FlareClient\View;
 
 class ManagerController extends Controller
@@ -11,6 +12,16 @@ class ManagerController extends Controller
      */
     public function showSalesOrders()
     {
+
+        try {
+            $result = JasminConnect::callJasmin('sales/orders');
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
+        var_dump($result);
+        return;
+
         $orders = [
             [
                 'id' => '4',

@@ -25,9 +25,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
-            JasminToken::updateExpiryDate();
-        })->everyMinute();
+        // $schedule->command('inspire')
+        //          ->hourly();
     }
 
     /**
