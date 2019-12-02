@@ -20,10 +20,9 @@ class ManagerController extends Controller
 
         $products = json_decode($result->getBody(), true);
 
-        echo $products[0]['itemKey'] . "\xA";
-        echo substr($products[0]['barcode'], 4) . "\xA";
-        echo $products[0]['materialsItemWarehouses'][0]['stockBalance'] . "\xA";
-
+//        echo $products[0]['itemKey'] . "\xA";
+//        echo substr($products[0]['barcode'], 4) . "\xA";
+//        echo $products[0]['materialsItemWarehouses'][0]['stockBalance'] . "\xA";
 
         //var_dump($products);
 

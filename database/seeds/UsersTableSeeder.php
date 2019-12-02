@@ -14,6 +14,8 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('users')->truncate();
+
         // Create manager(s)
         Users::insertManager([
             'username' => "admin",
@@ -26,5 +28,7 @@ class UsersTableSeeder extends Seeder
 
         // Create workers
         factory(App\Users::class, 10)->create();
+
+        $this->command->info('Database users table seeded!');
     }
 }
