@@ -1,10 +1,9 @@
 <div class="header row text-center justify-content-start pb-2">
     @switch($page)
         @case('orders')
-            <div class="col-2">Document ID</div>
-            <div class="col-4">Order ID</div>
-            <div class="col-2">{{ $type }} ID</div>
-            <div class="col-3">Date</div>
+            <div class="col-4">Document ID</div>
+            <div class="col-3">{{ $type }} ID</div>
+            <div class="col-4">Date</div>
             @break
         @case('waves')
             <div class="col-{{ $clerk? '2' : '3' }}">Wave ID</div>
