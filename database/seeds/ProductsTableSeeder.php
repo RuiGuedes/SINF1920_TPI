@@ -29,7 +29,8 @@ class ProductsTableSeeder extends Seeder
         for($i = 0; $i < count($products); $i++) {
             $section = $prodToSection[substr($products[$i]['barcode'], 4)];
 
-            $data = ['id' => $products[$i]['itemKey'],
+            $data = ['product_id' => $products[$i]['itemKey'],
+                     'description' => $products[$i]['description'],
                      'stock' => $products[$i]['materialsItemWarehouses'][0]['stockBalance'],
                      'warehouse_section' => $section . $sections[$section]
                     ];

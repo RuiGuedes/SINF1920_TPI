@@ -34,9 +34,9 @@
 
         @foreach ($products as $product)
             <div class="row text-center py-2 replenishment">
-                <div class="col-2">{{$product['id']}}</div>
+                <div class="col-2">{{$product['product_id']}}</div>
                 <div class="col-3">{{$product['description']}}</div>
-                <div class="col-1">{{$product['zone']}}</div>
+                <div class="col-1">{{$product['warehouse_section']}}</div>
                 <div class="col-1">{{$product['stock']}}</div>
                 <div class="col-2"> @isset($product['status']) {{$product['status']}} @endisset </div>
                 <div class="col-2">

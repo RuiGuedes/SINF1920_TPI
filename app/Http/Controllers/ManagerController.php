@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\JasminConnect;
+use App\Products;
 use Facade\FlareClient\View;
 
 class ManagerController extends Controller
@@ -270,34 +271,16 @@ class ManagerController extends Controller
      */
     public function showReplenishment()
     {
-        $products = [
-            [
-                'id' => '56',
-                'description' => 'AK-47',
-                'zone' => 'D4',
-                'stock' => '9',
-                'status' => 'Last Units'
-            ],
-            [
-                'id' => '56',
-                'description' => 'AK-47',
-                'zone' => 'D4',
-                'stock' => '9'
-            ],
-            [
-                'id' => '58',
-                'description' => 'AK-48',
-                'zone' => 'D4',
-                'stock' => '0',
-                'status' => 'Out of Stock'
-            ],
-            [
-                'id' => '58',
-                'description' => 'Desert Eagle',
-                'zone' => 'B3',
-                'stock' => '300'
-            ]
-        ];
+        $products = Products::getProducts();
+
+        for($i = 0; $i < count($products); $i++) {
+            if($products[$i]['stock'] == 0)
+                $products[$i]['status'] = 'Out of stock';
+            else if($products[$i]['stock'] < 10)
+                $products[$i]['status'] = 'Last units';
+            else
+                $products[$i]['status'] = 'All good';
+        }
 
         return View('manager.replenishment', ['products' => $products]);
     }
