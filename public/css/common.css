@@ -319,8 +319,7 @@ option:not(selected) {
 
 .quantity.buttons_added .minus:hover,
 .quantity.buttons_added .plus:hover {
-    background: var(--brand-color);
-    color: var(--dark-grey);
+    color: var(--brand-color);
 }
 
 .quantity input::-webkit-outer-spin-button,
