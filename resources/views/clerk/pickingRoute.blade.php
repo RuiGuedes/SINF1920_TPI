@@ -54,9 +54,11 @@
                         <div class="col-2"></div>
                         <div class="col-1">{{$product['quantity']}}</div>
                         <div class="col-2">
-                            <div class="qnt-input input-group">
-                                <input type="number" min="0" aria-label="Quantity" 
-                                    class="form-control text-center">
+                            <div class="quantity buttons_added">
+                                <input type="button" value="-" class="minus">
+                                <input type="number" step="1" min="0" max="" name="quantity" value="0" 
+                                title="Qty" class="input-text qty text" size="4" pattern="" inputmode="">
+                                <input type="button" value="+" class="plus">
                             </div>
                         </div>
                         <div class="col-2">

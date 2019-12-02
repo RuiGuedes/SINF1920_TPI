@@ -194,14 +194,6 @@ div.double-sub-container {
     font-size: 18px;
 }
 
-div.qnt-input input, div.qnt-input input:active, div.qnt-input input:focus {
-    color: white;
-    border-color: var(--light-grey);
-    background-color: var(--semi-transparent-brand-color);
-    box-shadow: none;
-    height: 30px;
-}
-
 /* PICKING ROUTE */
 div.route-boxes {
     color: var(--brand-color);
@@ -262,4 +254,74 @@ option:not(selected) {
     color: var(--dark-grey);
     border-color: var(--light-grey);
     background-color: #82c7a5;
+}
+
+/* QUANTITY BOX */
+.quantity {
+    display: inline-block;
+    min-width: 160px;
+    font-size: medium;
+}
+   
+.quantity .input-text.qty {
+    width: 70px;
+    height: 36px;
+    padding: 0 5px;
+    text-align: center;
+    background-color: var(--semi-transparent-brand-color);
+    color: white;
+    border: 0px;
+    border-bottom: solid var(--light-grey) 1px;
+    border-top: solid var(--light-grey) 1px;
+
+}
+
+.quantity.buttons_added {
+    position: relative;
+    white-space: nowrap;
+    vertical-align: top; 
+}
+
+.quantity.buttons_added input {
+    display: inline-block;
+    margin: 0;
+    vertical-align: top;
+    box-shadow: none;
+    font-size: inherit;
+}
+
+.quantity.buttons_added .minus,
+.quantity.buttons_added .plus {
+    position: relative;
+    color: var(--light-grey);
+    height: 36px;
+    width: 28px;
+    background-color: var(--semi-transparent-brand-color);
+    border: 1px solid var(--light-grey);
+    cursor:pointer;
+}
+
+.quantity.buttons_added .minus {
+    border-radius: 0.25rem 0px 0px 0.25rem;
+    border-right: 0px;
+    left: 10px;
+}
+
+.quantity.buttons_added .plus {
+    border-radius: 0px 0.25rem 0.25rem 0px;
+    border-left: 0px;
+    right: 10px;
+}
+
+.quantity.buttons_added .minus:hover,
+.quantity.buttons_added .plus:hover {
+    background: var(--brand-color);
+    color: var(--dark-grey);
+}
+
+.quantity input::-webkit-outer-spin-button,
+.quantity input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin: 0; 
 }

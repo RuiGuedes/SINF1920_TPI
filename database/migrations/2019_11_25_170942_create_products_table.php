@@ -15,10 +15,14 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('description');
+            $table->string('product_id')->unique();
+            $table->unsignedBigInteger('min_stock');
+            $table->unsignedBigInteger('max_stock');
             $table->unsignedBigInteger('stock');
-            $table->unsignedBigInteger('warehouse_id');
-            $table->foreign('warehouse_id')
-                ->references('id')
+            $table->string('warehouse_section');
+            $table->foreign('warehouse_section')
+                ->references('section')
                 ->on('warehouse')
                 ->onDelete('cascade');
             $table->timestamps();
