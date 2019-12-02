@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="col-1">
-                    <button class="btn btn-outline-secondary"></button>
+                    <button class="btn btn-outline-secondary select-multiple"></button>
                 </div>
             </div>
             
