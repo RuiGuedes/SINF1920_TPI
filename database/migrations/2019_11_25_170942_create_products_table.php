@@ -14,11 +14,11 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->string('id')->primary();
             $table->unsignedBigInteger('stock');
-            $table->unsignedBigInteger('warehouse_id');
-            $table->foreign('warehouse_id')
-                ->references('id')
+            $table->string('warehouse_section');
+            $table->foreign('warehouse_section')
+                ->references('section')
                 ->on('warehouse')
                 ->onDelete('cascade');
             $table->timestamps();

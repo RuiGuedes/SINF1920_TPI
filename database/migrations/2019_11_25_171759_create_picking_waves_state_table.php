@@ -20,7 +20,7 @@ class CreatePickingWavesStateTable extends Migration
                 ->references('id')
                 ->on('picking_waves')
                 ->onDelete('cascade');
-            $table->unsignedBigInteger('product_id');
+            $table->string('product_id');
             $table->foreign('product_id')
                 ->references('id')
                 ->on('products')
