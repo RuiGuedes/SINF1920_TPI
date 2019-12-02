@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\JasminConnect;
-use Facade\FlareClient\View;
-
 class ManagerController extends Controller
 {
     /**
@@ -12,75 +9,10 @@ class ManagerController extends Controller
      */
     public function showSalesOrders()
     {
-        $orders = [
-            [
-                'id' => '4',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                'owner' => 'C0078',
-                'date' => '2019-07-24',
-                'items' => [
-                    [
-                        'id' => '56',
-                        'description' => 'AK-47',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ]
-                ]
-            ],
-            [
-                'id' => '7',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                'owner' => 'C0004',
-                'date' => '2019-07-24',
-                'items' => [
-                    [
-                        'id' => '56',
-                        'description' => 'AK-47',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ],
-                    [
-                        'id' => '58',
-                        'description' => 'AK-48',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ]
-                ]
-            ],
-            [
-                'id' => '8',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                'owner' => 'C0054',
-                'date' => '2019-07-24',
-                'items' => [
-                    [
-                        'id' => '56',
-                        'description' => 'AK-47',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ],
-                    [
-                        'id' => '58',
-                        'description' => 'AK-48',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '90'
-                    ],
-                    [
-                        'id' => '98',
-                        'description' => 'Desert Eagle',
-                        'zone' => 'B3',
-                        'quantity' => '40',
-                        'stock' => '300'
-                    ]
-                ]
-            ]
-        ];
+        $orders = SalesOrdersController::allSalesOrders();
 
+        // TODO: Remove from $orders the sales orders in database.
+        
         return View('manager.salesOrders', ['sales' => $orders]);
     }
 
@@ -92,7 +24,6 @@ class ManagerController extends Controller
         $orders = [
             [
                 'id' => '4',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
                 'owner' => 'C0078',
                 'date' => '2019-07-24',
                 'items' => [
@@ -107,7 +38,6 @@ class ManagerController extends Controller
             ],
             [
                 'id' => '7',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
                 'owner' => 'C0004',
                 'date' => '2019-07-24',
                 'items' => [
@@ -129,7 +59,6 @@ class ManagerController extends Controller
             ],
             [
                 'id' => '8',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
                 'owner' => 'C0054',
                 'date' => '2019-07-24',
                 'items' => [
