@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\JasminConnect;
+use App\Products;
 
 class SalesOrdersController extends Controller
 {
@@ -20,10 +21,13 @@ class SalesOrdersController extends Controller
         foreach ($salesOrders as $saleOrder) {
             if($saleOrder['documentStatus'] === 2 || ($saleOrder['serie'] === "2019" && $saleOrder['seriesNumber'] === 1))
                 continue;
-            
-            $documentId = $saleOrder['documentType'] . $saleOrder['serie'] . "-" . $saleOrder['seriesNumber'];
-            $date = explode('T', $saleOrder['documentDate'])[0];
-            $owner = $saleOrder['buyerCustomerParty'];
+                
+            $order = [
+                'id' => $saleOrder['documentType'] . $saleOrder['serie'] . "-" . $saleOrder['seriesNumber'],
+                'owner' => $saleOrder['buyerCustomerParty'],
+                'date' => explode('T', $saleOrder['documentDate'])[0],
+            ];
+
             $documentLines = $saleOrder['documentLines'];
             $products = [];
 
@@ -31,20 +35,17 @@ class SalesOrdersController extends Controller
                 $product = [
                     'id' => $line['salesItem'],
                     'description' => $line['description'],
-                    'zone' => null,
-                    'quantity' => $line['quantity'],
-                    'stock' => null
+                    'quantity' => $line['quantity']
                 ];
+
+                $dbProduct = Products::where('product_id', $product['id'])->get()->first();
+                $product['zone'] = $dbProduct->warehouse_section;
+                $product['stock'] = $dbProduct->stock;
 
                 array_push($products, $product);
             }
 
-            $order = [
-                'id' => $documentId,
-                'owner' => $owner,
-                'date' => $date,
-                'items' => $products
-            ];
+            $order['items'] = $products;
             
             array_push($filteredOrders, $order);
         }

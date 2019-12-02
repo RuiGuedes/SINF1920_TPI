@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Products;
 use App\SalesOrders;
 
 class ManagerController extends Controller
@@ -202,7 +203,8 @@ class ManagerController extends Controller
      */
     public function showReplenishment()
     {
-        $products = Products::getProducts();
+        
+        $products =  Products::getProducts();
 
         for($i = 0; $i < count($products); $i++) {
             if($products[$i]['stock'] == 0)
