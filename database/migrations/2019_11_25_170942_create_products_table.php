@@ -17,6 +17,8 @@ class CreateProductsTable extends Migration
             $table->bigIncrements('id');
             $table->string('description');
             $table->string('product_id')->unique();
+            $table->unsignedBigInteger('min_stock');
+            $table->unsignedBigInteger('max_stock');
             $table->unsignedBigInteger('stock');
             $table->string('warehouse_section');
             $table->foreign('warehouse_section')

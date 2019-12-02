@@ -275,11 +275,11 @@ class ManagerController extends Controller
 
         for($i = 0; $i < count($products); $i++) {
             if($products[$i]['stock'] == 0)
-                $products[$i]['status'] = 'Out of stock';
-            else if($products[$i]['stock'] < 10)
-                $products[$i]['status'] = 'Last units';
+                $products[$i]['status'] = 'OUT OF STOCK';
+            else if($products[$i]['stock'] < $products[$i]['min_stock'])
+                $products[$i]['status'] = 'LAST UNITS';
             else
-                $products[$i]['status'] = 'All good';
+                $products[$i]['status'] = 'ALL GOOD';
         }
 
         return View('manager.replenishment', ['products' => $products]);

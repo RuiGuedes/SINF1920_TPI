@@ -31,6 +31,8 @@ class ProductsTableSeeder extends Seeder
 
             $data = ['product_id' => $products[$i]['itemKey'],
                      'description' => $products[$i]['description'],
+                     'min_stock' => $products[$i]['minStock'],
+                     'max_stock' => $products[$i]['maxStock'],
                      'stock' => $products[$i]['materialsItemWarehouses'][0]['stockBalance'],
                      'warehouse_section' => $section . $sections[$section]
                     ];

@@ -27,6 +27,15 @@ class Products extends Model
     ];
 
     /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [
+        'min_stock', 'max_stock'
+    ];
+
+    /**
      * Inserts a product
      *
      * @param array $array
@@ -35,6 +44,8 @@ class Products extends Model
         $product = new Products();
         $product->product_id = $array['product_id'];
         $product->description = $array['description'];
+        $product->min_stock = $array['min_stock'];
+        $product->max_stock = $array['max_stock'];
         $product->stock = $array['stock'];
         $product->warehouse_section = $array['warehouse_section'];
         $product->save();
