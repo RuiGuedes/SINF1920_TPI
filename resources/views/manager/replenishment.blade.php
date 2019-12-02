@@ -40,16 +40,17 @@
                 <div class="col-1">{{$product['stock']}}</div>
                 <div class="col-2"> @isset($product['status']) {{$product['status']}} @endisset </div>
                 <div class="col-2">
-                    <div class="qnt-input input-group">
-                        <input type="number" min="0" aria-label="Quantity" 
-                            class="form-control text-center" hidden>
+                    <div class="quantity buttons_added" hidden>
+                        <input type="button" value="-" class="minus">
+                        <input type="number" step="1" min="0" max="" name="quantity" value="0" 
+                        title="Qty" class="input-text qty text" size="4" pattern="" inputmode="">
+                        <input type="button" value="+" class="plus">
                     </div>
                 </div>
                 <div class="col-1">
                     <button class="btn btn-outline-secondary select-multiple"></button>
                 </div>
             </div>
-            
         @endforeach
 
         @include('partials.mainButton', [
