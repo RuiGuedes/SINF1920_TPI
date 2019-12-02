@@ -268,7 +268,7 @@ option:not(selected) {
     height: 36px;
     padding: 0 5px;
     text-align: center;
-    background-color: var(--semi-transparent-brand-color);
+    background-color: transparent;
     color: white;
     border: 0px;
     border-bottom: solid var(--light-grey) 1px;
@@ -290,13 +290,17 @@ option:not(selected) {
     font-size: inherit;
 }
 
+.quantity.buttons_added input:focus {
+    outline: none;
+}
+
 .quantity.buttons_added .minus,
 .quantity.buttons_added .plus {
     position: relative;
     color: var(--light-grey);
     height: 36px;
     width: 28px;
-    background-color: var(--semi-transparent-brand-color);
+    background-color: transparent;
     border: 1px solid var(--light-grey);
     cursor:pointer;
 }
