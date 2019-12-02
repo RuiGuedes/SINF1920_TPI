@@ -104,7 +104,7 @@ button.btn.btn-secondary {
     padding: 4px 25px;
 }
 
-button.btn.btn-secondary:hover {
+button.btn.btn-secondary:hover:not(:disabled) {
     background-color: var(--bg-dark);
     border-color: var(--light-grey);
     color: var(--brand-color);
