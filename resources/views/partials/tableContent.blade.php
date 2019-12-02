@@ -3,10 +3,9 @@
         <div class="row text-center py-2">
             <a class="col-11" @empty($dispatch) href="#row-id-{{ $order['id'] }}" @endempty data-toggle="collapse" role="button" aria-expanded="false">
                 <div class="row justify-content-around">
-                    <div class="col-2">{{ $order['id'] }}</div>
-                    <div class="col-4">{{ $order['order_id'] }}</div>
-                    <div class="col-2">{{ $order['owner'] }}</div>
-                    <div class="col-3">{{ $order['date'] }}</div>
+                    <div class="col-4">{{ $order['id'] }}</div>
+                    <div class="col-3">{{ $order['owner'] }}</div>
+                    <div class="col-4">{{ $order['date'] }}</div>
                 </div>
             </a>
             <div class="col-1">

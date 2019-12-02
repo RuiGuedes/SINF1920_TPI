@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\JasminToken;
-use App\SalesOrders;
 use App\Http\Middleware\JasminConnect;
+use App\Products;
 
 class SalesOrdersController extends Controller
 {
-
-    public function allSalesOrders() {
+    public static function allSalesOrders() {
 
         try {
             $result = JasminConnect::callJasmin('sales/orders');
@@ -18,22 +16,41 @@ class SalesOrdersController extends Controller
         }
 
         $salesOrders = json_decode($result->getBody(), true);
-        $added = false;
+        $filteredOrders = [];
 
         foreach ($salesOrders as $saleOrder) {
-            $order = SalesOrders::getSalesOrderId($saleOrder['serieId']);
-            if (empty($order)) {
-                try {
-                    $newSaleOrder = new SalesOrders();
-                    $newSaleOrder->create(['serie_id' => $saleOrder['serieId']]);
-                } catch (Exception $e) {
-                    return  $e;
-                }
-                $added = true;
+            if($saleOrder['documentStatus'] === 2 || ($saleOrder['serie'] === "2019" && $saleOrder['seriesNumber'] === 1))
+                continue;
+                
+            $order = [
+                'id' => $saleOrder['documentType'] . $saleOrder['serie'] . "-" . $saleOrder['seriesNumber'],
+                'owner' => $saleOrder['buyerCustomerParty'],
+                'date' => explode('T', $saleOrder['documentDate'])[0],
+            ];
+
+            $documentLines = $saleOrder['documentLines'];
+            $products = [];
+
+            foreach ($documentLines as $line) {
+                $product = [
+                    'id' => $line['salesItem'],
+                    'description' => $line['description'],
+                    'quantity' => $line['quantity']
+                ];
+
+                $dbProduct = Products::where('product_id', $product['id'])->get()->first();
+                $product['zone'] = $dbProduct->warehouse_section;
+                $product['stock'] = $dbProduct->stock;
+
+                array_push($products, $product);
             }
+
+            $order['items'] = $products;
+            
+            array_push($filteredOrders, $order);
         }
 
-        return $added ? response()->json("New sales orders added!", 200) : response()->json("Nothing to add!", 200);
+        return $filteredOrders;
     }
 
     public function saleOrderBySerieId($serieId)

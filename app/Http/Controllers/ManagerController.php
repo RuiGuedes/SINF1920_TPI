@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\JasminConnect;
 use App\Products;
-use Facade\FlareClient\View;
+use App\SalesOrders;
 
 class ManagerController extends Controller
 {
@@ -13,77 +12,13 @@ class ManagerController extends Controller
      */
     public function showSalesOrders()
     {
-//        var_dump($products);
-//        return;
+        $orders = SalesOrdersController::allSalesOrders();
 
-        $orders = [
-            [
-                'id' => '4',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                'owner' => 'C0078',
-                'date' => '2019-07-24',
-                'items' => [
-                    [
-                        'id' => '56',
-                        'description' => 'AK-47',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ]
-                ]
-            ],
-            [
-                'id' => '7',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                'owner' => 'C0004',
-                'date' => '2019-07-24',
-                'items' => [
-                    [
-                        'id' => '56',
-                        'description' => 'AK-47',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ],
-                    [
-                        'id' => '58',
-                        'description' => 'AK-48',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ]
-                ]
-            ],
-            [
-                'id' => '8',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                'owner' => 'C0054',
-                'date' => '2019-07-24',
-                'items' => [
-                    [
-                        'id' => '56',
-                        'description' => 'AK-47',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ],
-                    [
-                        'id' => '58',
-                        'description' => 'AK-48',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '90'
-                    ],
-                    [
-                        'id' => '98',
-                        'description' => 'Desert Eagle',
-                        'zone' => 'B3',
-                        'quantity' => '40',
-                        'stock' => '300'
-                    ]
-                ]
-            ]
-        ];
+        // Remove sales orders already in existing picking waves
+        for ($i=0; $i < count($orders); $i++) { 
+            if (SalesOrders::where('id', $orders[$i]['id'])->exists())
+                array_splice($orders, $i, 1);
+        }
 
         return View('manager.salesOrders', ['sales' => $orders]);
     }
@@ -96,7 +31,6 @@ class ManagerController extends Controller
         $orders = [
             [
                 'id' => '4',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
                 'owner' => 'C0078',
                 'date' => '2019-07-24',
                 'items' => [
@@ -111,7 +45,6 @@ class ManagerController extends Controller
             ],
             [
                 'id' => '7',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
                 'owner' => 'C0004',
                 'date' => '2019-07-24',
                 'items' => [
@@ -133,7 +66,6 @@ class ManagerController extends Controller
             ],
             [
                 'id' => '8',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
                 'owner' => 'C0054',
                 'date' => '2019-07-24',
                 'items' => [
@@ -271,7 +203,8 @@ class ManagerController extends Controller
      */
     public function showReplenishment()
     {
-        $products = Products::getProducts();
+        
+        $products =  Products::getProducts();
 
         for($i = 0; $i < count($products); $i++) {
             if($products[$i]['stock'] == 0)

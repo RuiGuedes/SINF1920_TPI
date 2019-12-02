@@ -63,7 +63,12 @@ radioboxes.forEach(radiobox => {
     })
 })
 
+let mainButton = document.querySelector("div.main-container button.btn.btn-secondary");
 
+if (mainButton != null) {
+    if (document.querySelectorAll("div.main-container > .row").length <= 1)
+        mainButton.disabled = true;
+}
 
 
 
