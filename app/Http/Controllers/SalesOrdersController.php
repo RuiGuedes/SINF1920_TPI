@@ -18,7 +18,7 @@ class SalesOrdersController extends Controller
         $filteredOrders = [];
 
         foreach ($salesOrders as $saleOrder) {
-            if($saleOrder['documentStatus'] == 2 || ($saleOrder['serie'] == "2019" && $saleOrder['seriesNumber'] == "1"))
+            if($saleOrder['documentStatus'] === 2 || ($saleOrder['serie'] === "2019" && $saleOrder['seriesNumber'] === 1))
                 continue;
             
             $documentId = $saleOrder['documentType'] . $saleOrder['serie'] . "-" . $saleOrder['seriesNumber'];

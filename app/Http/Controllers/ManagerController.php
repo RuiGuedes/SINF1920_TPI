@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\SalesOrders;
+
 class ManagerController extends Controller
 {
     /**
@@ -11,8 +13,12 @@ class ManagerController extends Controller
     {
         $orders = SalesOrdersController::allSalesOrders();
 
-        // TODO: Remove from $orders the sales orders in database.
-        
+        // Remove sales orders already in existing picking waves
+        for ($i=0; $i < count($orders); $i++) { 
+            if (SalesOrders::where('id', $orders[$i]['id'])->exists())
+                array_splice($orders, $i, 1);
+        }
+
         return View('manager.salesOrders', ['sales' => $orders]);
     }
 
