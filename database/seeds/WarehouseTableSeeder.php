@@ -12,8 +12,6 @@ class WarehouseTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('warehouse')->truncate();
-
         $data = array();
         $sectionLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 

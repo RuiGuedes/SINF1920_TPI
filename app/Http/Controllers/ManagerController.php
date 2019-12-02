@@ -12,26 +12,8 @@ class ManagerController extends Controller
      */
     public function showSalesOrders()
     {
-        try {
-            $result = JasminConnect::callJasmin('/materialsCore/materialsItems');
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-
-        $products = json_decode($result->getBody(), true);
-
-//        echo $products[0]['itemKey'] . "\xA";
-//        echo substr($products[0]['barcode'], 4) . "\xA";
-//        echo $products[0]['materialsItemWarehouses'][0]['stockBalance'] . "\xA";
-
-        //var_dump($products);
-
-        for($i = 0; $i < count($products); $i++) {
-//            print_r($products[$i]);
-        }
-
-        // var_dump($salesOrders);
-        return;
+//        var_dump($products);
+//        return;
 
         $orders = [
             [
