@@ -14,8 +14,7 @@ class CreateWarehouseTable extends Migration
     public function up()
     {
         Schema::create('warehouse', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('section')->unique();
+            $table->string('section')->primary();
             $table->timestamps();
         });
     }

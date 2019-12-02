@@ -26,5 +26,7 @@ class UsersTableSeeder extends Seeder
 
         // Create workers
         factory(App\Users::class, 10)->create();
+
+        $this->command->info('Database users table seeded!');
     }
 }
