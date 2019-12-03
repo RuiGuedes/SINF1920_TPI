@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Middleware\JasminConnect;
 use App\Products;
 use App\SalesOrders;
+use Illuminate\Http\Request;
 
 class ManagerController extends Controller
 {
@@ -216,5 +217,24 @@ class ManagerController extends Controller
         }
 
         return View('manager.replenishment', ['products' => $products]);
+    }
+
+    /**
+     * Display the replenishment page with all the existing products
+     * @param Request $request
+     * @return false|string
+     */
+    public function createPurchaseOrder(Request $request)
+    {
+
+        $data = $request->input();
+
+        foreach ($data as $key => $value) {
+            return "$key => $value";
+        }
+
+
+
+        return $data;
     }
 }

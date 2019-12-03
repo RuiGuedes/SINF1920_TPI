@@ -87,21 +87,24 @@ let createPO = document.getElementsByClassName('btn btn-secondary')
 for(let i = 0; i < createPO.length; i++) {
     createPO[i].addEventListener('click', function (event) {
         event.preventDefault();
-        let data = [];
+        let data = {};
 
         for(let j = 0; j < qntRangeLimit.length; j++) {
             if(qntRangeLimit[j].getAttribute('hidden') == null) {
                 let productID = qntRangeLimit[j].parentElement.parentElement.children[0].textContent;
                 let qnt = qntRangeLimit[j].children[1].value;
-                data.push({'productID': productID, 'qnt': qnt})
+                data[productID] = qnt
             }
         }
-        
-        console.log(data);
-        // this.parentElement.submit()
+        console.log(data)
+        sendAjaxRequest.call(this, 'post', '/manager/replenishment/create-purchase-order', data, redirectToPurchaseOrdersPage)
     });
 }
 
+function redirectToPurchaseOrdersPage() {
+    // if (this.status !== 200) return;
+    console.log(this.responseText);
+}
 
 //////////
 // AJAX //
@@ -116,6 +119,7 @@ function sendAjaxRequest(method, url, data, handler) {
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     request.addEventListener('load', handler);
     request.send(encodeForAjax(data));
+
 }
 
 function encodeForAjax(data) {
