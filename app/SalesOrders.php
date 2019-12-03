@@ -18,6 +18,13 @@ class SalesOrders extends Model
      */
     protected $table = 'sales_orders';
 
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
     public static function getSalesOrderId(String $serieId) {
 
         return self::where('serie_id', $serieId)->first()['id'];
