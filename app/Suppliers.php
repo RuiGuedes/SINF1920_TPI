@@ -15,4 +15,18 @@ class Suppliers extends Model
      * @var string
      */
     protected $table = 'suppliers';
+
+    /**
+     * Inserts new supplier
+     *
+     * @param array $array
+     */
+    public static function insertSupplier(array $array) {
+        $supplier = new Suppliers();
+
+        $supplier->entity = $array["entity"];
+        $supplier->name = $array["name"];
+
+        $supplier->save();
+    }
 }

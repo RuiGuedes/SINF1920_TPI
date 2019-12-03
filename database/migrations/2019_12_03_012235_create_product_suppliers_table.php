@@ -14,10 +14,10 @@ class CreateProductSuppliersTable extends Migration
     public function up()
     {
         Schema::create('product_suppliers', function (Blueprint $table) {
-            $table->primary(['supplier_id', 'product_id']);
-            $table->unsignedBigInteger('supplier_id');
-            $table->foreign('supplier_id')
-                ->references('id')
+            $table->primary(['supplier_entity', 'product_id']);
+            $table->string('supplier_entity');
+            $table->foreign('supplier_entity')
+                ->references('entity')
                 ->on('suppliers')
                 ->onDelete('cascade');
             $table->string('product_id');
@@ -25,7 +25,7 @@ class CreateProductSuppliersTable extends Migration
                 ->references('product_id')
                 ->on('products')
                 ->onDelete('cascade');
-            $table->unsignedBigInteger('price');
+            $table->float('price', 12, 2);
             $table->timestamps();
             $table->softDeletes();
         });

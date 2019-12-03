@@ -15,5 +15,34 @@ class ProductSuppliers extends Model
      * @var string
      */
     protected $table = 'product_suppliers';
-    
+
+    /**
+     * Table primary key
+     *
+     * @var array
+     */
+    protected $primaryKey = ['supplier_entity', 'product_id'];
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * Inserts new product and supplier relation
+     *
+     * @param array $array
+     */
+    public static function insertSupplier(array $array) {
+        $prodSupplier = new ProductSuppliers();
+
+        $prodSupplier->supplier_entity = $array['entity'];
+        $prodSupplier->product_id = $array['item'];
+        $prodSupplier->price = $array['price'];
+
+        $prodSupplier->save();
+    }
+
 }

@@ -15,8 +15,8 @@ class CreateSuppliersTable extends Migration
     {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('entity');
-            $table->string('name');
+            $table->string('entity')->unique();
+            $table->string('name')->unique();
             $table->timestamps();
             $table->softDeletes();
         });
