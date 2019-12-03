@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\PickingWaves;
+use App\PickingWavesState;
 use App\Products;
 use App\SalesOrders;
 
@@ -216,5 +218,32 @@ class ManagerController extends Controller
         }
 
         return View('manager.replenishment', ['products' => $products]);
+    }
+
+
+    public function createPickingWave($salesOrdersIds) {
+        $salesOrders = SalesOrdersController::saleOrderById($salesOrdersIds);
+
+        $pickingWave = new PickingWaves();
+        $pickingWave->save();
+
+        foreach ($salesOrders as $saleOrder) {
+            $sale = new SalesOrders();
+            $sale->id = $saleOrder['id'];
+            $sale->picking_wave_id = $pickingWave->id;
+            $sale->client = $saleOrder['owner'];
+            $sale->date = $saleOrder['date'];
+            $sale->save();
+
+            foreach ($saleOrder['items'] as $item) {
+                $pickingWaveState = new PickingWavesState();
+                $pickingWaveState->picking_wave_id = $pickingWave->id;
+                $pickingWaveState->product_id = $item['id'];
+                $pickingWaveState->desired_qnt = $item['quantity'];
+                $pickingWaveState->save();
+            }
+        }
+
+        return redirect('manager/pickingWaves');
     }
 }

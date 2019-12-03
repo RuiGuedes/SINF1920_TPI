@@ -7,7 +7,8 @@ use App\Products;
 
 class SalesOrdersController extends Controller
 {
-    public static function allSalesOrders() {
+    public static function allSalesOrders()
+    {
 
         try {
             $result = JasminConnect::callJasmin('sales/orders');
@@ -19,11 +20,11 @@ class SalesOrdersController extends Controller
         $filteredOrders = [];
 
         foreach ($salesOrders as $saleOrder) {
-            if($saleOrder['documentStatus'] === 2 || ($saleOrder['serie'] === "2019" && $saleOrder['seriesNumber'] === 1))
+            if ($saleOrder['documentStatus'] === 2 || ($saleOrder['serie'] === "2019" && $saleOrder['seriesNumber'] === 1))
                 continue;
-                
+
             $order = [
-                'id' => $saleOrder['documentType'] . $saleOrder['serie'] . "-" . $saleOrder['seriesNumber'],
+                'id' => $saleOrder['documentType'] . '-' . $saleOrder['serie'] . "-" . $saleOrder['seriesNumber'],
                 'owner' => $saleOrder['buyerCustomerParty'],
                 'date' => explode('T', $saleOrder['documentDate'])[0],
             ];
@@ -32,21 +33,19 @@ class SalesOrdersController extends Controller
             $products = [];
 
             foreach ($documentLines as $line) {
-                $product = [
-                    'id' => $line['salesItem'],
-                    'description' => $line['description'],
-                    'quantity' => $line['quantity']
-                ];
+                $dbProduct = Products::where('product_id', $line['salesItem'])->get()->first();
 
-                $dbProduct = Products::where('product_id', $product['id'])->get()->first();
-                $product['zone'] = $dbProduct->warehouse_section;
-                $product['stock'] = $dbProduct->stock;
-
-                array_push($products, $product);
+                array_push($products, [
+                        'id' => $line['salesItem'],
+                        'description' => $line['description'],
+                        'quantity' => $line['quantity'],
+                        'zone' => $dbProduct->warehouse_section,
+                        'stock' => $dbProduct->stock
+                    ]);
             }
 
             $order['items'] = $products;
-            
+
             array_push($filteredOrders, $order);
         }
 
@@ -62,5 +61,44 @@ class SalesOrdersController extends Controller
         }
 
         return json_decode($result->getBody(), true);
+    }
+
+    public static function saleOrderById($ordersId)
+    {
+        $orders = [];
+
+        foreach ($ordersId as $id) {
+            $info = explode('-', $id);
+            $companyKey = 'TP-INDUSTRIES';
+
+            try {
+                $result = JasminConnect::callJasmin(
+                    'sales/orders/' . $companyKey . '/' . $info[0] . '/' . $info[1] . '/' . $info[2]
+                );
+            } catch (\Exception $e) {
+                return $e->getMessage();
+            }
+
+            $saleOrder = json_decode($result->getBody(), true);
+
+            $documentLines = $saleOrder['documentLines'];
+            $products = [];
+
+            foreach ($documentLines as $line) {
+                array_push($products, [
+                        'id' => $line['salesItem'],
+                        'quantity' => $line['quantity']
+                    ]);
+            }
+
+            array_push($orders, [
+                    'id' => $id,
+                    'owner' => $saleOrder['buyerCustomerParty'],
+                    'date' => explode('T', $saleOrder['documentDate'])[0],
+                    'items' => $products
+                ]);
+        }
+
+        return $orders;
     }
 }

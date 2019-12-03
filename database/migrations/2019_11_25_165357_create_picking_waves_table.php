@@ -15,7 +15,7 @@ class CreatePickingWavesTable extends Migration
     {
         Schema::create('picking_waves', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')

@@ -20,6 +20,8 @@ class CreateSalesOrdersTable extends Migration
                 ->references('id')
                 ->on('picking_waves')
                 ->onDelete('cascade');
+            $table->string('client');
+            $table->string('date');
             $table->timestamps();
             $table->softDeletes();
         });
