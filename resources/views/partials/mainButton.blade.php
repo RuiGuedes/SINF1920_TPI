@@ -4,7 +4,7 @@
             @empty($param) {{route($action)}} @endempty">    
     @endisset
     @empty($action)
-        <form id="{{$event}}">
+        <form id="{{$id}}">
     @endempty
 
         <button type="submit" class="btn btn-secondary">{{$text}}</button>
