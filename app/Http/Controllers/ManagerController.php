@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Middleware\JasminConnect;
 use App\Products;
+use App\ProductSuppliers;
 use App\SalesOrders;
 use Illuminate\Http\Request;
 
@@ -205,6 +206,21 @@ class ManagerController extends Controller
      */
     public function showReplenishment()
     {
+        $data['P0001'] = 1;
+        $data['P0010'] = 1;
+        $data['P0018'] = 1;
+        $data['P0021'] = 450;
+
+        // Create supplier stuct and add the products and their qnt
+        $suppliers = array();
+
+        foreach ($data as $key => $value) {
+            echo ProductSuppliers::getSuppliersForProduct($key) . " :::::: ";
+            //echo "$key => $value !!! ";
+        }
+
+        return;
+
         $products =  Products::getProducts();
 
         for($i = 0; $i < count($products); $i++) {
