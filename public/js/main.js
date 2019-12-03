@@ -82,6 +82,26 @@ for(let i = 0; i < qntRangeLimit.length; i++) {
     })
 }
 
+let createPO = document.getElementsByClassName('btn btn-secondary')
+
+for(let i = 0; i < createPO.length; i++) {
+    createPO[i].addEventListener('click', function (event) {
+        event.preventDefault();
+        let data = [];
+
+        for(let j = 0; j < qntRangeLimit.length; j++) {
+            if(qntRangeLimit[j].getAttribute('hidden') == null) {
+                let productID = qntRangeLimit[j].parentElement.parentElement.children[0].textContent;
+                let qnt = qntRangeLimit[j].children[1].value;
+                data.push({'productID': productID, 'qnt': qnt})
+            }
+        }
+        
+        console.log(data);
+        // this.parentElement.submit()
+    });
+}
+
 
 //////////
 // AJAX //

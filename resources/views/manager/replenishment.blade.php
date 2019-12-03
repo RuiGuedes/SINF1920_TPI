@@ -43,7 +43,7 @@
                     <div class="quantity buttons_added" hidden>
                         <input type="button" value="-" class="minus">
                         <input type="number" step="1" min="{{$product['min_stock'] - $product['stock']}}" max="{{$product['max_stock']}}" 
-                        name="quantity" value="{{$product['min_stock'] - $product['stock']}}" title="Qty" class="input-text qty text" size="4" pattern="" inputmode="">
+                        name="quantity" value="{{max(0 , $product['min_stock'] - $product['stock'])}}" title="Qty" class="input-text qty text" size="4" pattern="" inputmode="">
                         <input type="button" value="+" class="plus">
                     </div>
                 </div>
