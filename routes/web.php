@@ -23,6 +23,8 @@ Route::get('manager/purchaseOrders','ManagerController@showPurchaseOrders')->nam
 Route::get('manager/pickingWaves','ManagerController@showPickingWaves')->name('manager-picking-waves');
 Route::get('manager/replenishment','ManagerController@showReplenishment')->name('manager-replenishment');
 
+Route::post('/manager/createPickingWave','ManagerController@createPickingWave');
+
 Route::get('clerk/packingWaves','ClerkController@showPackingWaves')->name('packing-waves');
 Route::get('clerk/packing/{id_wave}','ClerkController@showPacking')->name('packing');
 Route::get('clerk/pickingWaves','ClerkController@showPickingWaves')->name('picking-waves');
