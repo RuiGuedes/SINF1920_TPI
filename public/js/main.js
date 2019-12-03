@@ -70,6 +70,29 @@ if (mainButton != null) {
         mainButton.disabled = true;
 }
 
+let create_wave = document.getElementById('create_wave');
+
+if (create_wave != null) {
+    create_wave.firstElementChild.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        checked_buttons = document.getElementsByClassName('btn btn-outline-secondary select-multiple checked');
+        sales_Ids = [];
+                
+        for (let i = 0; i < checked_buttons.length; i++) {
+            id = checked_buttons[i].parentElement.parentElement.firstElementChild.firstElementChild.firstElementChild.textContent;
+            sales_Ids.push(id);
+        }
+
+        sendAjaxRequest.call(this, 'post', '/manager/createPickingWave', {ids: sales_Ids}, createPickingWaveHandler);
+    })
+}
+
+function createPickingWaveHandler() {
+    if (this.status != 200) return;
+    
+    window.location.replace("/manager/pickingWaves");
+}
 
 
 //////////

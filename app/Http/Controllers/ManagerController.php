@@ -6,6 +6,7 @@ use App\PickingWaves;
 use App\PickingWavesState;
 use App\Products;
 use App\SalesOrders;
+use Illuminate\Http\Request;
 
 class ManagerController extends Controller
 {
@@ -17,9 +18,11 @@ class ManagerController extends Controller
         $orders = SalesOrdersController::allSalesOrders();
 
         // Remove sales orders already in existing picking waves
-        for ($i=0; $i < count($orders); $i++) { 
-            if (SalesOrders::where('id', $orders[$i]['id'])->exists())
+        for ($i = 0; $i < count($orders); $i++) {
+            if (SalesOrders::where('id', $orders[$i]['id'])->exists()) {
                 array_splice($orders, $i, 1);
+                $i--;
+            }
         }
 
         return View('manager.salesOrders', ['sales' => $orders]);
@@ -205,13 +208,13 @@ class ManagerController extends Controller
      */
     public function showReplenishment()
     {
-        
+
         $products =  Products::getProducts();
 
-        for($i = 0; $i < count($products); $i++) {
-            if($products[$i]['stock'] == 0)
+        for ($i = 0; $i < count($products); $i++) {
+            if ($products[$i]['stock'] == 0)
                 $products[$i]['status'] = 'OUT OF STOCK';
-            else if($products[$i]['stock'] < $products[$i]['min_stock'])
+            else if ($products[$i]['stock'] < $products[$i]['min_stock'])
                 $products[$i]['status'] = 'LAST UNITS';
             else
                 $products[$i]['status'] = 'ALL GOOD';
@@ -220,9 +223,12 @@ class ManagerController extends Controller
         return View('manager.replenishment', ['products' => $products]);
     }
 
-
-    public function createPickingWave($salesOrdersIds) {
-        $salesOrders = SalesOrdersController::saleOrderById($salesOrdersIds);
+    /**
+     * Create a Picking Wave receiving only the sales orders ids
+     */
+    public function createPickingWave(Request $request)
+    {
+        $salesOrders = SalesOrdersController::saleOrderById(explode(',', $request->input('ids')));
 
         $pickingWave = new PickingWaves();
         $pickingWave->save();
@@ -236,14 +242,21 @@ class ManagerController extends Controller
             $sale->save();
 
             foreach ($saleOrder['items'] as $item) {
-                $pickingWaveState = new PickingWavesState();
-                $pickingWaveState->picking_wave_id = $pickingWave->id;
-                $pickingWaveState->product_id = $item['id'];
-                $pickingWaveState->desired_qnt = $item['quantity'];
+                $pickingWaveState = PickingWavesState::where([['picking_wave_id', $pickingWave->id], ['product_id', $item['id']]])->first();
+
+                if ($pickingWaveState != null) {
+                    $pickingWaveState->desired_qnt += $item['quantity'];
+                } else {
+                    $pickingWaveState = new PickingWavesState();
+                    $pickingWaveState->picking_wave_id = $pickingWave->id;
+                    $pickingWaveState->product_id = $item['id'];
+                    $pickingWaveState->desired_qnt = $item['quantity'];
+                }
+                
                 $pickingWaveState->save();
             }
         }
 
-        return redirect('manager/pickingWaves');
+        return response('', 200, []);
     }
 }
