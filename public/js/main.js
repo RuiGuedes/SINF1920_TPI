@@ -70,6 +70,17 @@ if (mainButton != null) {
         mainButton.disabled = true;
 }
 
+let qntRangeLimit = document.getElementsByClassName('quantity buttons_added')
+
+for(let i = 0; i < qntRangeLimit.length; i++) {
+    qntRangeLimit[i].children[1].addEventListener('change', function () {
+        let minValue = this.getAttribute('min');
+        let maxValue = this.getAttribute('max');
+
+        if(this.value < minValue) this.value = minValue;
+        else if(this.value > maxValue) this.value = maxValue;
+    })
+}
 
 
 //////////
