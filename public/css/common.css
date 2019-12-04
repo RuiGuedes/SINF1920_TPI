@@ -97,7 +97,7 @@ nav.sub-navbar a.active {
 /* Button */
 button.btn.btn-secondary {
     background-color: var(--brand-color);
-    border-color: var(--dark-grey);
+    border-color: transparent;
     color: var(--bg-dark);
     font-style: italic;
     font-size: x-large;
@@ -211,8 +211,7 @@ div.route-line {
 
 div.route-box {
     background-color: var(--bg-dark);
-    border: solid 2px;
-    border-color: inherit;
+    border: 2px solid inherit;
     width: 50px;
     height: 50px;
     padding: 0;
@@ -270,7 +269,7 @@ option:not(selected) {
     text-align: center;
     background-color: transparent;
     color: white;
-    border: 0px;
+    border: 0;
     border-bottom: solid var(--light-grey) 1px;
     border-top: solid var(--light-grey) 1px;
 
@@ -306,14 +305,14 @@ option:not(selected) {
 }
 
 .quantity.buttons_added .minus {
-    border-radius: 0.25rem 0px 0px 0.25rem;
-    border-right: 0px;
+    border-radius: 0.25rem 0 0 0.25rem;
+    border-right: 0;
     left: 10px;
 }
 
 .quantity.buttons_added .plus {
-    border-radius: 0px 0.25rem 0.25rem 0px;
-    border-left: 0px;
+    border-radius: 0 0.25rem 0.25rem 0;
+    border-left: 0;
     right: 10px;
 }
 
@@ -327,4 +326,8 @@ option:not(selected) {
     -webkit-appearance: none;
     -moz-appearance: none;
     margin: 0; 
+}
+
+#alert-modal {
+    color: var(--bg-dark);
 }

@@ -41,5 +41,7 @@
             'text' => 'Create Wave',
             'id' => 'create_wave'
         ])
+
+        @include('partials.alertModal')
     </div>
 @endsection

@@ -234,14 +234,14 @@ class ManagerController extends Controller
     {
         $salesOrders = SalesOrdersController::saleOrderById(explode(',', $request->input('ids')));
 
-        $pickingWave = PickingWaves::insertWave();
+        $pickingWaveId = PickingWaves::insertWave();
 
         foreach ($salesOrders as $saleOrder) {
-            $salesOrders['picking_wave_id'] = $pickingWave->id;
+            $saleOrder['picking_wave_id'] = $pickingWaveId;
             SalesOrders::insertSaleOrder($saleOrder);
 
             foreach ($saleOrder['items'] as $item) {
-                $item['picking_wave_id'] = $pickingWave->id;
+                $item['picking_wave_id'] = $pickingWaveId;
                 PickingWavesState::updatePickingWaveState($item);
             }
         }

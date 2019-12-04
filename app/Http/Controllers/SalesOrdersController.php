@@ -49,7 +49,7 @@ class SalesOrdersController extends Controller
             array_push($filteredOrders, $order);
         }
 
-        return $filteredOrders;
+        return array_reverse($filteredOrders);
     }
 
     public function saleOrderBySerieId($serieId)
