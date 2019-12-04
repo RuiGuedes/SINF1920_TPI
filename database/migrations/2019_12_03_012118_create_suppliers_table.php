@@ -17,6 +17,7 @@ class CreateSuppliersTable extends Migration
             $table->bigIncrements('id');
             $table->string('entity')->unique();
             $table->string('name')->unique();
+            $table->string('country');
             $table->timestamps();
             $table->softDeletes();
         });

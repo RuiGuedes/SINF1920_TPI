@@ -26,6 +26,7 @@ class Suppliers extends Model
 
         $supplier->entity = $array["entity"];
         $supplier->name = $array["name"];
+        $supplier->country = $array["country"];
 
         $supplier->save();
     }

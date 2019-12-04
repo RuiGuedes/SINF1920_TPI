@@ -63,7 +63,7 @@ class SalesOrdersController extends Controller
 
             try {
                 $result = JasminConnect::callJasmin(
-                    'sales/orders/' . $companyKey . '/' . $info[0] . '/' . $info[1] . '/' . $info[2]
+                    '/sales/orders/' . $companyKey . '/' . $info[0] . '/' . $info[1] . '/' . $info[2]
                 );
             } catch (\Exception $e) {
                 return $e->getMessage();

@@ -16,8 +16,8 @@ class SuppliersSeeder extends Seeder
     {
         try {
             $result = JasminConnect::callJasmin('/purchasesCore/supplierParties');
-        } catch (\Exception $e) {
-            return $e->getMessage();
+        } catch (Exception $e) {
+            return;
         }
 
         $suppliersParties = json_decode($result->getBody(), true);
@@ -29,6 +29,7 @@ class SuppliersSeeder extends Seeder
             {
                 $info = ['entity' => $suppliersParties[$i]['partyKey'],
                     'name' => $suppliersParties[$i]['name'],
+                    'country' => $suppliersParties[$i]['country'],
                     'items' => array()
                 ];
 

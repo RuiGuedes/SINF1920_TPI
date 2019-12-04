@@ -281,7 +281,7 @@ class ManagerController extends Controller
                     'accountingParty' => $supplier[0]['entity'],
                     'exchangeRate' => 1,
                     'discount' => 0,
-                    'loadingCountry' => 'US',
+                    'loadingCountry' => $supplier[0]['country'],
                     'unloadingCountry' => 'PT',
                     'currency' => 'EUR',
                     'paymentMethod' => 'NUM',
