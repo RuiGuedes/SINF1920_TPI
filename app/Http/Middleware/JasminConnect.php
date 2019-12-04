@@ -18,20 +18,24 @@ class JasminConnect
      *
      * @param String $path
      * @param String $query
+     * @param String $method
+     * @param array|null $body
      * @return Exception|ClientException|GuzzleException|RequestException|mixed|ResponseInterface
      */
-    public static function callJasmin(String $path, String $query = '')
+    public static function callJasmin(String $path, String $query = '', String $method = 'GET', array $body = null)
     {
         $token = JasminToken::getToken();
 
         $client = new Client();
         try {
             return $client->request(
-                'GET',
+                $method,
                 self::getUri($path, $query),
-                ['headers' =>
-                    ['Authorization' => $token['token_type'] . ' ' . $token['access_token']],
-                    ['Content-Type' => 'application/json']
+                ['headers' => [
+                    'Authorization' => $token['token_type'] . ' ' . $token['access_token'],
+                    'Content-Type' => 'application/json'
+                    ],
+                 'body' => json_encode($body)
                 ]
             );
         } catch (ClientException $e) {
@@ -91,7 +95,7 @@ class JasminConnect
         $scheme = 'https://';
         $authority = 'my.jasminsoftware.com/api/';
         $tenant = '224978/';
-        $organization = '224978-0001/';
+        $organization = '224978-0001';
 
         $partialUrl = $scheme . $authority . $tenant . $organization . $path;
 
