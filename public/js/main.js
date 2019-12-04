@@ -115,9 +115,10 @@ if (create_wave != null) {
             }
         }
 
-        if (insufficient_stock.length === 0 && sales_Ids.length > 0)
+        if (insufficient_stock.length === 0 && sales_Ids.length > 0) {
+            document.body.style.cursor = 'wait';
             sendAjaxRequest.call(this, 'post', '/manager/createPickingWave', {ids: sales_Ids}, createPickingWaveHandler);
-        else if(insufficient_stock.length !== 0) {
+        } else if(insufficient_stock.length !== 0) {
             let modal = $('#alert-modal');
             let modal_title = document.getElementsByClassName('modal-title')[0];
             console.log(modal_title);
@@ -137,7 +138,7 @@ if (create_wave != null) {
 
 function createPickingWaveHandler() {
     if (this.status !== 200) return;
-    
+    document.body.style.cursor = 'default';
     window.location.replace("/manager/pickingWaves");
 }
 
@@ -153,25 +154,29 @@ for(let i = 0; i < qntRangeLimit.length; i++) {
     })
 }
 
-let createPO = document.getElementsByClassName('btn btn-secondary');
+let createPO = document.getElementById('create-PO');
 
-for(let i = 0; i < createPO.length; i++) {
-    createPO[i].addEventListener('click', function (event) {
-        event.preventDefault();
-        let data = {};
+if (createPO !== null) {
+    for(let i = 0; i < createPO.length; i++) {
+        createPO[i].addEventListener('click', function (event) {
+            event.preventDefault();
+            let data = {};
 
-        for(let j = 0; j < qntRangeLimit.length; j++) {
-            if(qntRangeLimit[j].getAttribute('hidden') == null) {
-                let productID = qntRangeLimit[j].parentElement.parentElement.children[0].textContent;
-                data[productID] = parseInt(qntRangeLimit[j].children[1].value);
+            for(let j = 0; j < qntRangeLimit.length; j++) {
+                if(qntRangeLimit[j].getAttribute('hidden') == null) {
+                    let productID = qntRangeLimit[j].parentElement.parentElement.children[0].textContent;
+                    data[productID] = parseInt(qntRangeLimit[j].children[1].value);
+                }
             }
-        }
-        sendAjaxRequest.call(this, 'post', '/manager/replenishment/create-purchase-order', data, redirectToPurchaseOrdersPage)
-    });
+            document.body.style.cursor = 'wait';
+            sendAjaxRequest.call(this, 'post', '/manager/replenishment/create-purchase-order', data, redirectToPurchaseOrdersPage)
+        });
+    }
 }
 
 function redirectToPurchaseOrdersPage() {
     if (this.status !== 200) return;
+    document.body.style.cursor = 'default';
     window.location.replace('/manager/purchaseOrders');
 }
 
