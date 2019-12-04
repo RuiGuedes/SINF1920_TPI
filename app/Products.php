@@ -59,4 +59,28 @@ class Products extends Model
     public static function getProducts() {
         return Products::orderBy('stock')->get();
     }
+
+    /**
+     * Retrieves specific product stock
+     *
+     * @param String $product_id
+     * @return mixed
+     */
+    public static function getProductStock(String $product_id) {
+        return Products::select('stock')
+            ->where('product_id', '=', $product_id)
+            ->first()['stock'];
+    }
+
+    /**
+     * Retrieves specific product warehouse section
+     *
+     * @param String $product_id
+     * @return mixed
+     */
+    public static function getProductWarehouseSection(String $product_id) {
+        return Products::select('warehouse_section')
+            ->where('product_id', '=', $product_id)
+            ->first()['warehouse_section'];
+    }
 }

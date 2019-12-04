@@ -32,73 +32,42 @@ class ManagerController extends Controller
      */
     public function showPurchaseOrders()
     {
-        $orders = [
-            [
-                'id' => '4',
-                'owner' => 'C0078',
-                'date' => '2019-07-24',
-                'items' => [
-                    [
-                        'id' => '56',
-                        'description' => 'AK-47',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ]
-                ]
-            ],
-            [
-                'id' => '7',
-                'owner' => 'C0004',
-                'date' => '2019-07-24',
-                'items' => [
-                    [
-                        'id' => '56',
-                        'description' => 'AK-47',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ],
-                    [
-                        'id' => '58',
-                        'description' => 'AK-48',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ]
-                ]
-            ],
-            [
-                'id' => '8',
-                'owner' => 'C0054',
-                'date' => '2019-07-24',
-                'items' => [
-                    [
-                        'id' => '56',
-                        'description' => 'AK-47',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ],
-                    [
-                        'id' => '58',
-                        'description' => 'AK-48',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '90'
-                    ],
-                    [
-                        'id' => '98',
-                        'description' => 'Desert Eagle',
-                        'zone' => 'B3',
-                        'quantity' => '40',
-                        'stock' => '300'
-                    ]
-                ]
-            ]
-        ];
+        try {
+            $result = JasminConnect::callJasmin('/purchases/orders');
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
 
-        return View('manager.purchaseOrders', ['purchases' => $orders]);
+        $purchaseOrders = array();
+
+        foreach(json_decode($result->getBody(), true) as $order) {
+            if($order['documentStatus'] === 1) {
+                $purchaseOrder = [
+                    'sort_key' => substr($order['naturalKey'], '9'),
+                    'id' => str_replace('.', '-', $order['naturalKey']),
+                    'owner' => $order['sellerSupplierParty'],
+                    'date' => substr($order['documentDate'], 0, 10),
+                    'items' => []
+                ];
+
+                foreach ($order['documentLines'] as $product) {
+                    array_push($purchaseOrder['items'], [
+                        'id' => $product['purchasesItem'],
+                        'description' => $product['description'],
+                        'quantity' => $product['quantity'],
+                        'stock' => Products::getProductStock($product['purchasesItem']),
+                        'zone' => Products::getProductWarehouseSection($product['purchasesItem'])
+                    ]);
+                }
+
+                array_push($purchaseOrders, $purchaseOrder);
+            }
+        }
+
+        // Array sorting in ascending order
+        usort($purchaseOrders, function ($a, $b) {return $a['sort_key'] > $b['sort_key'];});
+
+        return View('manager.purchaseOrders', ['purchases' => $purchaseOrders]);
     }
 
     /**
