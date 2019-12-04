@@ -1,7 +1,9 @@
 function wcqib_refresh_quantity_increments() {
     jQuery("div.quantity:not(.buttons_added), td.quantity:not(.buttons_added)").each(function (a, b) {
         var c = jQuery(b);
-        c.addClass("buttons_added"), c.children().first().before('<input type="button" value="-" class="minus" />'), c.children().last().after('<input type="button" value="+" class="plus" />')
+        c.addClass("buttons_added"),
+            c.children().first().before('<input type="button" value="-" class="minus" />'),
+            c.children().last().after('<input type="button" value="+" class="plus" />')
     })
 }
 
@@ -19,7 +21,11 @@ String.prototype.getDecimals || (String.prototype.getDecimals = function () {
         c = parseFloat(a.attr("max")),
         d = parseFloat(a.attr("min")),
         e = a.attr("step");
-    b && "" !== b && "NaN" !== b || (b = 0), "" !== c && "NaN" !== c || (c = ""), "" !== d && "NaN" !== d || (d = 0), "any" !== e && "" !== e && void 0 !== e && "NaN" !== parseFloat(e) || (e = 1), jQuery(this).is(".plus") ? c && b >= c ? a.val(c) : a.val((b + parseFloat(e)).toFixed(e.getDecimals())) : d && b <= d ? a.val(d) : b > 0 && a.val((b - parseFloat(e)).toFixed(e.getDecimals())), a.trigger("change")
+    b && "" !== b && "NaN" !== b || (b = 0), "" !== c && "NaN" !== c || (c = ""), "" !== d && "NaN" !== d || (d = 0),
+    "any" !== e && "" !== e && void 0 !== e && "NaN" !== parseFloat(e) || (e = 1),
+        jQuery(this).is(".plus") ? c
+        && b >= c ? a.val(c) : a.val((b + parseFloat(e)).toFixed(e.getDecimals())) : d
+        && b <= d ? a.val(d) : b > 0 && a.val((b - parseFloat(e)).toFixed(e.getDecimals())), a.trigger("change")
 });
 
 let checkboxes = document.querySelectorAll("button.btn.btn-outline-secondary.select-multiple");
@@ -32,36 +38,36 @@ checkboxes.forEach(checkbox => {
         if (className === "btn btn-outline-secondary select-multiple") {
             checkbox.setAttribute('class', 'btn btn-outline-secondary select-multiple checked');
 
-            if (parent_row.className.search('replenishment') != -1)
+            if (parent_row.className.search('replenishment') !== -1)
                 parent_row.children[5].firstElementChild.removeAttribute('hidden');
 
         } else {
             checkbox.setAttribute('class', 'btn btn-outline-secondary select-multiple');
 
-            if (parent_row.className.search('replenishment') != -1)
+            if (parent_row.className.search('replenishment') !== -1)
                 parent_row.children[5].firstElementChild.setAttribute('hidden', 'true');
         }
     })
-})
+});
 
-let radioboxes = document.querySelectorAll("button.btn.btn-outline-secondary.select-one");
+let radio_boxes = document.querySelectorAll("button.btn.btn-outline-secondary.select-one");
 
-radioboxes.forEach(radiobox => {
-    radiobox.addEventListener('click', function (event) {
-        let className = radiobox.className;
+radio_boxes.forEach(radio_box => {
+    radio_box.addEventListener('click', function (event) {
+        let className = radio_box.className;
 
         if (className === "btn btn-outline-secondary select-one") {
-            radiobox.setAttribute('class', 'btn btn-outline-secondary checked select-one');
+            radio_box.setAttribute('class', 'btn btn-outline-secondary checked select-one');
 
-            radioboxes.forEach(r => {
-                if (r != radiobox)
+            radio_boxes.forEach(r => {
+                if (r !== radio_box)
                     r.setAttribute('class', 'btn btn-outline-secondary select-one');
             })
         } else {
-            radiobox.setAttribute('class', 'btn btn-outline-secondary select-one');
+            radio_box.setAttribute('class', 'btn btn-outline-secondary select-one');
         }
     })
-})
+});
 
 let mainButton = document.querySelector("div.main-container button.btn.btn-secondary");
 
@@ -76,11 +82,11 @@ if (create_wave != null) {
     create_wave.firstElementChild.addEventListener('click', function(event) {
         event.preventDefault();
 
-        checked_buttons = document.getElementsByClassName('btn btn-outline-secondary select-multiple checked');
-        sales_Ids = [];
+        let checked_buttons = document.getElementsByClassName('btn btn-outline-secondary select-multiple checked');
+        let sales_Ids = [];
                 
         for (let i = 0; i < checked_buttons.length; i++) {
-            id = checked_buttons[i].parentElement.parentElement.firstElementChild.firstElementChild.firstElementChild.textContent;
+            let id = checked_buttons[i].parentElement.parentElement.firstElementChild.firstElementChild.firstElementChild.textContent;
             sales_Ids.push(id);
         }
 
@@ -89,7 +95,7 @@ if (create_wave != null) {
 }
 
 function createPickingWaveHandler() {
-    if (this.status != 200) return;
+    if (this.status !== 200) return;
     
     window.location.replace("/manager/pickingWaves");
 }
