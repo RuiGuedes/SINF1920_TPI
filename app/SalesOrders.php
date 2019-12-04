@@ -25,8 +25,25 @@ class SalesOrders extends Model
      */
     public $incrementing = false;
 
-    public static function getSalesOrderId(String $serieId) {
+    /**
+     * @param $saleOrder
+     */
+    public static function insertSaleOrder($saleOrder)
+    {
+        $sale = new SalesOrders();
+        $sale->id = $saleOrder['id'];
+        $sale->picking_wave_id = $saleOrder['picking_wave_id'];
+        $sale->client = $saleOrder['owner'];
+        $sale->date = $saleOrder['date'];
+        $sale->save();
+    }
 
-        return self::where('serie_id', $serieId)->first()['id'];
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public static function getExists($id)
+    {
+        return SalesOrders::where('id', $id)->exists();
     }
 }

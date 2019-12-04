@@ -6,7 +6,9 @@ use App\PickingWaves;
 use App\PickingWavesState;
 use App\Products;
 use App\SalesOrders;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ManagerController extends Controller
 {
@@ -19,7 +21,7 @@ class ManagerController extends Controller
 
         // Remove sales orders already in existing picking waves
         for ($i = 0; $i < count($orders); $i++) {
-            if (SalesOrders::where('id', $orders[$i]['id'])->exists()) {
+            if (SalesOrders::getExists($orders[$i]['id'])) {
                 array_splice($orders, $i, 1);
                 $i--;
             }
@@ -225,35 +227,22 @@ class ManagerController extends Controller
 
     /**
      * Create a Picking Wave receiving only the sales orders ids
+     * @param Request $request
+     * @return ResponseFactory|Response
      */
     public function createPickingWave(Request $request)
     {
         $salesOrders = SalesOrdersController::saleOrderById(explode(',', $request->input('ids')));
 
-        $pickingWave = new PickingWaves();
-        $pickingWave->save();
+        $pickingWave = PickingWaves::insertWave();
 
         foreach ($salesOrders as $saleOrder) {
-            $sale = new SalesOrders();
-            $sale->id = $saleOrder['id'];
-            $sale->picking_wave_id = $pickingWave->id;
-            $sale->client = $saleOrder['owner'];
-            $sale->date = $saleOrder['date'];
-            $sale->save();
+            $salesOrders['picking_wave_id'] = $pickingWave->id;
+            SalesOrders::insertSaleOrder($saleOrder);
 
             foreach ($saleOrder['items'] as $item) {
-                $pickingWaveState = PickingWavesState::where([['picking_wave_id', $pickingWave->id], ['product_id', $item['id']]])->first();
-
-                if ($pickingWaveState != null) {
-                    $pickingWaveState->desired_qnt += $item['quantity'];
-                } else {
-                    $pickingWaveState = new PickingWavesState();
-                    $pickingWaveState->picking_wave_id = $pickingWave->id;
-                    $pickingWaveState->product_id = $item['id'];
-                    $pickingWaveState->desired_qnt = $item['quantity'];
-                }
-                
-                $pickingWaveState->save();
+                $item['picking_wave_id'] = $pickingWave->id;
+                PickingWavesState::updatePickingWaveState($item);
             }
         }
 
