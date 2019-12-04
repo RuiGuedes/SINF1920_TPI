@@ -61,7 +61,7 @@ radioboxes.forEach(radiobox => {
             radiobox.setAttribute('class', 'btn btn-outline-secondary select-one');
         }
     })
-})
+});
 
 let mainButton = document.querySelector("div.main-container button.btn.btn-secondary");
 
@@ -70,19 +70,19 @@ if (mainButton != null) {
         mainButton.disabled = true;
 }
 
-let qntRangeLimit = document.getElementsByClassName('quantity buttons_added')
+let qntRangeLimit = document.getElementsByClassName('quantity buttons_added');
 
 for(let i = 0; i < qntRangeLimit.length; i++) {
     qntRangeLimit[i].children[1].addEventListener('change', function () {
-        let minValue = this.getAttribute('min');
-        let maxValue = this.getAttribute('max');
+        let minValue = parseInt(this.getAttribute('min'));
+        let maxValue = parseInt(this.getAttribute('max'));
 
         if(this.value < minValue) this.value = minValue;
         else if(this.value > maxValue) this.value = maxValue;
     })
 }
 
-let createPO = document.getElementsByClassName('btn btn-secondary')
+let createPO = document.getElementsByClassName('btn btn-secondary');
 
 for(let i = 0; i < createPO.length; i++) {
     createPO[i].addEventListener('click', function (event) {
@@ -92,19 +92,15 @@ for(let i = 0; i < createPO.length; i++) {
         for(let j = 0; j < qntRangeLimit.length; j++) {
             if(qntRangeLimit[j].getAttribute('hidden') == null) {
                 let productID = qntRangeLimit[j].parentElement.parentElement.children[0].textContent;
-                let qnt = qntRangeLimit[j].children[1].value;
-                data[productID] = qnt
+                data[productID] = parseInt(qntRangeLimit[j].children[1].value);
             }
         }
-        console.log(data);
-
         sendAjaxRequest.call(this, 'post', '/manager/replenishment/create-purchase-order', data, redirectToPurchaseOrdersPage)
     });
 }
 
 function redirectToPurchaseOrdersPage() {
     if (this.status !== 200) return;
-
     window.location.replace('/manager/purchaseOrders');
 }
 

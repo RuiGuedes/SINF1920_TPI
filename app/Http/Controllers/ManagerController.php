@@ -6,6 +6,7 @@ use App\Http\Middleware\JasminConnect;
 use App\Products;
 use App\ProductSuppliers;
 use App\SalesOrders;
+use Exception;
 use Illuminate\Http\Request;
 
 class ManagerController extends Controller
@@ -221,7 +222,7 @@ class ManagerController extends Controller
     }
 
     /**
-     * Create purchase orders
+     * Create purchase orders selecting automatically the supplier
      *
      * @param Request $request
      * @return false|string
@@ -239,7 +240,6 @@ class ManagerController extends Controller
                 array_push($suppliers[$bestSupplier['entity']], $bestSupplier);
             else
                 $suppliers[$bestSupplier['entity']] = [$bestSupplier];
-
         }
 
         foreach($suppliers as $supplier) {
@@ -262,7 +262,7 @@ class ManagerController extends Controller
 
             try {
                 $result = JasminConnect::callJasmin('/purchases/orders', '', 'GET');
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return $e->getMessage();
             }
 
@@ -290,7 +290,7 @@ class ManagerController extends Controller
                 ];
 
                 JasminConnect::callJasmin('/purchases/orders', '', 'POST', $body);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return $e->getMessage();
             }
         }
