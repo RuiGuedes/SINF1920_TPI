@@ -55,7 +55,7 @@
 
         @include('partials.mainButton', [
             'text' => 'Create PO',
-            'action' => 'manager-replenishment'
+            'id' => 'create-PO'
         ])
     </div>
 @endsection

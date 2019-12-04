@@ -3,6 +3,14 @@
 @section('title', 'Purchase Orders')
 
 @section('body')
+    @if ($errors->any())
+        <div class="alert alert-success">
+            @foreach($errors->all() as $error)
+                {{ $error }} <br>
+            @endforeach
+        </div>
+    @endif
+    
     @include('partials.mainNavbar')
 
     @include('partials.subNavbar', [
@@ -39,7 +47,7 @@
 
         @include('partials.mainButton', [
             'text' => 'Allocate', 
-            'id' => 'create-PO'
+            'id' => 'allocate'
         ])
     </div>
     
