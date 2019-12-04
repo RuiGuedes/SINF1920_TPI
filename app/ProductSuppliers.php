@@ -51,7 +51,7 @@ class ProductSuppliers extends Model
      * @param string $product_id
      * @return mixed
      */
-    public static function getSuppliersForProduct(string $product_id) {
+    public static function getBestSupplierForProduct(string $product_id) {
         return self::select('products.product_id as product', 'suppliers.entity as entity', 'price')
             ->join('suppliers', 'product_suppliers.supplier_entity', '=', 'suppliers.entity')
             ->join('products', 'product_suppliers.product_id', '=', 'products.product_id')

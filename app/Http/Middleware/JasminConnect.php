@@ -18,20 +18,25 @@ class JasminConnect
      *
      * @param String $path
      * @param String $query
+     * @param String $method
      * @return Exception|ClientException|GuzzleException|RequestException|mixed|ResponseInterface
      */
-    public static function callJasmin(String $path, String $query = '')
+    public static function callJasmin(String $path, String $query = '', String $method = 'GET', array $body = null)
     {
         $token = JasminToken::getToken();
 
+        echo self::getUri($path, $query);
         $client = new Client();
         try {
+            print_r($body);
             return $client->request(
-                'GET',
+                $method,
                 self::getUri($path, $query),
-                ['headers' =>
-                    ['Authorization' => $token['token_type'] . ' ' . $token['access_token']],
-                    ['Content-Type' => 'application/json']
+                ['headers' => [
+                    'Authorization' => $token['token_type'] . ' ' . $token['access_token'],
+                    'Content-Type' => 'application/json'
+                    ],
+                 'form_params' => $body
                 ]
             );
         } catch (ClientException $e) {

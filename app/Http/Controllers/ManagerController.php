@@ -215,9 +215,48 @@ class ManagerController extends Controller
         $suppliers = array();
 
         foreach ($data as $key => $value) {
-            echo ProductSuppliers::getSuppliersForProduct($key) . " :::::: ";
+            echo ProductSuppliers::getBestSupplierForProduct($key) . " :::::: ";
             //echo "$key => $value !!! ";
         }
+
+        try {
+            $body = [
+                'documentType' => 'ECF',
+                'company' => 'TP-INDUSTRIES',
+                'serie' => '2019',
+                'seriesNumber' => 17,
+                'documentDate' => '2019-12-04T00:00:00',
+                'postingDate' => '2019-12-04T00:00:00',
+                'sellerSupplierParty' => '0003',
+                'sellerSupplierPartyName' => 'Academy Sports + Outdoors',
+                'accountingParty' => '0003',
+                'exchangeRate' => 1,
+                'discount' => 0,
+                'loadingCountry' => 'US',
+                'unloadingCountry' => 'PT',
+                'currency' => 'EUR',
+                'paymentMethod' => 'NUM',
+                'paymentTerm' => '01',
+                'documentLines' => [
+                    'description' => 'Thompson Compass 6.5 Creedmoor Bolt-Action',
+                    'quantity' => 5,
+                    'unitPrice' => 149.00,
+                    'deliveryDate' => '2019-12-05T00:00:00',
+                    'unit' => 'UN',
+                    'itemTaxSchema' => 'ISENTO',
+                    'purchasesItem' => 'P0006',
+                    'documentLineStatus' => 'OPEN',
+                    ]
+            ];
+
+            $result = JasminConnect::callJasmin('purchases/orders', '', 'POST', $body);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
+        var_dump($result->getResponse());
+//        $salesOrders = json_decode($result->getBody(), true);
+//        var_dump($salesOrders[2]);
 
         return;
 
@@ -248,8 +287,6 @@ class ManagerController extends Controller
         foreach ($data as $key => $value) {
             return "$key => $value";
         }
-
-
 
         return $data;
     }
