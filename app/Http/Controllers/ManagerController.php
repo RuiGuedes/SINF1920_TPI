@@ -219,45 +219,46 @@ class ManagerController extends Controller
             //echo "$key => $value !!! ";
         }
 
+       // echo date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d")+1, date("Y")));
         try {
-            $body = [
-                            'documentType' => 'ECF',
-                            'company' => 'TP-INDUSTRIES',
-                            'serie' => '2019',
-                            'seriesNumber' => 17,
-                            'documentDate' => '2019-12-04T00:00:00',
-                            'postingDate' => '2019-12-04T00:00:00',
-                            'SellerSupplierParty' => '0003',
-                            'SellerSupplierPartyName' => 'Academy Sports + Outdoors',
-                            'accountingParty' => '0003',
-                            'exchangeRate' => 1,
-                            'discount' => 0,
-                            'loadingCountry' => 'US',
-                            'unloadingCountry' => 'PT',
-                            'currency' => 'EUR',
-                            'paymentMethod' => 'NUM',
-                            'paymentTerm' => '01',
-                            'documentLines' => [[
-                                'description' => 'Thompson Compass 6.5 Creedmoor Bolt-Action',
-                                'quantity' => 5,
-                                'unitPrice' => 149.00,
-                                'deliveryDate' => '2019-12-05T00:00:00',
-                                'unit' => 'UN',
-                                'itemTaxSchema' => 'ISENTO',
-                                'purchasesItem' => 'P0006',
-                                'documentLineStatus' => 'OPEN'
-                                ]]
+//            $body = [
+//                            'documentType' => 'ECF',
+//                            'company' => 'TP-INDUSTRIES',
+//                            'serie' => '2019',
+//                            'seriesNumber' => 19,
+//                            'documentDate' => date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d"), date("Y"))),
+//                            'postingDate' => date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d"), date("Y"))),
+//                            'SellerSupplierParty' => '0003',
+//                            'SellerSupplierPartyName' => 'Academy Sports + Outdoors',
+//                            'accountingParty' => '0003',
+//                            'exchangeRate' => 1,
+//                            'discount' => 0,
+//                            'loadingCountry' => 'US',
+//                            'unloadingCountry' => 'PT',
+//                            'currency' => 'EUR',
+//                            'paymentMethod' => 'NUM',
+//                            'paymentTerm' => '01',
+//                            'documentLines' => [[
+//                                'description' => 'Thompson Compass 6.5 Creedmoor Bolt-Action',
+//                                'quantity' => 10,
+//                                'unitPrice' => 149.00,
+//                                'deliveryDate' => date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d")+1, date("Y"))),
+//                                'unit' => 'UN',
+//                                'itemTaxSchema' => 'ISENTO',
+//                                'purchasesItem' => 'P0006',
+//                                'documentLineStatus' => 'OPEN'
+//                                ]]
+//
+//            ];
 
-            ];
-
-            $result = JasminConnect::callJasmin('/purchases/orders', '', 'POST', $body);
+            $result = JasminConnect::callJasmin('/purchases/orders/TP-INDUSTRIES/ECF/2019/19', '', 'GET');
         } catch (\Exception $e) {
             return $e->getMessage();
         }
 
-        var_dump($result);
-//        $salesOrders = json_decode($result->getBody(), true);
-//        var_dump($salesOrders[2]);
+//        var_dump($result);
+        $salesOrders = json_decode($result->getBody(), true);
+        var_dump($salesOrders);
 
         return;
 
