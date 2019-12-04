@@ -117,6 +117,7 @@ if (create_wave != null) {
 
         if (insufficient_stock.length === 0 && sales_Ids.length > 0) {
             document.body.style.cursor = 'wait';
+            create_wave.style.cursor = 'wait';
             sendAjaxRequest.call(this, 'post', '/manager/createPickingWave', {ids: sales_Ids}, createPickingWaveHandler);
         } else if(insufficient_stock.length !== 0) {
             let modal = $('#alert-modal');
@@ -139,7 +140,7 @@ if (create_wave != null) {
 function createPickingWaveHandler() {
     if (this.status !== 200) return;
     document.body.style.cursor = 'default';
-    window.location.replace("/manager/pickingWaves");
+    window.location.replace("/manager/pickingWaves/added");
 }
 
 let qntRangeLimit = document.getElementsByClassName('quantity buttons_added');
@@ -177,7 +178,7 @@ if (createPO !== null) {
 function redirectToPurchaseOrdersPage() {
     if (this.status !== 200) return;
     document.body.style.cursor = 'default';
-    window.location.replace('/manager/purchaseOrders');
+    window.location.replace('/manager/purchaseOrders/added');
 }
 
 //////////

@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
     return view('login', ['route' => 'picking-waves']);
 });
@@ -19,8 +21,8 @@ Route::view('/','login', ['route' => 'picking-waves'])->name('login');
 Route::view('layout','layout')->name('layout');
 
 Route::get('manager/salesOrders','ManagerController@showSalesOrders')->name('manager-sales-orders');
-Route::get('manager/purchaseOrders','ManagerController@showPurchaseOrders')->name('manager-purchase-orders');
-Route::get('manager/pickingWaves','ManagerController@showPickingWaves')->name('manager-picking-waves');
+Route::get('manager/purchaseOrders/{status?}','ManagerController@showPurchaseOrders')->name('manager-purchase-orders');
+Route::get('manager/pickingWaves/{status?}','ManagerController@showPickingWaves')->name('manager-picking-waves');
 Route::get('manager/replenishment','ManagerController@showReplenishment')->name('manager-replenishment');
 
 Route::post('/manager/replenishment/create-purchase-order','PurchaseOrdersController@createPurchaseOrder');

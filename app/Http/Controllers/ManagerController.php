@@ -19,19 +19,26 @@ class ManagerController extends Controller
     /**
      * Retrieves purchase orders view
      *
+     * @param null $status
      * @return View
      */
-    public function showPurchaseOrders()
+    public function showPurchaseOrders($status = null)
     {
-        return View('manager.purchaseOrders', ['purchases' => PurchaseOrdersController::allPurchaseOrders()]);
+        $errors = [];
+
+        if ($status == 'added')
+            array_push($errors,'New Purchase Orders added');
+
+        return View('manager.purchaseOrders', ['purchases' => PurchaseOrdersController::allPurchaseOrders()])->withErrors([$errors]);
     }
 
     /**
      * Retrieves picking waves view
      *
+     * @param null $status
      * @return View
      */
-    public function showPickingWaves()
+    public function showPickingWaves($status = null)
     {
         $waves = [
             [
@@ -125,8 +132,12 @@ class ManagerController extends Controller
                 ]
             ]
         ];
+        $errors = [];
 
-        return View('manager.pickingWaves', ['waves' => $waves]);
+        if ($status == 'added')
+            array_push($errors,'New Picking Wave added');
+
+        return View('manager.pickingWaves', ['waves' => $waves])->withErrors([$errors]);
     }
 
     /**
