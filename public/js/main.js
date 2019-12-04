@@ -96,7 +96,8 @@ for(let i = 0; i < createPO.length; i++) {
                 data[productID] = qnt
             }
         }
-        console.log(data)
+        console.log(data);
+
         sendAjaxRequest.call(this, 'post', '/manager/replenishment/create-purchase-order', data, redirectToPurchaseOrdersPage)
     });
 }
