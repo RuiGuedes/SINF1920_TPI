@@ -39,7 +39,7 @@
 
         @include('partials.mainButton', [
             'text' => 'Allocate', 
-            'action' => 'manager-purchase-orders'
+            'id' => 'create-PO'
         ])
     </div>
     

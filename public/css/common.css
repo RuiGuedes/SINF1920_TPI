@@ -11,7 +11,14 @@ html, body, .login-container {
     height: 100%;
 }
 
-body.bg-dark, footer {
+footer {
+    position: fixed;
+    bottom: 0;
+    width: max-content;
+    background-color: var(--bg-dark)
+}
+
+body.bg-dark {
     background-color: var(--bg-dark)!important;
     color: var(--light-grey);
     font-family: 'Roboto Mono', monospace;
