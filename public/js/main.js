@@ -61,7 +61,7 @@ radioboxes.forEach(radiobox => {
             radiobox.setAttribute('class', 'btn btn-outline-secondary select-one');
         }
     })
-})
+});
 
 let mainButton = document.querySelector("div.main-container button.btn.btn-secondary");
 
@@ -70,7 +70,39 @@ if (mainButton != null) {
         mainButton.disabled = true;
 }
 
+let qntRangeLimit = document.getElementsByClassName('quantity buttons_added');
 
+for(let i = 0; i < qntRangeLimit.length; i++) {
+    qntRangeLimit[i].children[1].addEventListener('change', function () {
+        let minValue = parseInt(this.getAttribute('min'));
+        let maxValue = parseInt(this.getAttribute('max'));
+
+        if(this.value < minValue) this.value = minValue;
+        else if(this.value > maxValue) this.value = maxValue;
+    })
+}
+
+let createPO = document.getElementsByClassName('btn btn-secondary');
+
+for(let i = 0; i < createPO.length; i++) {
+    createPO[i].addEventListener('click', function (event) {
+        event.preventDefault();
+        let data = {};
+
+        for(let j = 0; j < qntRangeLimit.length; j++) {
+            if(qntRangeLimit[j].getAttribute('hidden') == null) {
+                let productID = qntRangeLimit[j].parentElement.parentElement.children[0].textContent;
+                data[productID] = parseInt(qntRangeLimit[j].children[1].value);
+            }
+        }
+        sendAjaxRequest.call(this, 'post', '/manager/replenishment/create-purchase-order', data, redirectToPurchaseOrdersPage)
+    });
+}
+
+function redirectToPurchaseOrdersPage() {
+    if (this.status !== 200) return;
+    window.location.replace('/manager/purchaseOrders');
+}
 
 //////////
 // AJAX //
@@ -85,6 +117,7 @@ function sendAjaxRequest(method, url, data, handler) {
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     request.addEventListener('load', handler);
     request.send(encodeForAjax(data));
+
 }
 
 function encodeForAjax(data) {
