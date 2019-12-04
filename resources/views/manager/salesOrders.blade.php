@@ -39,7 +39,9 @@
         
         @include('partials.mainButton', [
             'text' => 'Create Wave',
-            'action' => 'manager-sales-orders'
+            'id' => 'create_wave'
         ])
+
+        @include('partials.alertModal')
     </div>
 @endsection

@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\PickingWaves;
+use App\PickingWavesState;
 use App\Http\Middleware\JasminConnect;
 use App\Products;
 use App\ProductSuppliers;
 use App\SalesOrders;
-use Exception;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Exception;
 
 class ManagerController extends Controller
 {
@@ -19,9 +23,11 @@ class ManagerController extends Controller
         $orders = SalesOrdersController::allSalesOrders();
 
         // Remove sales orders already in existing picking waves
-        for ($i=0; $i < count($orders); $i++) { 
-            if (SalesOrders::where('id', $orders[$i]['id'])->exists())
+        for ($i = 0; $i < count($orders); $i++) {
+            if (SalesOrders::getExists($orders[$i]['id'])) {
                 array_splice($orders, $i, 1);
+                $i--;
+            }
         }
 
         return View('manager.salesOrders', ['sales' => $orders]);
@@ -207,18 +213,43 @@ class ManagerController extends Controller
      */
     public function showReplenishment()
     {
+
         $products =  Products::getProducts();
 
-        for($i = 0; $i < count($products); $i++) {
-            if($products[$i]['stock'] == 0)
+        for ($i = 0; $i < count($products); $i++) {
+            if ($products[$i]['stock'] == 0)
                 $products[$i]['status'] = 'OUT OF STOCK';
-            else if($products[$i]['stock'] < $products[$i]['min_stock'])
+            else if ($products[$i]['stock'] < $products[$i]['min_stock'])
                 $products[$i]['status'] = 'LAST UNITS';
             else
                 $products[$i]['status'] = 'ALL GOOD';
         }
 
         return View('manager.replenishment', ['products' => $products]);
+    }
+
+    /**
+     * Create a Picking Wave receiving only the sales orders ids
+     * @param Request $request
+     * @return ResponseFactory|Response
+     */
+    public function createPickingWave(Request $request)
+    {
+        $salesOrders = SalesOrdersController::saleOrderById(explode(',', $request->input('ids')));
+
+        $pickingWaveId = PickingWaves::insertWave();
+
+        foreach ($salesOrders as $saleOrder) {
+            $saleOrder['picking_wave_id'] = $pickingWaveId;
+            SalesOrders::insertSaleOrder($saleOrder);
+
+            foreach ($saleOrder['items'] as $item) {
+                $item['picking_wave_id'] = $pickingWaveId;
+                PickingWavesState::updatePickingWaveState($item);
+            }
+        }
+
+        return response('', 200, []);
     }
 
     /**

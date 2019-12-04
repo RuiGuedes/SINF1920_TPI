@@ -18,8 +18,32 @@ class SalesOrders extends Model
      */
     protected $table = 'sales_orders';
 
-    public static function getSalesOrderId(String $serieId) {
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
 
-        return self::where('serie_id', $serieId)->first()['id'];
+    /**
+     * @param $saleOrder
+     */
+    public static function insertSaleOrder($saleOrder)
+    {
+        $sale = new SalesOrders();
+        $sale->id = $saleOrder['id'];
+        $sale->picking_wave_id = $saleOrder['picking_wave_id'];
+        $sale->client = $saleOrder['owner'];
+        $sale->date = $saleOrder['date'];
+        $sale->save();
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public static function getExists($id)
+    {
+        return SalesOrders::where('id', $id)->exists();
     }
 }

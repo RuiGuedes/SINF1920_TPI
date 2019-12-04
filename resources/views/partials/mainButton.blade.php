@@ -1,7 +1,12 @@
 <div class="text-right my-4">
-    <form action="@isset($param) {{route($action, ['id_wave' => $param])}} @endisset
-        @empty($param) {{route($action)}} @endempty">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+    @isset($action)
+        <form action="@isset($param) {{route($action, ['id_wave' => $param])}} @endisset
+            @empty($param) {{route($action)}} @endempty">    
+    @endisset
+    @empty($action)
+        <form id="{{$id}}">
+    @endempty
+
         <button type="submit" class="btn btn-secondary">{{$text}}</button>
     </form>
 </div>

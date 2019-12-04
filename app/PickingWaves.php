@@ -15,4 +15,14 @@ class PickingWaves extends Model
      * @var string
      */
     protected $table = 'picking_waves';
+
+    /**
+     * @return int
+     */
+    public static function insertWave(): int
+    {
+        $pickingWave = new PickingWaves();
+        $pickingWave->save();
+        return $pickingWave->id;
+    }
 }
