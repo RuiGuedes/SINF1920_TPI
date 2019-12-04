@@ -11,7 +11,7 @@ class SalesOrdersController extends Controller
     {
 
         try {
-            $result = JasminConnect::callJasmin('sales/orders');
+            $result = JasminConnect::callJasmin('/sales/orders');
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -55,7 +55,7 @@ class SalesOrdersController extends Controller
     public function saleOrderBySerieId($serieId)
     {
         try {
-            $result = JasminConnect::callJasmin('sales/orders' . '/' . $serieId);
+            $result = JasminConnect::callJasmin('/sales/orders' . '/' . $serieId);
         } catch (\Exception $e) {
             return $e->getMessage();
         }
