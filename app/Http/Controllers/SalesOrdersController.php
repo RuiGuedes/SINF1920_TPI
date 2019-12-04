@@ -4,56 +4,74 @@ namespace App\Http\Controllers;
 
 use App\Http\Middleware\JasminConnect;
 use App\Products;
+use App\SalesOrders;
+use Exception;
 
 class SalesOrdersController extends Controller
 {
+    /**
+     * Retrieves all active sales orders properly ordered
+     *
+     * @return array|string
+     */
     public static function allSalesOrders()
     {
         try {
             $result = JasminConnect::callJasmin('/sales/orders');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $e->getMessage();
         }
 
         $salesOrders = [];
 
-        foreach (json_decode($result->getBody(), true) as $saleOrder) {
-            if ($saleOrder['documentStatus'] === 2 || ($saleOrder['serie'] === "2019" && $saleOrder['seriesNumber'] === 1))
-                continue;
+        foreach (json_decode($result->getBody(), true) as $order) {
+            if (!($order['documentStatus'] === 2 || ($order['serie'] === "2019" && $order['seriesNumber'] === 1))) {
+                $salesOrder = [
+                    'id' => str_replace('.', '-', $order['naturalKey']),
+                    'owner' => $order['buyerCustomerParty'],
+                    'date' => substr($order['documentDate'], 0, 10),
+                ];
 
-            $order = [
-                'id' => $saleOrder['documentType'] . '-' . $saleOrder['serie'] . "-" . $saleOrder['seriesNumber'],
-                'owner' => $saleOrder['buyerCustomerParty'],
-                'date' => explode('T', $saleOrder['documentDate'])[0],
-            ];
+                $products = [];
 
-            $products = [];
+                foreach ($order['documentLines'] as $line) {
+                    $product = Products::getProductByID($line['salesItem']);
 
-            foreach ($saleOrder['documentLines'] as $line) {
-                $dbProduct = Products::where('product_id', $line['salesItem'])->get()->first();
-
-                array_push($products, [
+                    array_push($products, [
                         'id' => $line['salesItem'],
                         'description' => $line['description'],
                         'quantity' => $line['quantity'],
-                        'zone' => $dbProduct->warehouse_section,
-                        'stock' => $dbProduct->stock
+                        'zone' => $product->warehouse_section,
+                        'stock' => $product->stock
                     ]);
+                }
+
+                $salesOrder['items'] = $products;
+
+                array_push($salesOrders, $salesOrder);
             }
-
-            $order['items'] = $products;
-
-            array_push($salesOrders, $order);
         }
 
-        return array_reverse($salesOrders);
+        $salesOrders = array_reverse($salesOrders);
+
+        // Remove sales orders already in existing picking waves
+        for ($i = 0; $i < count($salesOrders); $i++) {
+            if (SalesOrders::getExists($salesOrders[$i]['id'])) {
+                array_splice($salesOrders, $i, 1);
+                $i--;
+            }
+        }
+
+        return $salesOrders;
     }
 
     /**
-     * @param $ordersId array sales orders id
+     * Retrieves information about specific sales orders
+     *
+     * @param $ordersId array
      * @return array|string
      */
-    public static function saleOrderById($ordersId)
+    public static function salesOrderById($ordersId)
     {
         $orders = [];
 
@@ -65,7 +83,7 @@ class SalesOrdersController extends Controller
                 $result = JasminConnect::callJasmin(
                     '/sales/orders/' . $companyKey . '/' . $info[0] . '/' . $info[1] . '/' . $info[2]
                 );
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return $e->getMessage();
             }
 

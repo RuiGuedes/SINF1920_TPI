@@ -83,4 +83,14 @@ class Products extends Model
             ->where('product_id', '=', $product_id)
             ->first()['warehouse_section'];
     }
+
+    /**
+     * Retrieves product information through identifier
+     *
+     * @param String $product_id
+     * @return mixed
+     */
+    public static function getProductByID(String $product_id) {
+        return Products::where('product_id', '=', $product_id)->get()->first();
+    }
 }
