@@ -9,17 +9,15 @@ class SalesOrdersController extends Controller
 {
     public static function allSalesOrders()
     {
-
         try {
             $result = JasminConnect::callJasmin('/sales/orders');
         } catch (\Exception $e) {
             return $e->getMessage();
         }
 
-        $salesOrders = json_decode($result->getBody(), true);
-        $filteredOrders = [];
+        $salesOrders = [];
 
-        foreach ($salesOrders as $saleOrder) {
+        foreach (json_decode($result->getBody(), true) as $saleOrder) {
             if ($saleOrder['documentStatus'] === 2 || ($saleOrder['serie'] === "2019" && $saleOrder['seriesNumber'] === 1))
                 continue;
 
@@ -29,10 +27,9 @@ class SalesOrdersController extends Controller
                 'date' => explode('T', $saleOrder['documentDate'])[0],
             ];
 
-            $documentLines = $saleOrder['documentLines'];
             $products = [];
 
-            foreach ($documentLines as $line) {
+            foreach ($saleOrder['documentLines'] as $line) {
                 $dbProduct = Products::where('product_id', $line['salesItem'])->get()->first();
 
                 array_push($products, [
@@ -46,23 +43,16 @@ class SalesOrdersController extends Controller
 
             $order['items'] = $products;
 
-            array_push($filteredOrders, $order);
+            array_push($salesOrders, $order);
         }
 
-        return array_reverse($filteredOrders);
+        return array_reverse($salesOrders);
     }
 
-    public function saleOrderBySerieId($serieId)
-    {
-        try {
-            $result = JasminConnect::callJasmin('/sales/orders' . '/' . $serieId);
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-
-        return json_decode($result->getBody(), true);
-    }
-
+    /**
+     * @param $ordersId array sales orders id
+     * @return array|string
+     */
     public static function saleOrderById($ordersId)
     {
         $orders = [];
