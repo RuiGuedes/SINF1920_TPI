@@ -103,8 +103,9 @@ for(let i = 0; i < createPO.length; i++) {
 }
 
 function redirectToPurchaseOrdersPage() {
-    // if (this.status !== 200) return;
-    console.log(this.responseText);
+    if (this.status !== 200) return;
+
+    window.location.replace('/manager/purchaseOrders');
 }
 
 //////////

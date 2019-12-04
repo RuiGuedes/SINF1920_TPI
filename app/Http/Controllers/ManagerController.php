@@ -206,62 +206,6 @@ class ManagerController extends Controller
      */
     public function showReplenishment()
     {
-        $data['P0001'] = 1;
-        $data['P0010'] = 1;
-        $data['P0018'] = 1;
-        $data['P0021'] = 450;
-
-        // Create supplier stuct and add the products and their qnt
-        $suppliers = array();
-
-        foreach ($data as $key => $value) {
-            echo ProductSuppliers::getBestSupplierForProduct($key) . " :::::: ";
-            //echo "$key => $value !!! ";
-        }
-
-       // echo date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d")+1, date("Y")));
-        try {
-//            $body = [
-//                            'documentType' => 'ECF',
-//                            'company' => 'TP-INDUSTRIES',
-//                            'serie' => '2019',
-//                            'seriesNumber' => 19,
-//                            'documentDate' => date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d"), date("Y"))),
-//                            'postingDate' => date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d"), date("Y"))),
-//                            'SellerSupplierParty' => '0003',
-//                            'SellerSupplierPartyName' => 'Academy Sports + Outdoors',
-//                            'accountingParty' => '0003',
-//                            'exchangeRate' => 1,
-//                            'discount' => 0,
-//                            'loadingCountry' => 'US',
-//                            'unloadingCountry' => 'PT',
-//                            'currency' => 'EUR',
-//                            'paymentMethod' => 'NUM',
-//                            'paymentTerm' => '01',
-//                            'documentLines' => [[
-//                                'description' => 'Thompson Compass 6.5 Creedmoor Bolt-Action',
-//                                'quantity' => 10,
-//                                'unitPrice' => 149.00,
-//                                'deliveryDate' => date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d")+1, date("Y"))),
-//                                'unit' => 'UN',
-//                                'itemTaxSchema' => 'ISENTO',
-//                                'purchasesItem' => 'P0006',
-//                                'documentLineStatus' => 'OPEN'
-//                                ]]
-//
-//            ];
-
-            $result = JasminConnect::callJasmin('/purchases/orders/TP-INDUSTRIES/ECF/2019/19', '', 'GET');
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-
-//        var_dump($result);
-        $salesOrders = json_decode($result->getBody(), true);
-        var_dump($salesOrders);
-
-        return;
-
         $products =  Products::getProducts();
 
         for($i = 0; $i < count($products); $i++) {
@@ -277,19 +221,80 @@ class ManagerController extends Controller
     }
 
     /**
-     * Display the replenishment page with all the existing products
+     * Create purchase orders
+     *
      * @param Request $request
      * @return false|string
      */
     public function createPurchaseOrder(Request $request)
     {
-
         $data = $request->input();
 
+        $suppliers = array();
+
         foreach ($data as $key => $value) {
-            return "$key => $value";
+            $bestSupplier = ProductSuppliers::getBestSupplierForProduct($key);
+
+            if(array_key_exists($bestSupplier['entity'], $suppliers))
+                array_push($suppliers[$bestSupplier['entity']], $bestSupplier);
+            else
+                $suppliers[$bestSupplier['entity']] = [$bestSupplier];
+
         }
 
+        foreach($suppliers as $supplier) {
+            $documentLines = [];
+
+            for($i = 0; $i < count($supplier); $i++) {
+                $product = [
+                    'description' => $supplier[$i]['description'],
+                    'quantity' => $data[$supplier[$i]['product']],
+                    'unitPrice' => number_format(floatval($supplier[$i]['price']), 2),
+                    'deliveryDate' => date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d")+1, date("Y"))),
+                    'unit' => 'UN',
+                    'itemTaxSchema' => 'ISENTO',
+                    'purchasesItem' => $supplier[$i]['product'],
+                    'documentLineStatus' => 'OPEN'
+                ];
+
+                array_push($documentLines, $product);
+            }
+
+            try {
+                $result = JasminConnect::callJasmin('/purchases/orders', '', 'GET');
+            } catch (\Exception $e) {
+                return $e->getMessage();
+            }
+
+            $seriesNumber = count(json_decode($result->getBody(), true)) + 1;
+
+            try {
+                $body = [
+                    'documentType' => 'ECF',
+                    'company' => 'TP-INDUSTRIES',
+                    'serie' => '2019',
+                    'seriesNumber' => $seriesNumber,
+                    'documentDate' => date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d"), date("Y"))),
+                    'postingDate' => date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d"), date("Y"))),
+                    'SellerSupplierParty' => $supplier[0]['entity'],
+                    'SellerSupplierPartyName' => $supplier[0]['name'],
+                    'accountingParty' => $supplier[0]['entity'],
+                    'exchangeRate' => 1,
+                    'discount' => 0,
+                    'loadingCountry' => 'US',
+                    'unloadingCountry' => 'PT',
+                    'currency' => 'EUR',
+                    'paymentMethod' => 'NUM',
+                    'paymentTerm' => '01',
+                    'documentLines' => $documentLines
+                ];
+
+                JasminConnect::callJasmin('/purchases/orders', '', 'POST', $body);
+            } catch (\Exception $e) {
+                return $e->getMessage();
+            }
+        }
+        
         return $data;
     }
 }
