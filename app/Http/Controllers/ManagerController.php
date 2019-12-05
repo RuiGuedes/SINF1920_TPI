@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\JasminConnect;
 use Illuminate\View\View;
 
 class ManagerController extends Controller
@@ -35,6 +36,50 @@ class ManagerController extends Controller
      */
     public function showPickingWaves()
     {
+//        $body = [
+//            [
+//                'sourceDocKey' => 'ECF.2019.15',
+//                'sourceDocLineNumber' => 1,
+//                'quantity' => 200,
+//                'selected' => true
+//            ]
+//        ];
+//
+//        echo json_encode($body);
+//
+//        try {
+////            $result = JasminConnect::callJasmin('/goodsReceipt/processOrders/1/1000?company=TP-INDUSTRIES', '', 'GET');
+//            $result = JasminConnect::callJasmin('/goodsReceipt/processOrders/TP-INDUSTRIES', '', 'POST', $body);
+//        } catch (Exception $e) {
+//            return $e->getMessage();
+//        }
+//
+//        var_dump($result);
+////        var_dump(json_decode($result->getBody(), true)[0]);
+//        return;
+
+        $body = [
+            [
+                'goodsReceiptNoteKey' => 'RM.2019.15',
+                'goodsReceiptNoteLineNumber' => 1,
+                'orderKey' => 'ECF.2019.15',
+                'orderLineNumber' => 1
+            ]
+        ];
+
+        echo json_encode($body);
+
+        try {
+//            $result = JasminConnect::callJasmin('/invoiceReceipt/processOrders/1/1000', '', 'GET');
+            $result = JasminConnect::callJasmin('/invoiceReceipt/processOrders/TP-INDUSTRIES', '', 'POST', $body);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+        var_dump($result);
+//        var_dump(json_decode($result->getBody(), true));
+        return;
+
         $waves = [
             [
                 'id' => '2',
