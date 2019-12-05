@@ -136,7 +136,7 @@ function createPickingWaveHandler() {
     if (this.status !== 200) return;
     document.body.style.cursor = 'default';
     setCookie('error_info', 'New Picking Wave added !', 1);
-    window.location.replace("/manager/pickingWaves");
+    window.location.assign("/manager/pickingWaves");
 }
 
 let qntRangeLimit = document.getElementsByClassName('quantity buttons_added');
@@ -175,7 +175,7 @@ function redirectToPurchaseOrdersPage() {
     if (this.status !== 200) return;
     document.body.style.cursor = 'default';
     setCookie('error_info', 'New Purchase Orders added !', 1);
-    window.location.replace('/manager/purchaseOrders');
+    window.location.assign('/manager/purchaseOrders');
 }
 
 let allocate = document.getElementById('allocate');
@@ -204,7 +204,7 @@ function redirectToReplenishmentPage() {
     if (this.status !== 200) return;
     document.body.style.cursor = 'default';
     setCookie('error_info', 'New stock allocated !', 1);
-    window.location.replace('/manager/replenishment');
+    window.location.assign('/manager/replenishment');
 }
 
 let init_picking_route = document.getElementById('init-picking-route');
@@ -218,10 +218,10 @@ if (init_picking_route !== null) {
         if (checked_button.length !== 1) {
             activeModal('Selected Picking Wave','To continue you should select ' +
             (checked_button.length > 1? 'only' : '') +' one Picking Wave');
+        } else {
+            window.location.assign('/clerk/pickingRoute/' +
+                checked_button[0].parentElement.parentElement.firstElementChild.firstElementChild.firstElementChild.textContent);
         }
-
-        window.location.replace('/clerk/pickingRoute/' +
-            checked_button[0].parentElement.parentElement.firstElementChild.firstElementChild.firstElementChild.textContent);
     })
 }
 

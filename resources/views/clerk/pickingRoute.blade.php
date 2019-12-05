@@ -76,7 +76,7 @@
 
             @include('partials.mainButton', [
                 'text' => 'Complete',
-                'action' => 'picking-waves'
+                'id' => 'complete-route'
             ])
         </div>
     </div>
