@@ -42,6 +42,18 @@ class PickingWavesState extends Model
     /**
      * @param $item
      */
+    public static function insertPickingWaveState($item)
+    {
+        $pickingWaveState = new PickingWavesState();
+        $pickingWaveState->picking_wave_id = $item['picking_wave_id'];
+        $pickingWaveState->product_id = $item['id'];
+        $pickingWaveState->desired_qnt = $item['quantity'];
+        $pickingWaveState->save();
+    }
+
+    /**
+     * @param $item
+     */
     public static function updatePickingWaveState($item): void
     {
         $pickingWaveState = PickingWavesState::where([['picking_wave_id', $item['picking_wave_id']], ['product_id', $item['id']]])->first();
@@ -52,17 +64,5 @@ class PickingWavesState extends Model
         } else {
             self::insertPickingWaveState($item);
         }
-    }
-
-    /**
-     * @param $item
-     */
-    public static function insertPickingWaveState($item)
-    {
-        $pickingWaveState = new PickingWavesState();
-        $pickingWaveState->picking_wave_id = $item['picking_wave_id'];
-        $pickingWaveState->product_id = $item['id'];
-        $pickingWaveState->desired_qnt = $item['quantity'];
-        $pickingWaveState->save();
     }
 }
