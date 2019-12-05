@@ -130,4 +130,22 @@ class PurchaseOrdersController extends Controller
 
         return $data;
     }
+
+    /**
+     *
+     *
+     * @param Request $request
+     * @return false|string
+     */
+    public function allocatePurchaseOrder(Request $request)
+    {
+        $data = $request->input();
+
+//        foreach ($data as $key => $value) {
+//            return $key . "..." . $value;
+//        }
+
+        return $data;
+
+    }
 }

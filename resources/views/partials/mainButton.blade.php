@@ -6,7 +6,6 @@
     @empty($action)
         <form id="{{$id}}">
     @endempty
-
         <button type="submit" class="btn btn-secondary">{{$text}}</button>
     </form>
 </div>

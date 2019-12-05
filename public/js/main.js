@@ -182,6 +182,66 @@ function redirectToPurchaseOrdersPage() {
     window.location.replace('/manager/purchaseOrders');
 }
 
+let allocate = document.getElementById('allocate');
+
+if (allocate !== null) {
+    for(let j = 0; j < allocate.length; j++) {
+        allocate[j].addEventListener('click', function (event) {
+            event.preventDefault();
+            let data = {};
+
+            let checked_buttons = document.getElementsByClassName('btn btn-outline-secondary select-multiple checked');
+
+            for (let i = 0; i < checked_buttons.length; i++) {
+                let purchase = checked_buttons[i].parentElement.parentElement.firstElementChild;
+                let purchaseOrderId = purchase.firstElementChild.firstElementChild.textContent;
+
+                data[purchaseOrderId] = "";
+
+                let products = Array.from(document.querySelector(purchase.getAttribute('href')).firstElementChild.children).slice(1,);
+
+                products.forEach(product_line => {
+                    let product_id = product_line.firstElementChild.textContent;
+                    let product_qnt = parseInt(product_line.children[3].textContent);
+
+                    data[purchaseOrderId] = data[purchaseOrderId] +  (product_id + "-" + product_qnt + ",");
+                });
+            }
+
+            sendAjaxRequest.call(this, 'post', '/manager/replenishment/allocate-purchase-order', data, redirectToReplenishmentPage)
+        });
+    }
+}
+
+function redirectToReplenishmentPage() {
+    // if (this.status !== 200) return;
+
+    console.log(this.response)
+}
+
+//////////
+// AJAX //
+//////////
+
+function sendAjaxRequest(method, url, data, handler) {
+    let request = new XMLHttpRequest();
+
+    request.prototype = this;
+    request.open(method, url, true);
+    request.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    request.addEventListener('load', handler);
+    request.send(encodeForAjax(data));
+
+}
+
+function encodeForAjax(data) {
+    if (data == null) return null;
+    return Object.keys(data).map(function (k) {
+        return encodeURIComponent(k) + '=' + encodeURIComponent(data[k])
+    }).join('&');
+}
+
 /////////////
 // COOKIES //
 /////////////
@@ -215,25 +275,3 @@ function checkCookie() {
 
 checkCookie();
 
-//////////
-// AJAX //
-//////////
-
-function sendAjaxRequest(method, url, data, handler) {
-    let request = new XMLHttpRequest();
-
-    request.prototype = this;
-    request.open(method, url, true);
-    request.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    request.addEventListener('load', handler);
-    request.send(encodeForAjax(data));
-
-}
-
-function encodeForAjax(data) {
-    if (data == null) return null;
-    return Object.keys(data).map(function (k) {
-        return encodeURIComponent(k) + '=' + encodeURIComponent(data[k])
-    }).join('&');
-}
