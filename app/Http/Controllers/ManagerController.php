@@ -20,7 +20,6 @@ class ManagerController extends Controller
     /**
      * Retrieves purchase orders view
      *
-     * @param null $status
      * @return View
      */
     public function showPurchaseOrders()
@@ -31,16 +30,11 @@ class ManagerController extends Controller
     /**
      * Retrieves picking waves view
      *
-     * @param null $status
      * @return View
      */
     public function showPickingWaves()
     {
-            [
-        ];
-
-        return View('manager.pickingWaves', ['waves' => WaveController::allPickingWaves()])->withErrors([$errors]);
-        return View('manager.pickingWaves', ['waves' => $waves]);
+        return View('manager.pickingWaves', ['waves' => WaveController::allPickingWaves()]);
     }
 
     /**

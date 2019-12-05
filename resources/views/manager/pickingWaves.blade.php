@@ -3,14 +3,6 @@
 @section('title', 'Picking Waves')
 
 @section('body')
-    @if ($errors->any())
-        <div class="alert alert-success">
-            @foreach($errors->all() as $error)
-                {{ $error }} <br>
-            @endforeach
-        </div>
-    @endif
-
     @include('partials.mainNavbar')
 
     @include('partials.subNavbar', [
