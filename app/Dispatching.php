@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Dispatching extends Model
@@ -16,7 +17,30 @@ class Dispatching extends Model
      */
     protected $table = 'dispatching';
 
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * Get the sales order associated with the dispatch.
+     *
+     * @return HasOne
+     */
+    public function salesOrder() {
+        return $this->hasOne('App\SalesOrders');
+    }
+
+    /**
+     * Get the sales orders that weren't dispatched yet.
+     *
+     * @return array
+     */
     public static function undispatched() {
+        // todo: get active dispatching records, and for each one retrieve the salesOrder id. Return associative array
+        // with that info.
         return [
                    [
                        'id' => '4',
