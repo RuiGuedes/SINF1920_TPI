@@ -21,12 +21,14 @@
 					<div class="form-group">
 						<label for="password" hidden>Password</label>
 						<input name="password" type="password" class="form-control" id="password" placeholder="Password">
-						@if ($errors->has('username'))
-							<span class="error mt-5 mx-auto" style="color: red;">
+					</div>
+					@if ($errors->has('username'))
+						<div class="text-center py-3">
+							<span class="error " style="color: red;">
                                 {{ $errors->first('username') }}
                             </span>
-						@endif
-					</div>
+						</div>
+					@endif
 					<div class="row justify-content-center">
 						<button type="submit" class="btn btn-secondary">Login</button>
 					</div>
