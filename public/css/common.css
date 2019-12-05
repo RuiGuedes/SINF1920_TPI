@@ -117,6 +117,10 @@ button.btn.btn-secondary:hover:not(:disabled) {
     color: var(--brand-color);
 }
 
+button.btn.btn-secondary:focus:not(:disabled) {
+    cursor: wait;
+}
+
 button.btn.btn-outline-danger {
     background-color: var(--semi-transparent-brand-color);
     border-color: var(--semi-transparent-brand-color);
