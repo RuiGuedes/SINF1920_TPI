@@ -117,7 +117,6 @@ if (create_wave != null) {
 
         if (insufficient_stock.length === 0 && sales_Ids.length > 0) {
             document.body.style.cursor = 'wait';
-            create_wave.style.cursor = 'wait';
             sendAjaxRequest.call(this, 'post', '/manager/createPickingWave', {ids: sales_Ids}, createPickingWaveHandler);
         } else if(insufficient_stock.length !== 0) {
             let modal = $('#alert-modal');
