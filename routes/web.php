@@ -17,6 +17,9 @@ Route::get('/', function () {
     return view('login', ['route' => 'picking-waves']);
 });
 
+Route::post('login', 'Auth\LoginController@login')->name('login-action');
+Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+
 Route::view('/','login', ['route' => 'picking-waves'])->name('login');
 Route::view('layout','layout')->name('layout');
 

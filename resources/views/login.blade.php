@@ -12,14 +12,20 @@
 
 		<div class="login-fields row justify-content-center">
 			<div class="col-10 col-sm-6 col-md-4 col-xl-3">
-				<form id="login-form" action="{{ route($route) }}">
+				<form id="login-form" method="post" action="{{ route('login-action') }}">
+					{{ csrf_field() }}
 					<div class="form-group">
 						<label for="username" hidden>Username</label>
-						<input type="text" class="form-control" id="username" placeholder="Username">
+						<input name="username" type="text" class="form-control" id="username" placeholder="Username">
 					</div>
 					<div class="form-group">
 						<label for="password" hidden>Password</label>
-						<input type="password" class="form-control" id="password" placeholder="Password">
+						<input name="password" type="password" class="form-control" id="password" placeholder="Password">
+						@if ($errors->has('username'))
+							<span class="error mt-5 mx-auto" style="color: red;">
+                                {{ $errors->first('username') }}
+                            </span>
+						@endif
 					</div>
 					<div class="row justify-content-center">
 						<button type="submit" class="btn btn-secondary">Login</button>
