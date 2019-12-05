@@ -283,8 +283,9 @@ function checkCookie() {
     let cookie = getCookie('error_info');
 
     if(cookie !== null) {
-        document.getElementsByTagName('body')[0].innerHTML = '<div class="alert alert-success">' +
-            cookie + '</div>' + document.getElementsByTagName('body')[0].innerHTML;
+        let div_message = document.getElementById('success-alert');
+        div_message.removeAttribute('hidden');
+        div_message.innerHTML = cookie;
     }
 
     deleteCookie('error_info');
