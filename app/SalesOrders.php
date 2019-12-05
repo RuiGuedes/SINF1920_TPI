@@ -46,4 +46,14 @@ class SalesOrders extends Model
     {
         return SalesOrders::where('id', $id)->exists();
     }
+
+    public static function getSalesOrdersIdsByWaveId($waveId)
+    {
+        $salesIds = self::select('id')->where('picking_wave_id', $waveId)->get();
+        $ids = [];
+
+        foreach ($salesIds as $saleId) array_push($ids, $saleId['id']);
+
+        return $ids;
+    }
 }
