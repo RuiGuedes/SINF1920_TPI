@@ -23,7 +23,7 @@ class WaveController extends Controller
     {
         $salesOrders = SalesOrdersController::salesOrderById(explode(',', $request->input('ids')));
 
-        $pickingWaveId = PickingWaves::insertWave();
+        $pickingWaveId = PickingWaves::insertWave(count($salesOrders));
 
         foreach ($salesOrders as $saleOrder) {
             $saleOrder['picking_wave_id'] = $pickingWaveId;
@@ -75,10 +75,56 @@ class WaveController extends Controller
 
             array_push($waves, [
                 'id' => $pickingWave->id,
-                'num_orders' => count($orders),
+                'num_orders' => $pickingWave->num_orders,
                 'num_products' => $count_products,
                 'date' => $date,
                 'orders' => $orders
+            ]);
+        }
+
+        return $waves;
+    }
+
+    /**
+     *
+     */
+    public static function allWorkerPickingWaves()
+    {
+        $pickingWaves = PickingWaves::getOrderedWaves();
+        $waves = [];
+
+        foreach ($pickingWaves as $pickingWave) {
+            $items = [];
+
+            $states = PickingWavesState::getPickingWaveStatesByWaveId($pickingWave->id);
+
+            foreach ($states as $state) {
+                $product = Products::getProductByID($state->product_id);
+
+                array_push($items, [
+                    'id' => $product->product_id,
+                    'description' => $product->description,
+                    'zone' => $product->warehouse_section,
+                    'quantity' => $state->desired_qnt,
+                    'stock' => $product->stock
+                ]);
+            }
+
+            $date = null;
+
+            try {
+                $date = new DateTime($pickingWave->created_at);
+                $date = $date->format('Y-m-d');
+            } catch (\Exception $e) {
+                $e->getMessage();
+            }
+
+            array_push($waves, [
+                'id' => $pickingWave->id,
+                'num_orders' => $pickingWave->num_orders,
+                'num_products' => count($items),
+                'date' => $date,
+                'items' => $items
             ]);
         }
 
