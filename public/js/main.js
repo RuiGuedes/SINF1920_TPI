@@ -139,7 +139,8 @@ if (create_wave != null) {
 function createPickingWaveHandler() {
     if (this.status !== 200) return;
     document.body.style.cursor = 'default';
-    window.location.replace("/manager/pickingWaves/added");
+    setCookie('error_info', 'New Picking Wave added', 1);
+    window.location.replace("/manager/pickingWaves");
 }
 
 let qntRangeLimit = document.getElementsByClassName('quantity buttons_added');
@@ -177,8 +178,42 @@ if (createPO !== null) {
 function redirectToPurchaseOrdersPage() {
     if (this.status !== 200) return;
     document.body.style.cursor = 'default';
-    window.location.replace('/manager/purchaseOrders/added');
+    setCookie('error_info', 'New Purchase Orders added', 1);
+    window.location.replace('/manager/purchaseOrders');
 }
+
+/////////////
+// COOKIES //
+/////////////
+
+function getCookie(name) {
+    let v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+    return v ? v[2] : null;
+}
+
+function setCookie(name, value, days) {
+    let d = new Date;
+    d.setTime(d.getTime() + 24*60*60*1000*days);
+    document.cookie = name + "=" + value + ";path=/;expires=" + d.toGMTString();
+}
+
+function deleteCookie(name) {
+    setCookie(name, '', -1);
+}
+
+function checkCookie() {
+    let cookie = getCookie('error_info');
+
+    if(cookie !== null) {
+        document.getElementsByTagName('body')[0].innerHTML = '<div class="alert alert-success">\n' +
+            cookie + '                              <br>\n' +
+            '                    </div>' + document.getElementsByTagName('body')[0].innerHTML;
+    }
+
+    deleteCookie('error_info');
+}
+
+checkCookie();
 
 //////////
 // AJAX //
