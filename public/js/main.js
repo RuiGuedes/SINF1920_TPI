@@ -205,9 +205,8 @@ function checkCookie() {
     let cookie = getCookie('error_info');
 
     if(cookie !== null) {
-        document.getElementsByTagName('body')[0].innerHTML = '<div class="alert alert-success">\n' +
-            cookie + '                              <br>\n' +
-            '                    </div>' + document.getElementsByTagName('body')[0].innerHTML;
+        document.getElementsByTagName('body')[0].innerHTML = '<div class="alert alert-success">' +
+            cookie + '</div>' + document.getElementsByTagName('body')[0].innerHTML;
     }
 
     deleteCookie('error_info');

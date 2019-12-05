@@ -25,4 +25,12 @@ class PickingWaves extends Model
         $pickingWave->save();
         return $pickingWave->id;
     }
+
+    /**
+     * @return mixed
+     */
+    public static function getOrderedWaves()
+    {
+        return PickingWaves::orderby('created_at', 'asc')->get();
+    }
 }

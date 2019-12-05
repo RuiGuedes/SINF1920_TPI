@@ -2,18 +2,16 @@
     @isset($list_orders)
         <div class="container p-0">
             <div class="sub-header row text-center py-2 ml-5">
-                <div class="col-2">Document ID</div>
-                <div class="col-4">Order ID</div>
-                <div class="col-2">Client ID</div>
-                <div class="col-3">Date</div>
+                <div class="col-4">Document ID</div>
+                <div class="col-3">Client ID</div>
+                <div class="col-4">Date</div>
             </div>
 
             @foreach ($list_orders as $order)
                 <div class="row text-center py-2 ml-5">
-                    <div class="col-2">{{$order['id']}}</div>
-                    <div class="col-4">{{$order['order_id']}}</div>
-                    <div class="col-2">{{$order['owner']}}</div>
-                    <div class="col-3">{{$order['date']}}</div>
+                    <div class="col-4">{{ $order['id'] }}</div>
+                    <div class="col-3">{{ $order['owner'] }}</div>
+                    <div class="col-4">{{ $order['date'] }}</div>
                 </div>
 
                 @include('partials.doubleSubTable', [

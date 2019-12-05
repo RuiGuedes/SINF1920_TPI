@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\PickingWaves;
 use App\PickingWavesState;
+use App\Products;
 use App\SalesOrders;
+use DateTime;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -34,5 +36,52 @@ class WaveController extends Controller
         }
 
         return response('', 200, []);
+    }
+
+    /**
+     * Retrieves all picking Waves properly ordered
+     *
+     * @return array|string
+     */
+    public static function allPickingWaves()
+    {
+        $pickingWaves = PickingWaves::getOrderedWaves();
+        $waves = [];
+
+        foreach ($pickingWaves as $pickingWave) {
+            $orders = SalesOrdersController::salesOrderById(SalesOrders::getSalesOrdersIdsByWaveId($pickingWave->id));
+            $count_products = 0;
+
+            foreach ($orders as &$order) {
+                $count_products += count($order['items']);
+
+                foreach ($order['items'] as &$item) {
+                    $product = Products::getProductByID($item['id']);
+
+                    $item['description'] = $product->description;
+                    $item['zone'] = $product->warehouse_section;
+                    $item['stock'] = $product->stock;
+                }
+            }
+
+            $date = null;
+
+            try {
+                $date = new DateTime($pickingWave->created_at);
+                $date = $date->format('Y-m-d');
+            } catch (\Exception $e) {
+                $e->getMessage();
+            }
+
+            array_push($waves, [
+                'id' => $pickingWave->id,
+                'num_orders' => count($orders),
+                'num_products' => $count_products,
+                'date' => $date,
+                'orders' => $orders
+            ]);
+        }
+
+        return $waves;
     }
 }
