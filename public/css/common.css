@@ -222,7 +222,8 @@ div.route-line {
 
 div.route-box {
     background-color: var(--bg-dark);
-    border: 2px solid inherit;
+    border-color: inherit;
+    border: 2px solid;
     width: 50px;
     height: 50px;
     padding: 0;
