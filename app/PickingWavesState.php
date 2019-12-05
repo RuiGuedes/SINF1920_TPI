@@ -65,4 +65,9 @@ class PickingWavesState extends Model
             self::insertPickingWaveState($item);
         }
     }
+
+    public static function getPickingWaveStatesByWaveId($waveId)
+    {
+        return self::where('picking_wave_id', $waveId)->get();
+    }
 }

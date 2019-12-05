@@ -17,11 +17,13 @@ class PickingWaves extends Model
     protected $table = 'picking_waves';
 
     /**
+     * @param $num_orders
      * @return int
      */
-    public static function insertWave(): int
+    public static function insertWave($num_orders): int
     {
         $pickingWave = new PickingWaves();
+        $pickingWave->num_orders = $num_orders;
         $pickingWave->save();
         return $pickingWave->id;
     }
@@ -31,6 +33,6 @@ class PickingWaves extends Model
      */
     public static function getOrderedWaves()
     {
-        return PickingWaves::orderby('created_at', 'asc')->get();
+        return self::orderby('created_at', 'asc')->get();
     }
 }
