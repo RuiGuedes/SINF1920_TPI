@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Facade\FlareClient\View;
+use App\Dispatching;
 
 class ClerkController extends Controller
 {
@@ -236,27 +237,6 @@ class ClerkController extends Controller
 
     public function showDispatchOrders()
     {
-        $orders = [
-            [
-                'id' => '4',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                'owner' => 'C0004',
-                'date' => '2019-07-24',
-            ],
-            [
-                'id' => '7',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                'owner' => 'C0004',
-                'date' => '2019-07-24',
-            ],
-            [
-                'id' => '8',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                'owner' => 'C0004',
-                'date' => '2019-07-24',
-            ]
-        ];
-
-        return View('clerk.dispatching', ['orders' => $orders]);
+        return View('clerk.dispatching', ['orders' => Dispatching::undispatched()]);
     }
 }
