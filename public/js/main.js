@@ -139,7 +139,7 @@ if (create_wave != null) {
 function createPickingWaveHandler() {
     if (this.status !== 200) return;
     document.body.style.cursor = 'default';
-    setCookie('error_info', 'New Picking Wave added', 1);
+    setCookie('error_info', 'New Picking Wave added !', 1);
     window.location.replace("/manager/pickingWaves");
 }
 
@@ -178,8 +178,60 @@ if (createPO !== null) {
 function redirectToPurchaseOrdersPage() {
     if (this.status !== 200) return;
     document.body.style.cursor = 'default';
-    setCookie('error_info', 'New Purchase Orders added', 1);
+    setCookie('error_info', 'New Purchase Orders added !', 1);
     window.location.replace('/manager/purchaseOrders');
+}
+
+let allocate = document.getElementById('allocate');
+
+if (allocate !== null) {
+    for(let j = 0; j < allocate.length; j++) {
+        allocate[j].addEventListener('click', function (event) {
+            event.preventDefault();
+            let data = [];
+
+            let checked_buttons = document.getElementsByClassName('btn btn-outline-secondary select-multiple checked');
+
+            for (let i = 0; i < checked_buttons.length; i++) {
+                let purchase = checked_buttons[i].parentElement.parentElement.firstElementChild;
+                let purchaseOrderId = purchase.firstElementChild.firstElementChild.textContent;
+
+                data.push(purchaseOrderId);
+            }
+            document.body.style.cursor = 'wait';
+            sendAjaxRequest.call(this, 'post', '/manager/replenishment/allocate-purchase-order', {'purchase_orders' : data}, redirectToReplenishmentPage)
+        });
+    }
+}
+
+function redirectToReplenishmentPage() {
+    if (this.status !== 200) return;
+    document.body.style.cursor = 'default';
+    setCookie('error_info', 'New stock allocated !', 1);
+    window.location.replace('/manager/replenishment');
+}
+
+//////////
+// AJAX //
+//////////
+
+function sendAjaxRequest(method, url, data, handler) {
+    let request = new XMLHttpRequest();
+
+    request.prototype = this;
+    request.open(method, url, true);
+    request.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    request.addEventListener('load', handler);
+    request.send(encodeForAjax(data));
+
+}
+
+function encodeForAjax(data) {
+    if (data == null) return null;
+    return Object.keys(data).map(function (k) {
+        return encodeURIComponent(k) + '=' + encodeURIComponent(data[k])
+    }).join('&');
 }
 
 /////////////
@@ -214,25 +266,3 @@ function checkCookie() {
 
 checkCookie();
 
-//////////
-// AJAX //
-//////////
-
-function sendAjaxRequest(method, url, data, handler) {
-    let request = new XMLHttpRequest();
-
-    request.prototype = this;
-    request.open(method, url, true);
-    request.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    request.addEventListener('load', handler);
-    request.send(encodeForAjax(data));
-
-}
-
-function encodeForAjax(data) {
-    if (data == null) return null;
-    return Object.keys(data).map(function (k) {
-        return encodeURIComponent(k) + '=' + encodeURIComponent(data[k])
-    }).join('&');
-}

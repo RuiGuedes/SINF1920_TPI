@@ -26,6 +26,7 @@ Route::get('manager/pickingWaves/{status?}','ManagerController@showPickingWaves'
 Route::get('manager/replenishment','ManagerController@showReplenishment')->name('manager-replenishment');
 
 Route::post('/manager/replenishment/create-purchase-order','PurchaseOrdersController@createPurchaseOrder');
+Route::post('/manager/replenishment/allocate-purchase-order','PurchaseOrdersController@allocatePurchaseOrder');
 Route::post('/manager/createPickingWave','WaveController@createPickingWave');
 
 Route::get('clerk/packingWaves','ClerkController@showPackingWaves')->name('packing-waves');

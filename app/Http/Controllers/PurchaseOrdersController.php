@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Middleware\JasminConnect;
 use App\Products;
 use App\ProductSuppliers;
+use Exception;
 use Illuminate\Http\Request;
 
 class PurchaseOrdersController extends Controller
@@ -18,7 +19,7 @@ class PurchaseOrdersController extends Controller
     {
         try {
             $result = JasminConnect::callJasmin('/purchases/orders');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $e->getMessage();
         }
 
@@ -129,5 +130,106 @@ class PurchaseOrdersController extends Controller
         }
 
         return $data;
+    }
+
+    /**
+     * Allocates purchase order and automatically updates stock
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function allocatePurchaseOrder(Request $request)
+    {
+        $data = explode(',', $request->input('purchase_orders'));
+
+        for($i = 0; $i < count($data); $i++) {
+            $order = str_replace('-', '.', $data[$i]);
+
+            // Allocation needed steps (goods and invoice receipts)
+            $this->generateGoodsReceipt($order);
+            $this->generateInvoiceReceipt($order);
+        }
+
+        // Automatically update stock
+        ProductsController::updateProductsStock();
+
+        return $data;
+
+    }
+
+    /**
+     * Generates goods receipt for a specific purchase order
+     *
+     * @param String $purchaseOrderID
+     * @return void
+     */
+    public function generateGoodsReceipt(String $purchaseOrderID) {
+        try {
+            $result = JasminConnect::callJasmin('/goodsReceipt/processOrders/1/1000?company=TP-INDUSTRIES', '', 'GET');
+        } catch (Exception $e) {
+            return;
+        }
+
+        $goodsReceipt = array();
+
+        foreach(json_decode($result->getBody(), true) as $goodReceipt) {
+            if($goodReceipt['sourceDocKey'] === $purchaseOrderID)
+                array_push($goodsReceipt, $goodReceipt);
+        }
+
+        foreach($goodsReceipt as $goodReceipt) {
+            $body = [
+                [
+                    'sourceDocKey' => $goodReceipt['sourceDocKey'],
+                    'sourceDocLineNumber' => $goodReceipt['sourceDocLineNumber'],
+                    'quantity' => $goodReceipt['quantity'],
+                    'selected' => true
+                ]
+            ];
+
+            try {
+                JasminConnect::callJasmin('/goodsReceipt/processOrders/TP-INDUSTRIES', '', 'POST', $body);
+            } catch (Exception $e) {
+                return;
+            }
+        }
+    }
+
+    /**
+     * Generates invoice receipt for a specific purchase order
+     *
+     * @param String $purchaseOrderID
+     * @return void
+     */
+    public function generateInvoiceReceipt(String $purchaseOrderID) {
+        try {
+            $result = JasminConnect::callJasmin('/invoiceReceipt/processOrders/1/1000', '', 'GET');
+        } catch (Exception $e) {
+            return;
+        }
+
+        $invoicesReceipt = array();
+
+        foreach(json_decode($result->getBody(), true) as $invoiceReceipt) {
+            if($invoiceReceipt['orderKey'] === $purchaseOrderID)
+                array_push($invoicesReceipt, $invoiceReceipt);
+        }
+
+        foreach($invoicesReceipt as $invoiceReceipt) {
+            $body = [
+                [
+                    'goodsReceiptNoteKey' => $invoiceReceipt['goodsReceiptNoteKey'],
+                    'goodsReceiptNoteLineNumber' => $invoiceReceipt['goodsReceiptNoteLineNumber'],
+                    'orderKey' => $invoiceReceipt['orderKey'],
+                    'orderLineNumber' => $invoiceReceipt['orderLineNumber']
+                ]
+            ];
+
+            try {
+                JasminConnect::callJasmin('/invoiceReceipt/processOrders/TP-INDUSTRIES', '', 'POST', $body);
+            } catch (Exception $e) {
+                return;
+            }
+        }
     }
 }

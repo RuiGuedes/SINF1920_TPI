@@ -93,4 +93,15 @@ class Products extends Model
     public static function getProductByID(String $product_id) {
         return Products::where('product_id', '=', $product_id)->get()->first();
     }
+
+    /**
+     * Updates product stock
+     *
+     * @param String $product_id
+     * @param int $stock
+     */
+    public static function updateStock(String $product_id, int $stock) {
+        Products::where('product_id', '=', $product_id)
+            ->update(['stock' => $stock]);
+    }
 }

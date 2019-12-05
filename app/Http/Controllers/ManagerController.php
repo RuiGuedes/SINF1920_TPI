@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\JasminConnect;
+use App\Products;
 use App\PickingWaves;
 use Illuminate\View\View;
 
