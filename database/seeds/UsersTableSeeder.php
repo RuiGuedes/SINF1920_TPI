@@ -1,6 +1,6 @@
 <?php
 
-use App\Users;
+use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -15,7 +15,7 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         // Create manager(s)
-        Users::insertManager([
+        User::insertManager([
             'username' => "admin",
             'email' => "admin@tpi.com",
             'email_verified_at' => now(),
@@ -25,7 +25,7 @@ class UsersTableSeeder extends Seeder
         ]);
 
         // Create workers
-        factory(App\Users::class, 10)->create();
+        factory(App\User::class, 10)->create();
 
         $this->command->info('Database users table seeded!');
     }

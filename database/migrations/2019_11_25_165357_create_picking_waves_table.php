@@ -20,6 +20,7 @@ class CreatePickingWavesTable extends Migration
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
+            $table->unsignedInteger('num_orders');
             $table->timestamps();
             $table->softDeletes();
         });

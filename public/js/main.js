@@ -119,19 +119,15 @@ if (create_wave != null) {
             document.body.style.cursor = 'wait';
             sendAjaxRequest.call(this, 'post', '/manager/createPickingWave', {ids: sales_Ids}, createPickingWaveHandler);
         } else if(insufficient_stock.length !== 0) {
-            let modal = $('#alert-modal');
-            let modal_title = document.getElementsByClassName('modal-title')[0];
-            console.log(modal_title);
-            let modal_body = document.getElementsByClassName('modal-body')[0];
+            let body = '<p>The existing stock is insufficient for all the selected orders.</p> ' +
+                '<p>Lack of stock of:</p> <ul>';
 
-            modal_title.innerHTML = 'Insufficient Stock';
-            modal_body.innerHTML = '<p>The existing stock is insufficient for all the selected orders.</p> ' +
-                '<p>Lack of stock of:</p>' +
-                '<ul>';
+            insufficient_stock.forEach(id => {
+                body += '<li>' + id + '</li>'
+            });
 
-            insufficient_stock.forEach(id => {modal_body.innerHTML += '<li>' + id + '</li>'})
-            modal_body.innerHTML += '</ul>';
-            modal.modal('show');
+            body += '</ul>';
+            activeModal('Insufficient Stock', body);
         }
     })
 }
@@ -209,6 +205,36 @@ function redirectToReplenishmentPage() {
     document.body.style.cursor = 'default';
     setCookie('error_info', 'New stock allocated !', 1);
     window.location.replace('/manager/replenishment');
+}
+
+let init_picking_route = document.getElementById('init-picking-route');
+
+if (init_picking_route !== null) {
+    init_picking_route.firstElementChild.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        let checked_button = document.getElementsByClassName('btn btn-outline-secondary select-one checked')
+
+        if (checked_button.length !== 1) {
+            activeModal('Selected Picking Wave','To continue you should select ' +
+            (checked_button.length > 1? 'only' : '') +' one Picking Wave');
+        }
+
+        window.location.replace('/clerk/pickingRoute/' +
+            checked_button[0].parentElement.parentElement.firstElementChild.firstElementChild.firstElementChild.textContent);
+    })
+}
+
+
+function activeModal(title, body) {
+    let modal = $('#alert-modal');
+    let modal_title = document.getElementsByClassName('modal-title')[0]
+    let modal_body = document.getElementsByClassName('modal-body')[0];
+
+    modal_title.innerHTML = title;
+    modal_body.style = 'font-size: 14px;'
+    modal_body.innerHTML = body;
+    modal.modal('show');
 }
 
 //////////
