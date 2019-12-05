@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Middleware\JasminConnect;
 use App\Products;
 use App\ProductSuppliers;
+use Exception;
 use Illuminate\Http\Request;
 
 class PurchaseOrdersController extends Controller
@@ -18,7 +19,7 @@ class PurchaseOrdersController extends Controller
     {
         try {
             $result = JasminConnect::callJasmin('/purchases/orders');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $e->getMessage();
         }
 
@@ -132,21 +133,25 @@ class PurchaseOrdersController extends Controller
     }
 
     /**
-     *
+     * Allocates purchase order and automatically updates stock
      *
      * @param Request $request
-     * @return false|string
+     * @return array
      */
     public function allocatePurchaseOrder(Request $request)
     {
         $data = explode(',', $request->input('purchase_orders'));
 
-//        for($i = 0; $i < count($data); $i++) {
-//            $order = str_replace('-', '.', $data[$i]);
-//
-//            $this->generateGoodsReceipt($order);
-//            $this->generateInvoiceReceipt($order);
-//        }
+        for($i = 0; $i < count($data); $i++) {
+            $order = str_replace('-', '.', $data[$i]);
+
+            // Allocation needed steps (goods and invoice receipts)
+            $this->generateGoodsReceipt($order);
+            $this->generateInvoiceReceipt($order);
+        }
+
+        // Automatically update stock
+        ProductsController::updateProductsStock();
 
         return $data;
 

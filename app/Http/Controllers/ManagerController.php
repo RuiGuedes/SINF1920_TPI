@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\JasminConnect;
+use App\Products;
 use Illuminate\View\View;
 
 class ManagerController extends Controller
@@ -36,7 +37,6 @@ class ManagerController extends Controller
      */
     public function showPickingWaves()
     {
-
         $waves = [
             [
                 'id' => '2',
