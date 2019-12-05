@@ -125,6 +125,7 @@ if (create_wave != null) {
             let modal_body = document.getElementsByClassName('modal-body')[0];
 
             modal_title.innerHTML = 'Insufficient Stock';
+            modal_body.style = 'font-size: 14px;'
             modal_body.innerHTML = '<p>The existing stock is insufficient for all the selected orders.</p> ' +
                 '<p>Lack of stock of:</p>' +
                 '<ul>';
