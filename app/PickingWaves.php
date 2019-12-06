@@ -36,6 +36,17 @@ class PickingWaves extends Model
         return self::where('user_id', null)->orderby('created_at', 'asc')->get();
     }
 
+    public static function getUserPickingWave($user_id)
+    {
+        if(self::where('user_id', $user_id)->exists())
+            return self::select('picking_waves.id','picking_waves.user_id','picking_waves.num_orders','picking_waves.created_at')
+                ->leftJoin('packing', 'packing.picking_wave_id', '=', 'picking_waves.id')
+                ->where([['picking_waves.user_id', $user_id], ['packing.id', null]])
+                ->first();
+
+        return null;
+    }
+
     /**
      * @param $wave_id
      * @param $user_id
