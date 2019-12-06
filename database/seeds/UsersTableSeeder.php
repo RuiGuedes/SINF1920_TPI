@@ -15,7 +15,7 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         // Create manager(s)
-        User::insertManager([
+        User::insertUser([
             'username' => "admin",
             'email' => "admin@tpi.com",
             'email_verified_at' => now(),
@@ -25,7 +25,15 @@ class UsersTableSeeder extends Seeder
         ]);
 
         // Create workers
-        factory(App\User::class, 10)->create();
+        User::insertUser([
+            'username' => "clerk",
+            'email' => "clerk@tpi.com",
+            'email_verified_at' => now(),
+            'manager' => false,
+            'password' => bcrypt('clerk'),
+            'remember_token' => Str::random(10)
+        ]);
+        factory(App\User::class, 9)->create();
 
         $this->command->info('Database users table seeded!');
     }
