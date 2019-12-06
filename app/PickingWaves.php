@@ -33,6 +33,17 @@ class PickingWaves extends Model
      */
     public static function getOrderedWaves()
     {
-        return self::orderby('created_at', 'asc')->get();
+        return self::where('user_id', null)->orderby('created_at', 'asc')->get();
+    }
+
+    /**
+     * @param $wave_id
+     * @param $user_id
+     */
+    public static function assignToUser($wave_id, $user_id)
+    {
+        $pickingWave = self::find($wave_id);
+        $pickingWave->user_id = $user_id;
+        $pickingWave->save();
     }
 }
