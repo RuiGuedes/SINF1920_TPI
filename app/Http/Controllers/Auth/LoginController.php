@@ -32,11 +32,7 @@ class LoginController extends Controller
         if(Auth::check() && Auth::id() === 1) return 'manager/salesOrders';
         else if(Auth::check()){
             $unfinished_wave = PickingWaves::getUserPickingWave(Auth::id());
-
-            if($unfinished_wave == null)
-                return 'clerk/pickingWaves';
-            else
-                return 'clerk/pickingRoute/'. $unfinished_wave->id;
+            return ($unfinished_wave == null) ? 'clerk/pickingWaves' : 'clerk/pickingRoute/'. $unfinished_wave->id;
         }
 
         return '/';
