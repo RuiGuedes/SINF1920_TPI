@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Data;
 
 use App\Http\Middleware\JasminConnect;
 use App\Products;
 
-class ProductsController extends Controller
+class DataProducts
 {
     /**
      * Updates products stock with updated values

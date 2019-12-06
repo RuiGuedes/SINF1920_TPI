@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Data;
 
 use App\Http\Middleware\JasminConnect;
 use App\Products;
@@ -8,7 +8,7 @@ use App\ProductSuppliers;
 use Exception;
 use Illuminate\Http\Request;
 
-class PurchaseOrdersController extends Controller
+class DataPurchaseOrders
 {
     /**
      * Retrieves all active purchase orders properly ordered
@@ -151,7 +151,7 @@ class PurchaseOrdersController extends Controller
         }
 
         // Automatically update stock
-        ProductsController::updateProductsStock();
+        DataProducts::updateProductsStock();
 
         return $data;
 

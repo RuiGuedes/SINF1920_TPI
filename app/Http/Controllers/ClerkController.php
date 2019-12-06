@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Data\DataWave;
 use App\PickingWaves;
 use App\PickingWavesState;
 use App\Products;
@@ -11,7 +12,7 @@ class ClerkController extends Controller
 {
     public function showPickingWaves()
     {
-        return View('clerk.pickingWaves', ['waves' => WaveController::allWorkerPickingWaves()]);
+        return View('clerk.pickingWaves', ['waves' => DataWave::allWorkerPickingWaves()]);
     }
 
     public function showPickingRoute($id_wave)
