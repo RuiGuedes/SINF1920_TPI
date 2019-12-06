@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\PickingWaves;
+use App\PickingWavesState;
+use App\Products;
+use Illuminate\Support\Facades\Auth;
+
 class ClerkController extends Controller
 {
     public function showPickingWaves()
@@ -11,99 +16,38 @@ class ClerkController extends Controller
 
     public function showPickingRoute($id_wave)
     {
-        $zone_list = [
-            [
-                'zone' => 'A',
-                'products' => [
-                    [
-                        'section' => 'A3',
-                        'product' => 'Desert Eagle',
-                        'quantity' => '4'
-                    ],
-                    [
-                        'section' => 'A4',
-                        'product' => 'M1911',
-                        'quantity' => '2'
-                    ]
-                ]
-            ],
-            [
-                'zone' => 'B',
-                'products' => [
-                    [
-                        'section' => 'B1',
-                        'product' => 'Desert Eagle',
-                        'quantity' => '4'
-                    ],
-                    [
-                        'section' => 'B6',
-                        'product' => 'M1911',
-                        'quantity' => '2'
-                    ]
-                ]
-            ],
-            [
-                'zone' => 'C',
-                'products' => [
-                    [
-                        'section' => 'C3',
-                        'product' => 'C4',
-                        'quantity' => '4'
-                    ],
-                    [
-                        'section' => 'C8',
-                        'product' => 'M1911',
-                        'quantity' => '2'
-                    ]
-                ]
-            ],
-            [
-                'zone' => 'D',
-                'products' => [
-                    [
-                        'section' => 'D2',
-                        'product' => 'MP7',
-                        'quantity' => '4'
-                    ]
-                ]
-            ],
-            [
-                'zone' => 'E',
-                'products' => [
-                    [
-                        'section' => 'E2',
-                        'product' => 'MP7',
-                        'quantity' => '4'
-                    ]
-                ]
-            ],
-            [
-                'zone' => 'F',
-                'products' => [
-                    [
-                        'section' => 'F8',
-                        'product' => 'MP7',
-                        'quantity' => '4'
-                    ]
-                ]
-            ]
-        ];
+        PickingWaves::assignToUser($id_wave, Auth::user()->getAuthIdentifier());
 
-        $last_zone = [
-            'zone' => 'G',
-            'products' => [
-                [
-                    'section' => 'G8',
-                    'product' => 'P2',
-                    'quantity' => '9'
-                ]
-            ]
-        ];
+        $states = PickingWavesState::getPickingWaveStatesByWaveId($id_wave);
+        $zone_list = [];
 
-        return View('clerk.pickingRoute', [
-            'zones_list' => $zone_list,
-            'last_zone' => $last_zone
-        ]);
+        foreach ($states as $state) {
+            $item = Products::getProductByID($state->product_id);
+            $product = [
+                'section' => $item->warehouse_section,
+                'product' => $item->description,
+                'quantity' => $state->desired_qnt
+            ];
+
+            $zone = $item->warehouse_section[0];
+            $section = $item->warehouse_section;
+
+            if (array_key_exists($zone, $zone_list)){
+                $zone_list[$zone]['products'][$section] = $product;
+            } else {
+                $zone_list[$zone] = [
+                    'zone' => $zone,
+                    'products' => [$section => $product]
+                ];
+            }
+        }
+
+        ksort($zone_list);
+
+        foreach ($zone_list as &$zone)
+            ksort($zone['products']);
+
+        return View('clerk.pickingRoute', [ 'zones_list' => array_values($zone_list) ]);
     }
 
     public function showPackingWaves()

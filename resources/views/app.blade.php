@@ -34,6 +34,8 @@
 
 <body class="bg-dark">
     @yield('body')
+
+    @include('partials.alertModal')
 </body>
 
 <footer class="fixed-bottom px-3">

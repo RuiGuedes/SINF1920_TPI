@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\PickingWaves;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,8 +30,12 @@ class LoginController extends Controller
     protected function redirectTo()
     {
         if(Auth::check() && Auth::id() === 1) return 'manager/salesOrders';
-        else if(Auth::check()) return 'clerk/pickingWaves';
-        else return '/';
+        else if(Auth::check()){
+            $unfinished_wave = PickingWaves::getUserPickingWave(Auth::id());
+            return ($unfinished_wave == null) ? 'clerk/pickingWaves' : 'clerk/pickingRoute/'. $unfinished_wave->id;
+        }
+
+        return '/';
     }
 
     /**

@@ -48,7 +48,7 @@ class User extends Authenticatable
      *
      * @param array $array
      */
-    public static function insertManager(array $array) {
+    public static function insertUser(array $array) {
         $user = new User();
 
         $user->username = $array["username"];
