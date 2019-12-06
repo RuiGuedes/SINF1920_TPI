@@ -16,8 +16,7 @@ class ClerkController extends Controller
 
     public function showPickingRoute($id_wave)
     {
-        // TODO: Block Picker when he is in picking a route
-        //PickingWaves::assignToUser($id_wave, Auth::user()->getAuthIdentifier());
+        PickingWaves::assignToUser($id_wave, Auth::user()->getAuthIdentifier());
 
         $states = PickingWavesState::getPickingWaveStatesByWaveId($id_wave);
         $zone_list = [];
