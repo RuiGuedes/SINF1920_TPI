@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\JasminConnect;
-use App\Products;
-use App\PickingWaves;
+use App\Http\Controllers\Data\DataPurchaseOrders;
+use App\Http\Controllers\Data\DataReplenishment;
+use App\Http\Controllers\Data\DataSalesOrders;
+use App\Http\Controllers\Data\DataWave;
 use Illuminate\View\View;
 
 class ManagerController extends Controller
@@ -16,7 +17,7 @@ class ManagerController extends Controller
      */
     public function showSalesOrders()
     {
-        return View('manager.salesOrders', ['sales' => SalesOrdersController::allSalesOrders()]);
+        return View('manager.salesOrders', ['sales' => DataSalesOrders::allSalesOrders()]);
     }
 
     /**
@@ -26,7 +27,7 @@ class ManagerController extends Controller
      */
     public function showPurchaseOrders()
     {
-        return View('manager.purchaseOrders', ['purchases' => PurchaseOrdersController::allPurchaseOrders()]);
+        return View('manager.purchaseOrders', ['purchases' => DataPurchaseOrders::allPurchaseOrders()]);
     }
 
     /**
@@ -36,7 +37,7 @@ class ManagerController extends Controller
      */
     public function showPickingWaves()
     {
-        return View('manager.pickingWaves', ['waves' => WaveController::allPickingWaves()]);
+        return View('manager.pickingWaves', ['waves' => DataWave::allPickingWaves()]);
     }
 
     /**
@@ -46,6 +47,6 @@ class ManagerController extends Controller
      */
     public function showReplenishment()
     {
-        return View('manager.replenishment', ['products' => ReplenishmentController::getAllInventory()]);
+        return View('manager.replenishment', ['products' => DataReplenishment::getAllInventory()]);
     }
 }

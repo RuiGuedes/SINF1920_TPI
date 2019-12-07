@@ -3,6 +3,8 @@
 @section('title', 'Replenishment')
 
 @section('body')
+    <div id="success-alert" class="alert alert-success" hidden></div>
+
     @include('partials.mainNavbar')
 
     @include('partials.subNavbar', [

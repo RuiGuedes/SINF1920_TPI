@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Data;
 
 use App\Products;
 
-class ReplenishmentController extends Controller
+class DataReplenishment
 {
     /**
      * Retrieves all inventory and their associated status

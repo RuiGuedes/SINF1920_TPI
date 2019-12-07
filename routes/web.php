@@ -28,9 +28,9 @@ Route::get('manager/purchaseOrders','ManagerController@showPurchaseOrders')->nam
 Route::get('manager/pickingWaves','ManagerController@showPickingWaves')->name('manager-picking-waves');
 Route::get('manager/replenishment','ManagerController@showReplenishment')->name('manager-replenishment');
 
-Route::post('/manager/replenishment/create-purchase-order','PurchaseOrdersController@createPurchaseOrder');
-Route::post('/manager/replenishment/allocate-purchase-order','PurchaseOrdersController@allocatePurchaseOrder');
-Route::post('/manager/createPickingWave','WaveController@createPickingWave');
+Route::post('/manager/replenishment/create-purchase-order','Data\DataPurchaseOrders@createPurchaseOrder');
+Route::post('/manager/replenishment/allocate-purchase-order','Data\DataPurchaseOrders@allocatePurchaseOrder');
+Route::post('/manager/createPickingWave','Data\DataWave@createPickingWave');
 
 Route::get('clerk/packingWaves','ClerkController@showPackingWaves')->name('packing-waves');
 Route::get('clerk/packing/{id_wave}','ClerkController@showPacking')->name('packing');

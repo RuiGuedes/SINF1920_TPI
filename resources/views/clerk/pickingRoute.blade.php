@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('title', 'Sales Orders')
+@section('title', 'Picking Route')
 
 @section('body')
     @include('partials.mainNavbar')
@@ -26,10 +26,10 @@
     <div class="container-fluid">
         <div class="container-fluid my-4">            
             <div class="row route-boxes justify-content-center">
-                @foreach ($zones_list as $item)
-                    <div class="route-line pr-md-2 pr-xl-5"><div class="route-box mr-3 mr-md-5"><div class="route-text">{{$item['zone']}}</div></div></div>
-                @endforeach
-                <div class="route-line"><div class="route-box"><div class="route-text">{{$last_zone['zone']}}</div></div></div>
+                @for ($i = 0; $i < count($zones_list)-1 ; $i++)
+                    <div class="route-line pr-md-2 pr-xl-5"><div class="route-box mr-3 mr-md-5"><div class="route-text">{{$zones_list[$i]['zone']}}</div></div></div>
+                @endfor
+                <div class="route-line"><div class="route-box"><div class="route-text">{{$zones_list[$i]['zone']}}</div></div></div>
             </div>                
         </div>
 
@@ -76,7 +76,7 @@
 
             @include('partials.mainButton', [
                 'text' => 'Complete',
-                'action' => 'picking-waves'
+                'id' => 'complete-route'
             ])
         </div>
     </div>

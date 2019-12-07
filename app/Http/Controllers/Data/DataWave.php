@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Data;
 
 use App\PickingWaves;
 use App\PickingWavesState;
@@ -11,7 +11,7 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class WaveController extends Controller
+class DataWave
 {
     /**
      * Create a Picking Wave receiving only the sales orders ids
@@ -21,7 +21,7 @@ class WaveController extends Controller
      */
     public function createPickingWave(Request $request)
     {
-        $salesOrders = SalesOrdersController::salesOrderById(explode(',', $request->input('ids')));
+        $salesOrders = DataSalesOrders::salesOrderById(explode(',', $request->input('ids')));
 
         $pickingWaveId = PickingWaves::insertWave(count($salesOrders));
 
@@ -49,7 +49,7 @@ class WaveController extends Controller
         $waves = [];
 
         foreach ($pickingWaves as $pickingWave) {
-            $orders = SalesOrdersController::salesOrderById(SalesOrders::getSalesOrdersIdsByWaveId($pickingWave->id));
+            $orders = DataSalesOrders::salesOrderById(SalesOrders::getSalesOrdersIdsByWaveId($pickingWave->id));
             $count_products = 0;
 
             foreach ($orders as &$order) {

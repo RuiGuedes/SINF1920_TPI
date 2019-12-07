@@ -16,11 +16,11 @@
 					{{ csrf_field() }}
 					<div class="form-group">
 						<label for="username" hidden>Username</label>
-						<input name="username" type="text" class="form-control" id="username" placeholder="Username">
+						<input name="username" type="text" class="form-control" id="username" placeholder="Username" required>
 					</div>
 					<div class="form-group">
 						<label for="password" hidden>Password</label>
-						<input name="password" type="password" class="form-control" id="password" placeholder="Password">
+						<input name="password" type="password" class="form-control" id="password" placeholder="Password" required>
 					</div>
 					@if ($errors->has('username'))
 						<div class="text-center py-3">

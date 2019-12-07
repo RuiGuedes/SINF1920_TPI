@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Data;
 
 use App\Http\Middleware\JasminConnect;
 use App\Products;
 use App\SalesOrders;
 use Exception;
 
-class SalesOrdersController extends Controller
+class DataSalesOrders
 {
     /**
      * Retrieves all active sales orders properly ordered
