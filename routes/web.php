@@ -21,7 +21,7 @@ Route::post('login', 'Auth\LoginController@login')->name('login-action');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::view('/','login', ['route' => 'picking-waves'])->name('login');
-Route::view('layout','layout')->name('layout');
+Route::view('layout','layout')->name('layout')->middleware('auth');
 
 Route::get('manager/salesOrders','ManagerController@showSalesOrders')->name('manager-sales-orders');
 Route::get('manager/purchaseOrders','ManagerController@showPurchaseOrders')->name('manager-purchase-orders');
