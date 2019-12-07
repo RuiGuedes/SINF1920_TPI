@@ -37,3 +37,5 @@ Route::get('clerk/packing/{id_wave}','ClerkController@showPacking')->name('packi
 Route::get('clerk/pickingWaves','ClerkController@showPickingWaves')->name('picking-waves');
 Route::get('clerk/dispatching','ClerkController@showDispatchOrders')->name('dispatching');
 Route::get('clerk/pickingRoute/{id_wave}','ClerkController@showPickingRoute')->name('picking-route');
+
+Route::post('clerk/dispatching','ClerkController@dispatchOrder');
