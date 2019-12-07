@@ -34,17 +34,19 @@ class ClerkController extends Controller
             $section = $item->warehouse_section;
 
             if (array_key_exists($zone, $zone_list)){
-                $zone_list[$zone]['products'][$section] = $product;
+                if (array_key_exists($section, $zone_list[$zone]['products']))
+                    array_push($zone_list[$zone]['products'][$section], $product);
+                else
+                    $zone_list[$zone]['products'][$section] = [$product];
             } else {
                 $zone_list[$zone] = [
                     'zone' => $zone,
-                    'products' => [$section => $product]
+                    'products' => [$section => [$product]]
                 ];
             }
         }
 
         ksort($zone_list);
-
         foreach ($zone_list as &$zone)
             ksort($zone['products']);
 

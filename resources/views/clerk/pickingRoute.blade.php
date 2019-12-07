@@ -46,8 +46,8 @@
                     'page' => 'picking-route'
                 ])
                 
-                @foreach ($item['products'] as $product)
-
+                @foreach ($item['products'] as $section)
+                    @foreach ($section as $product)
                     <div class="row text-center py-2">
                         <div class="col-2">{{$product['section']}}</div>
                         <div class="col-3">{{$product['product']}}</div>
@@ -69,7 +69,7 @@
                             </select>
                         </div>
                     </div>
-
+                    @endforeach
                 @endforeach
                 
             @endforeach
