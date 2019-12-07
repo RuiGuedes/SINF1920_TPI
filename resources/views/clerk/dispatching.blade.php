@@ -23,7 +23,7 @@
         ]
     ])
 
-    <div class="main-container dispatch container pt-5">
+    <div class="main-container dispatch container pt-5" id="dispatch-div">
         @include('partials.tableHeader', [
             'page' => 'orders',
             'type' => 'Client'
@@ -39,5 +39,7 @@
             'action' => 'dispatching'
         ])
     </div>
+
+    <script type="module" src="{{asset('js/dispatching.js')}}"></script>
     
 @endsection
