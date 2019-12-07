@@ -1,7 +1,13 @@
-const ENDPOINT_CLERK_DISPATCHING = 'clerk/dispatching';
+const ENDPOINT_CLERK_DISPATCHING = '/clerk/dispatching';
 
 function main() {
+    setup();
     addSubmitListener();
+}
+
+function setup() {
+    let csrfToken = $('meta[name="csrf-token"]').attr('content');
+    $.ajaxSetup({headers: { 'X-CSRF-TOKEN': csrfToken}});
 }
 
 function getIds() {
@@ -28,7 +34,7 @@ function addSubmitListener() {
 function postIds(ids) {
     if (ids.length === 0) return;
 
-    $.post(ENDPOINT_CLERK_DISPATCHING, {'ids': ids}, data => {
+    $.post(ENDPOINT_CLERK_DISPATCHING, {'ids': ids}, () => {
         location.reload();
     });
 }
