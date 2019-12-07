@@ -1,0 +1,36 @@
+const ENDPOINT_CLERK_DISPATCHING = 'clerk/dispatching';
+
+function main() {
+    addSubmitListener();
+}
+
+function getIds() {
+    let ids = [];
+
+    $('#dispatch-div').find('button.select-multiple[class*="checked"]').each(function () {
+        let id = $(this).data('id');
+        ids.push(id);
+    });
+
+    return ids;
+}
+
+function addSubmitListener() {
+    let form = $('form');
+
+    form.submit(e => {
+        e.preventDefault();
+
+        postIds(getIds());
+    });
+}
+
+function postIds(ids) {
+    if (ids.length === 0) return;
+
+    $.post(ENDPOINT_CLERK_DISPATCHING, {'ids': ids}, data => {
+        location.reload();
+    });
+}
+
+main();
