@@ -25,6 +25,7 @@ class ClerkController extends Controller
         foreach ($states as $state) {
             $item = Products::getProductByID($state->product_id);
             $product = [
+                'product_id' => $state->product_id,
                 'section' => $item->warehouse_section,
                 'product' => $item->description,
                 'quantity' => $state->desired_qnt
