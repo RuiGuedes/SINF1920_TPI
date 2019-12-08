@@ -50,7 +50,7 @@ class ProductsTableSeeder extends Seeder
         foreach ($packing_waves as $packing_wave) {
             foreach (\App\PickingWavesState::getPickingWaveStatesByWaveId($packing_wave) as $item) {
                 Products::updateStock($item->product_id,
-                    Products::getProductStock($item->product_id) - $item->picked_qnt);
+                    ($item->exception ? 0 : Products::getProductStock($item->product_id) - $item->picked_qnt));
             }
         }
 
