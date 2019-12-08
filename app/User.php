@@ -61,4 +61,8 @@ class User extends Authenticatable
         $user->save();
     }
 
+    public static function isManager(int $userId) {
+        $user = User::where('id', $userId)->first();
+        return $user->manager;
+    }
 }
