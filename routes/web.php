@@ -32,10 +32,10 @@ Route::post('/manager/replenishment/create-purchase-order','Data\DataPurchaseOrd
 Route::post('/manager/replenishment/allocate-purchase-order','Data\DataPurchaseOrders@allocatePurchaseOrder');
 Route::post('/manager/createPickingWave','Data\DataWave@createPickingWave');
 
-Route::get('clerk/pickingWaves','ClerkController@showPickingWaves')->name('picking-waves');
+Route::get('/clerk/pickingWaves','ClerkController@showPickingWaves')->name('picking-waves');
 Route::get('clerk/pickingRoute/{id_wave}','ClerkController@showPickingRoute')->name('picking-route');
 Route::get('clerk/packingWaves','ClerkController@showPackingWaves')->name('packing-waves');
-Route::get('clerk/packing/{id_wave}','ClerkController@showPacking')->name('packing');
+Route::get('clerk/packing/{packing_id}','ClerkController@showPacking')->name('packing');
 Route::get('clerk/dispatching','ClerkController@showDispatchOrders')->name('dispatching');
 
 Route::post('/clerk/pickingRoute/{id_wave}/complete','Data\DataWave@completePickingWave');

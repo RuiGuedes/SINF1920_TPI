@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Data\DataSalesOrders;
 use App\Http\Controllers\Data\DataWave;
+use App\Packing;
+use App\PickingWaves;
+use App\SalesOrders;
 use Illuminate\View\View;
 
 class ClerkController extends Controller
@@ -32,6 +36,7 @@ class ClerkController extends Controller
     {
         // Abort if the route is already completed
         abort_if(PickingWaves::checkIfWavesCompleted($id_wave), 403);
+
         return View('clerk.pickingRoute', [ 'zones_list' => DataWave::pickingRoute($id_wave)]);
     }
 
@@ -48,52 +53,13 @@ class ClerkController extends Controller
     /**
      * Retrieves packing wave information view
      *
-     * @param $id_wave
+     * @param $packing_id
      * @return View
      */
-    public function showPacking($id_wave)
+    public function showPacking($packing_id)
     {
-        $orders = [
-            [
-                'id' => '4',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                'owner' => 'C0004',
-                'date' => '2019-07-24',
-                'items' => [
-                    [
-                        'id' => '56',
-                        'description' => 'AK-47',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ]
-                ]
-            ],
-            [
-                'id' => '7',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                'owner' => 'C0004',
-                'date' => '2019-07-24',
-                'items' => [
-                    [
-                        'id' => '56',
-                        'description' => 'AK-47',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ],
-                    [
-                        'id' => '58',
-                        'description' => 'AK-48',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ]
-                ]
-            ]
-        ];
-
-        return View('clerk.packing', ['orders' => $orders]);
+        return View('clerk.packing', ['orders' => DataSalesOrders::salesOrderById(
+            SalesOrders::getSalesOrdersIdsByWaveId(Packing::getPackingById($packing_id)->picking_wave_id))]);
     }
 
     public function showDispatchOrders()

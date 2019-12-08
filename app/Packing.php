@@ -43,8 +43,8 @@ class Packing extends Model
             ->get();
     }
 
-    public static function allAvailablePackingWaves()
+    public static function getPackingById($id)
     {
-        return self::where('user_id', null)->get();
+        return self::find($id);
     }
 }
