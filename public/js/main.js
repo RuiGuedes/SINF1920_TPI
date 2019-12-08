@@ -225,6 +225,54 @@ if (init_picking_route !== null) {
     })
 }
 
+let complete_route = document.getElementById('complete-route');
+
+if (complete_route !== null) {
+    complete_route.firstElementChild.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        let products_rows = Array.from(document.getElementsByClassName('row text-center py-2'));
+        let products = {};
+        products_rows.forEach(row => {
+            switch (row.lastElementChild.firstElementChild.selectedIndex) {
+                case 0:
+                    activeModal('Already collected all products?',
+                        '<p>Did not collect all products. The product ' + row.children[1].textContent +
+                        ' have a <i>No Picked</i> status.</p>Collect all the existing products before complete the route.');
+                    return;
+                case 1:
+                    if (row.children[3].textContent !== row.children[4].getElementsByClassName('input-text qty text')[0].value) {
+                        activeModal('Wrong picked quantity',
+                            '<p>The product ' + row.children[1].textContent +
+                            ' have a wrong picked quantity.</p>Check the picked quantity to complete the route.');
+                        return;
+                    }
+                    break;
+                case 2:
+                    break;
+            }
+
+            products[row.id] = [
+                row.children[4].getElementsByClassName('input-text qty text')[0].value,
+                row.lastElementChild.firstElementChild.selectedIndex
+            ];
+        });
+console.log(products);
+        document.body.style.cursor = 'wait';
+        sendAjaxRequest.call(this, 'post', window.location.pathname + '/complete', products, redirectToWorkerPickingWavesPage)
+    })
+}
+
+function redirectToWorkerPickingWavesPage() {
+    if (this.status !== 200) return;
+    document.body.style.cursor = 'default';
+    setCookie('error_info', 'Wave Completed !', 1);
+    window.location.assign('/clerk/pickingWaves');
+}
+
+
+
+// MODAL //
 
 function activeModal(title, body) {
     let modal = $('#alert-modal');
