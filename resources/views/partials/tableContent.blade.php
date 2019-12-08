@@ -1,11 +1,11 @@
 @isset($orders)
     @foreach ($orders as $order)
         <div class="row text-center py-2">
-            <a class="col-11" @empty($dispatch) href="#row-id-{{ $order['id'] }}" @endempty data-toggle="collapse" role="button" aria-expanded="false">
+            <a class="col-11" @empty($dispatch) href="#row-id-{{ $order->id }}" @endempty data-toggle="collapse" role="button" aria-expanded="false">
                 <div class="row justify-content-around">
-                    <div class="col-4">{{ $order['id'] }}</div>
-                    <div class="col-3">{{ $order['owner'] }}</div>
-                    <div class="col-4">{{ $order['date'] }}</div>
+                    <div class="col-4">{{ $order->id }}</div>
+                    <div class="col-3">{{ $order->client }}</div>
+                    <div class="col-4">{{ $order->date }}</div>
                 </div>
             </a>
             <div class="col-1">

@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class Dispatching extends Model
 {
@@ -27,23 +29,10 @@ class Dispatching extends Model
     /**
      * Get the sales orders that weren't dispatched yet.
      *
-     * @return array
+     * @return Collection
      */
     public static function undispatched() {
-        $res = [];
-
-        $dispatchOrders = Dispatching::all();
-
-        foreach ($dispatchOrders as $dispatchOrder) {
-            $so = SalesOrders::find($dispatchOrder->sales_order_id);
-
-            array_push($res, [
-               'id' => $so->id,
-               'owner' => $so->client,
-               'date' => $so->date
-            ]);
-        }
-
-        return $res;
+        return DB::table('dispatching')
+            ->join('sales_orders', 'sales_order_id', '=', 'sales_orders.id')->get();
     }
 }
