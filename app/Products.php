@@ -102,6 +102,6 @@ class Products extends Model
      */
     public static function updateStock(String $product_id, int $stock) {
         Products::where('product_id', '=', $product_id)
-            ->update(['stock' => $stock]);
+            ->update(['stock' => ($stock < 0 ? 0 : $stock)]);
     }
 }
