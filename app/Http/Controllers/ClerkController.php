@@ -10,6 +10,16 @@ use Illuminate\Support\Facades\Auth;
 
 class ClerkController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function showPickingWaves()
     {
         return View('clerk.pickingWaves', ['waves' => DataWave::allWorkerPickingWaves()]);
