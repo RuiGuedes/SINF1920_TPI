@@ -11,6 +11,7 @@ use DateTime;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class DataWave
 {
@@ -51,10 +52,10 @@ class DataWave
 
         foreach ($pickingWaves as $pickingWave) {
             $orders = DataSalesOrders::salesOrderById(SalesOrders::getSalesOrdersIdsByWaveId($pickingWave->id));
-            $count_products = 0;
+            $countProducts = 0;
 
             foreach ($orders as &$order) {
-                $count_products += count($order['items']);
+                $countProducts += count($order['items']);
 
                 foreach ($order['items'] as &$item) {
                     $product = Products::getProductByID($item['id']);
@@ -77,7 +78,7 @@ class DataWave
             array_push($waves, [
                 'id' => $pickingWave->id,
                 'num_orders' => $pickingWave->num_orders,
-                'num_products' => $count_products,
+                'num_products' => $countProducts,
                 'date' => $date,
                 'orders' => $orders
             ]);
@@ -87,7 +88,9 @@ class DataWave
     }
 
     /**
+     * Retrieves all picking Waves properly ordered and formatted for worker view
      *
+     * @return array
      */
     public static function allWorkerPickingWaves()
     {
@@ -133,25 +136,103 @@ class DataWave
     }
 
     /**
-     * @param Request $request
-     * @param $id_wave
+     * Retrieves picking route properly ordered and sectioned
+     *
+     * @param $waveId
+     * @return array
      */
-    public static function completePickingWave(Request $request, $id_wave)
+    public static function pickingRoute($waveId): array
+    {
+        PickingWaves::assignToUser($waveId, Auth::user()->getAuthIdentifier());
+
+        $states = PickingWavesState::getPickingWaveStatesByWaveId($waveId);
+        $zone_list = [];
+
+        foreach ($states as $state) {
+            $item = Products::getProductByID($state->product_id);
+            $product = [
+                'product_id' => $state->product_id,
+                'section' => $item->warehouse_section,
+                'product' => $item->description,
+                'quantity' => $state->desired_qnt
+            ];
+
+            $zone = $item->warehouse_section[0];
+            $section = $item->warehouse_section;
+
+            if (array_key_exists($zone, $zone_list)) {
+                if (array_key_exists($section, $zone_list[$zone]['products']))
+                    array_push($zone_list[$zone]['products'][$section], $product);
+                else
+                    $zone_list[$zone]['products'][$section] = [$product];
+            } else {
+                $zone_list[$zone] = [
+                    'zone' => $zone,
+                    'products' => [$section => [$product]]
+                ];
+            }
+        }
+
+        ksort($zone_list);
+        foreach ($zone_list as &$zone)
+            ksort($zone['products']);
+
+        return array_values($zone_list);
+    }
+
+    /**
+     * Complete a picking wave route and create a packing wave
+     *
+     * @param Request $request
+     * @param $idWave
+     */
+    public static function completePickingWave(Request $request, $idWave)
     {
         $products = $request->input();
 
-        foreach ($products as $product_id => $product_info) {
-            $product_info = explode(',', $product_info);
+        foreach ($products as $productId => $productInfo) {
+            $productInfo = explode(',', $productInfo);
 
-            PickingWavesState::updatePickedQntPickingWaveState($id_wave, $product_id, $product_info[0]);
+            PickingWavesState::updatePickedQntPickingWaveState($idWave, $productId, $productInfo[0]);
 
-            $new_stock = Products::getProductStock($product_id) - $product_info[0];
-            if ($product_info[1] == 2)
-                $new_stock = 0;
+            $newStock = Products::getProductStock($productId) - $productInfo[0];
+            if ($productInfo[1] == 2)
+                $newStock = 0;
 
-            Products::updateStock($product_id, $new_stock);
+            Products::updateStock($productId, $newStock);
         }
 
-        Packing::insertPackingWave($id_wave);
+        Packing::insertPackingWave($idWave);
+    }
+
+    /**
+     * Retrieves all packing Waves properly ordered and formatted for worker view
+     *
+     * @return array
+     */
+    public static function allWorkerPackingWaves()
+    {
+        $packingWaves = Packing::getOrderedPackingWaves();
+        $waves = [];
+
+        foreach ($packingWaves as &$packingWave) {
+            $date = null;
+
+            try {
+                $date = new DateTime($packingWave->created_at);
+                $date = $date->format('Y-m-d');
+            } catch (\Exception $e) {
+                $e->getMessage();
+            }
+
+            array_push($waves, [
+                'id' => $packingWave->id,
+                'num_orders' => $packingWave->num_orders,
+                'num_products' => count(PickingWavesState::getPickingWaveStatesByWaveId($packingWave->picking_wave_id)),
+                'date' => $date
+            ]);
+        }
+
+        return $waves;
     }
 }
