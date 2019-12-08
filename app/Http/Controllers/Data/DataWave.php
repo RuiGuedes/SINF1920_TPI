@@ -152,6 +152,6 @@ class DataWave
             Products::updateStock($product_id, $new_stock);
         }
 
-        echo Packing::insertPackingWave($id_wave);
+        Packing::insertPackingWave($id_wave);
     }
 }

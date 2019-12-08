@@ -24,6 +24,5 @@ class Packing extends Model
         $packing = new Packing();
         $packing->picking_wave_id = $wave_id;
         $packing->save();
-        return $packing->id;
     }
 }
