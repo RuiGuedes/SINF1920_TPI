@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Packing;
 use App\PickingWaves;
 use App\PickingWavesState;
 use App\Products;
@@ -31,7 +32,7 @@ class DataWave
 
             foreach ($saleOrder['items'] as $item) {
                 $item['picking_wave_id'] = $pickingWaveId;
-                PickingWavesState::updatePickingWaveState($item);
+                PickingWavesState::updateDesiredQntPickingWaveState($item);
             }
         }
 
@@ -129,5 +130,28 @@ class DataWave
         }
 
         return $waves;
+    }
+
+    /**
+     * @param Request $request
+     * @param $id_wave
+     */
+    public static function completePickingWave(Request $request, $id_wave)
+    {
+        $products = $request->input();
+
+        foreach ($products as $product_id => $product_info) {
+            $product_info = explode(',', $product_info);
+
+            PickingWavesState::updatePickedQntPickingWaveState($id_wave, $product_id, $product_info[0]);
+
+            $new_stock = Products::getProductStock($product_id) - $product_info[0];
+            if ($product_info[1] == 2)
+                $new_stock = 0;
+
+            Products::updateStock($product_id, $new_stock);
+        }
+
+        Packing::insertPackingWave($id_wave);
     }
 }

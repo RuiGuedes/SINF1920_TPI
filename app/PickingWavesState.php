@@ -54,7 +54,7 @@ class PickingWavesState extends Model
     /**
      * @param $item
      */
-    public static function updatePickingWaveState($item): void
+    public static function updateDesiredQntPickingWaveState($item): void
     {
         $pickingWaveState = PickingWavesState::where([['picking_wave_id', $item['picking_wave_id']], ['product_id', $item['id']]])->first();
 
@@ -69,5 +69,21 @@ class PickingWavesState extends Model
     public static function getPickingWaveStatesByWaveId($waveId)
     {
         return self::where('picking_wave_id', $waveId)->get();
+    }
+
+    /**
+     * @param String $wave_id
+     * @param $product_id
+     * @param $picked_qnt
+     */
+    public static function updatePickedQntPickingWaveState(String $wave_id, $product_id, $picked_qnt)
+    {
+        $pickingWaveState = PickingWavesState::where([['picking_wave_id', $wave_id], ['product_id', $product_id]])->first();
+
+        PickingWavesState::where([['picking_wave_id', $wave_id], ['product_id', $product_id]])
+            ->update([
+                'picked_qnt' => $picked_qnt,
+                'exception' => $pickingWaveState->desired_qnt != $pickingWaveState->picked_qnt
+            ]);
     }
 }

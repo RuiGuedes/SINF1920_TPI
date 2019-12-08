@@ -17,10 +17,10 @@ class PickingWaves extends Model
     protected $table = 'picking_waves';
 
     /**
-     * @param $num_orders
+     * @param int $num_orders
      * @return int
      */
-    public static function insertWave($num_orders): int
+    public static function insertWave(int $num_orders): int
     {
         $pickingWave = new PickingWaves();
         $pickingWave->num_orders = $num_orders;
@@ -36,7 +36,7 @@ class PickingWaves extends Model
         return self::where('user_id', null)->orderby('created_at', 'asc')->get();
     }
 
-    public static function getUserPickingWave($user_id)
+    public static function getUserPickingWave(String $user_id)
     {
         if(self::where('user_id', $user_id)->exists())
             return self::select('picking_waves.id','picking_waves.user_id','picking_waves.num_orders','picking_waves.created_at')
@@ -51,10 +51,15 @@ class PickingWaves extends Model
      * @param $wave_id
      * @param $user_id
      */
-    public static function assignToUser($wave_id, $user_id)
+    public static function assignToUser(String $wave_id, String $user_id)
     {
         $pickingWave = self::find($wave_id);
         $pickingWave->user_id = $user_id;
         $pickingWave->save();
+    }
+
+    public static function checkIfWavesCompleted(String $wave_id)
+    {
+        return Packing::where('picking_wave_id', $wave_id)->exists();
     }
 }

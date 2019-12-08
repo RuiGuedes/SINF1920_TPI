@@ -27,6 +27,9 @@ class ClerkController extends Controller
 
     public function showPickingRoute($id_wave)
     {
+        // Abort if the route is already completed
+        abort_if(PickingWaves::checkIfWavesCompleted($id_wave), 403);
+
         PickingWaves::assignToUser($id_wave, Auth::user()->getAuthIdentifier());
 
         $states = PickingWavesState::getPickingWaveStatesByWaveId($id_wave);
@@ -35,6 +38,7 @@ class ClerkController extends Controller
         foreach ($states as $state) {
             $item = Products::getProductByID($state->product_id);
             $product = [
+                'product_id' => $state->product_id,
                 'section' => $item->warehouse_section,
                 'product' => $item->description,
                 'quantity' => $state->desired_qnt
@@ -44,17 +48,19 @@ class ClerkController extends Controller
             $section = $item->warehouse_section;
 
             if (array_key_exists($zone, $zone_list)){
-                $zone_list[$zone]['products'][$section] = $product;
+                if (array_key_exists($section, $zone_list[$zone]['products']))
+                    array_push($zone_list[$zone]['products'][$section], $product);
+                else
+                    $zone_list[$zone]['products'][$section] = [$product];
             } else {
                 $zone_list[$zone] = [
                     'zone' => $zone,
-                    'products' => [$section => $product]
+                    'products' => [$section => [$product]]
                 ];
             }
         }
 
         ksort($zone_list);
-
         foreach ($zone_list as &$zone)
             ksort($zone['products']);
 
