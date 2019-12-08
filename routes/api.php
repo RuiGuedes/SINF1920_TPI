@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 //    return $request->user();
 //});
 
-Route::get('jasmin-getsalesorders', 'SalesOrdersController@allSalesOrders');
-Route::get('jasmin-getsalesorders/{serieId}', 'SalesOrdersController@saleOrderBySerieId');
-Route::get('jasmin-getpurchaseorders', 'PurchaseOrdersController@allPurchaseOrders');
-Route::get('jasmin-getstock', 'InventoryController@allStock');
+Route::get('jasmin-getsalesorders', 'Data\DataSalesOrders@allSalesOrders');
+Route::get('jasmin-getsalesorders/{serieId}', 'Data\DataSalesOrders@saleOrderBySerieId');
+Route::get('jasmin-getpurchaseorders', 'Data\DataPurchaseOrders@allPurchaseOrders');
+//Route::get('jasmin-getstock', 'InventoryController@allStock');
