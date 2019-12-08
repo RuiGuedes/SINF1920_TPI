@@ -45,6 +45,15 @@ class ProductsTableSeeder extends Seeder
             Products::insertProduct($data);
         }
 
+        $packing_waves = \App\Packing::allAvailablePackingWaves();
+
+        foreach ($packing_waves as $packing_wave) {
+            foreach (\App\PickingWavesState::getPickingWaveStatesByWaveId($packing_wave) as $item) {
+                Products::updateStock($item->product_id,
+                    Products::getProductStock($item->product_id) - $item->picked_qnt);
+            }
+        }
+
         $this->command->info('Database products table seeded!');
     }
 }

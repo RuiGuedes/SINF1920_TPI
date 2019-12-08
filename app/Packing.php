@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use PhpParser\Node\Scalar\String_;
 
 class Packing extends Model
 {
@@ -24,5 +25,10 @@ class Packing extends Model
         $packing = new Packing();
         $packing->picking_wave_id = $wave_id;
         $packing->save();
+    }
+
+    public static function allAvailablePackingWaves()
+    {
+        return self::where('user_id', null)->get();
     }
 }

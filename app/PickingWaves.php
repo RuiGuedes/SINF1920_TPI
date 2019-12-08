@@ -57,4 +57,9 @@ class PickingWaves extends Model
         $pickingWave->user_id = $user_id;
         $pickingWave->save();
     }
+
+    public static function checkIfWavesCompleted(String $wave_id)
+    {
+        return Packing::where('picking_wave_id', $wave_id)->exists();
+    }
 }

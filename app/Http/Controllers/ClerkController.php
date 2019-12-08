@@ -27,6 +27,9 @@ class ClerkController extends Controller
 
     public function showPickingRoute($id_wave)
     {
+        // Abort if the route is already completed
+        abort_if(PickingWaves::checkIfWavesCompleted($id_wave), 403);
+
         PickingWaves::assignToUser($id_wave, Auth::user()->getAuthIdentifier());
 
         $states = PickingWavesState::getPickingWaveStatesByWaveId($id_wave);
