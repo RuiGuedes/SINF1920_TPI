@@ -25,4 +25,13 @@ class Packing extends Model
         $packing->picking_wave_id = $wave_id;
         $packing->save();
     }
+
+    public static function getOrderedPackingWaves()
+    {
+        return self::select('packing.id', 'packing.picking_wave_id', 'picking_waves.num_orders', 'packing.created_at')
+            ->where('packing.user_id', null)
+            ->join('picking_waves', 'packing.picking_wave_id', '=', 'picking_waves.id')
+            ->orderby('packing.created_at', 'asc')
+            ->get();
+    }
 }

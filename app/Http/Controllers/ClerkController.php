@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Data\DataWave;
+use App\Packing;
 use App\PickingWaves;
 use App\PickingWavesState;
 use App\Products;
@@ -56,22 +57,7 @@ class ClerkController extends Controller
 
     public function showPackingWaves()
     {
-        $waves = [
-            [
-                'id' => '2',
-                'num_orders' => '2',
-                'num_products' => '7',
-                'date' => '2019-10-24',
-            ],
-            [
-                'id' => '1',
-                'num_orders' => '1',
-                'num_products' => '9',
-                'date' => '2019-10-24',
-            ]
-        ];
-
-        return View('clerk.packingWaves', ['waves' => $waves]);
+        return View('clerk.packingWaves', ['waves' => DataWave::allWorkerPackingWaves()]);
     }
 
     public function showPacking($id_wave)
