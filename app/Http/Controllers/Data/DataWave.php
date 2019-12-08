@@ -11,6 +11,7 @@ use DateTime;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class DataWave
 {
@@ -87,7 +88,9 @@ class DataWave
     }
 
     /**
+     * Retrieves all picking Waves properly ordered and formatted for worker view
      *
+     * @return array
      */
     public static function allWorkerPickingWaves()
     {
@@ -133,6 +136,53 @@ class DataWave
     }
 
     /**
+     * Retrieves picking route properly ordered and sectioned
+     *
+     * @param $waveId
+     * @return array
+     */
+    public static function pickingRoute($waveId): array
+    {
+        PickingWaves::assignToUser($waveId, Auth::user()->getAuthIdentifier());
+
+        $states = PickingWavesState::getPickingWaveStatesByWaveId($waveId);
+        $zone_list = [];
+
+        foreach ($states as $state) {
+            $item = Products::getProductByID($state->product_id);
+            $product = [
+                'product_id' => $state->product_id,
+                'section' => $item->warehouse_section,
+                'product' => $item->description,
+                'quantity' => $state->desired_qnt
+            ];
+
+            $zone = $item->warehouse_section[0];
+            $section = $item->warehouse_section;
+
+            if (array_key_exists($zone, $zone_list)) {
+                if (array_key_exists($section, $zone_list[$zone]['products']))
+                    array_push($zone_list[$zone]['products'][$section], $product);
+                else
+                    $zone_list[$zone]['products'][$section] = [$product];
+            } else {
+                $zone_list[$zone] = [
+                    'zone' => $zone,
+                    'products' => [$section => [$product]]
+                ];
+            }
+        }
+
+        ksort($zone_list);
+        foreach ($zone_list as &$zone)
+            ksort($zone['products']);
+
+        return array_values($zone_list);
+    }
+
+    /**
+     * Complete a picking wave route and create a packing wave
+     *
      * @param Request $request
      * @param $idWave
      */
@@ -155,6 +205,11 @@ class DataWave
         Packing::insertPackingWave($idWave);
     }
 
+    /**
+     * Retrieves all packing Waves properly ordered and formatted for worker view
+     *
+     * @return array
+     */
     public static function allWorkerPackingWaves()
     {
         $packingWaves = Packing::getOrderedPackingWaves();
@@ -181,7 +236,3 @@ class DataWave
         return $waves;
     }
 }
-//'id' => '1',
-//'num_orders' => '1',
-//'num_products' => '9',
-//'date' => '2019-10-24',
