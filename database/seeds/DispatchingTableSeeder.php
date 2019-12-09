@@ -21,17 +21,19 @@ class DispatchingTableSeeder extends Seeder
      */
     public function run()
     {
-        $salesOrders = DataSalesOrders::openOrders();
+        $openOrders = DataSalesOrders::openOrders();
 
-        foreach ($salesOrders as $saleOrder) {
+        foreach ($openOrders as $openOrder) {
+            $salesOrder = $openOrder['salesOrder'];
+            $date = substr($salesOrder->documentDate, 0, 10);
             SalesOrders::create([
-                'id' => $saleOrder['id'],
-                'client' => $saleOrder['owner'],
-                'date' => $saleOrder['date']
+                'id' => $salesOrder->naturalKey,
+                'client' => $salesOrder->buyerCustomerParty,
+                'date' => $date
             ]);
 
             Dispatching::create([
-                'sales_order_id' => $saleOrder['id']
+                'sales_order_id' => $salesOrder->naturalKey
             ]);
         }
 
