@@ -35,7 +35,7 @@
         ])
 
         <div class="text-right my-4">
-            <button id="dispatching" type="submit" class="btn btn-secondary">Dispatch</button>
+            <button id="dispatching-btn" type="submit" class="btn btn-secondary">Dispatch</button>
         </div>
     </div>
 

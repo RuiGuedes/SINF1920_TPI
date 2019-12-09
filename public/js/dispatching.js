@@ -22,11 +22,9 @@ function getIds() {
 }
 
 function addSubmitListener() {
-    let form = $('form');
+    let btn = $('#dispatching-btn');
 
-    form.submit(e => {
-        e.preventDefault();
-
+    btn.click(() => {
         postIds(getIds());
     });
 }

@@ -9,7 +9,7 @@
                 </div>
             </a>
             <div class="col-1">
-                <button id="dispatch-btn" data-id="{{$order['id']}}" class="btn btn-outline-secondary select-multiple"></button>
+                <button data-id="{{$order['id']}}" class="btn btn-outline-secondary select-multiple"></button>
             </div>
         </div>
         @empty($dispatch)
