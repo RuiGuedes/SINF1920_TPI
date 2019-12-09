@@ -33,11 +33,10 @@
             'dispatch' => true,   
             'orders' => $orders
         ])
-        
-        @include('partials.mainButton', [
-            'text' => 'Dispatch',
-            'action' => 'dispatching'
-        ])
+
+        <div class="text-right my-4">
+            <button id="dispatching" type="submit" class="btn btn-secondary">Dispatch</button>
+        </div>
     </div>
 
     <script type="module" src="{{asset('js/dispatching.js')}}"></script>

@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class Dispatching extends Model
 {
@@ -32,18 +34,18 @@ class Dispatching extends Model
     public static function undispatched() {
         $res = [];
 
-        $dispatchOrders = Dispatching::all();
+        $orders = DB::table('dispatching')
+            ->join('sales_orders', 'sales_order_id', '=', 'sales_orders.id')->get();
 
-        foreach ($dispatchOrders as $dispatchOrder) {
-            $so = SalesOrders::find($dispatchOrder->sales_order_id);
-
+        foreach ($orders as $order) {
             array_push($res, [
-               'id' => $so->id,
-               'owner' => $so->client,
-               'date' => $so->date
+                'id' => $order->id,
+                'owner' => $order->client,
+                'date' => $order->date
             ]);
         }
-
+        
         return $res;
+
     }
 }

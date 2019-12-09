@@ -33,10 +33,10 @@
             'clerk' => true,
             'waves' => $waves
         ])
-        @include('partials.mainButton', [
-            'text' => 'Next',
-            'id' => 'init-picking-route'
-        ])
+
+        <div class="text-right my-4">
+            <button id="init-picking-route" type="submit" class="btn btn-secondary">Next</button>
+        </div>
     </div>
 
 @endsection

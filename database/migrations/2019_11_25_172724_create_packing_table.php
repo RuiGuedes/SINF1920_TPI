@@ -20,7 +20,7 @@ class CreatePackingTable extends Migration
                 ->references('id')
                 ->on('picking_waves')
                 ->onDelete('cascade');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')

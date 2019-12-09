@@ -6,10 +6,21 @@ use App\Http\Controllers\Data\DataPurchaseOrders;
 use App\Http\Controllers\Data\DataReplenishment;
 use App\Http\Controllers\Data\DataSalesOrders;
 use App\Http\Controllers\Data\DataWave;
+use App\User;
 use Illuminate\View\View;
 
 class ManagerController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Retrieves sales orders view
      *
@@ -17,6 +28,8 @@ class ManagerController extends Controller
      */
     public function showSalesOrders()
     {
+
+        abort_if(!User::isManager(auth()->id()), 403);
         return View('manager.salesOrders', ['sales' => DataSalesOrders::allSalesOrders()]);
     }
 
@@ -27,6 +40,7 @@ class ManagerController extends Controller
      */
     public function showPurchaseOrders()
     {
+        abort_if(!User::isManager(auth()->id()), 403);
         return View('manager.purchaseOrders', ['purchases' => DataPurchaseOrders::allPurchaseOrders()]);
     }
 
@@ -37,6 +51,7 @@ class ManagerController extends Controller
      */
     public function showPickingWaves()
     {
+        abort_if(!User::isManager(auth()->id()), 403);
         return View('manager.pickingWaves', ['waves' => DataWave::allPickingWaves()]);
     }
 
@@ -47,6 +62,7 @@ class ManagerController extends Controller
      */
     public function showReplenishment()
     {
+        abort_if(!User::isManager(auth()->id()), 403);
         return View('manager.replenishment', ['products' => DataReplenishment::getAllInventory()]);
     }
 }

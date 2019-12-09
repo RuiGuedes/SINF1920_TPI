@@ -34,12 +34,8 @@
         ])
         <div class="container my-4">
             <div class="row justify-content-end">
-                <form action="">
-                    <button type="link" class="btn btn-outline-danger mr-4">Remove</button>
-                </form>
-                <form action="">
-                    <button type="link" class="btn btn-secondary">Pack</button>
-                </form>
+                <button type="link" class="btn btn-outline-danger mr-4">Remove</button>
+                <button type="link" class="btn btn-secondary">Pack</button>
             </div>
         </div>
     </div>
