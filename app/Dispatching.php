@@ -15,4 +15,11 @@ class Dispatching extends Model
      * @var string
      */
     protected $table = 'dispatching';
+
+    public static function insertDispatch($sale_order_id)
+    {
+        $dispatch = new Dispatching();
+        $dispatch->sales_order_id = $sale_order_id;
+        $dispatch->save();
+    }
 }
