@@ -35,10 +35,9 @@
             'waves' => $waves
         ])
 
-        @include('partials.mainButton', [
-            'text' => 'Next',
-            'id' => 'selected-packing-wave'
-        ])
+        <div class="text-right my-4">
+            <button id="selected-packing-wave" type="submit" class="btn btn-secondary">Next</button>
+        </div>
     </div>
 
 @endsection

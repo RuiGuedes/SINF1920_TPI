@@ -55,9 +55,8 @@
             </div>
         @endforeach
 
-        @include('partials.mainButton', [
-            'text' => 'Create PO',
-            'id' => 'create-PO'
-        ])
+        <div class="text-right my-4">
+            <button id="create-PO" type="submit" class="btn btn-secondary">Create PO</button>
+        </div>
     </div>
 @endsection
