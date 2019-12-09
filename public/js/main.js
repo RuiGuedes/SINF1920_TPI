@@ -254,7 +254,6 @@ function redirectToWorkerPickingWavesPage() {
     window.location.assign('/clerk/pickingWaves');
 }
 
-
 let init_packing_wave = document.getElementById('selected-packing-wave');
 if (init_packing_wave != null) {
     init_packing_wave.addEventListener('click', function (event) {
@@ -272,6 +271,75 @@ if (init_packing_wave != null) {
     })
 }
 
+let pack = document.getElementById('pack-order');
+if (pack != null) {
+    pack.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        let checked_button = Array.from(document.getElementsByClassName('btn btn-outline-secondary select-multiple checked'));
+        let data = [];
+        let status = false;
+        checked_button.forEach(button => {
+            let order_id = button.parentElement.parentElement.firstElementChild.firstElementChild.firstElementChild.textContent;
+            let products = Array.from(document.getElementById('row-id-' + order_id).
+            getElementsByClassName('row text-center py-2')).slice(1);
+
+            products.forEach(product => {
+                if (product.children[3] > product.children[4]){
+                    activeModal('Selected Order for Packing','To package an order, you must select an ' +
+                        'order whose products have the picked quantity equal to the desired quantity.');
+                    status = true;
+                }
+            });
+            data.push(order_id);
+        });
+
+        if (!status) {
+            document.body.style.cursor = 'wait';
+            sendAjaxRequest.call(this, 'post', window.location.pathname + '/pack', {'data': data}, packOrderHandler)
+        }
+    })
+}
+
+let remove_pack_order = document.getElementById('remove-packing-order');
+if (remove_pack_order != null) {
+    remove_pack_order.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        let checked_button = Array.from(document.getElementsByClassName('btn btn-outline-secondary select-multiple checked'));
+        let data = {
+            'orders_id': [],
+            'products': []
+        };
+        checked_button.forEach(button => {
+            let order_id = button.parentElement.parentElement.firstElementChild.firstElementChild.firstElementChild.textContent;
+            let products = Array.from(document.getElementById('row-id-' + order_id).
+            getElementsByClassName('row text-center py-2')).slice(1);
+
+            products.forEach(product => {
+                data.products.push(product.children[0].textContent, product.children[4].textContent);
+            });
+            data.orders_id.push(order_id);
+        });
+
+        document.body.style.cursor = 'wait';
+        sendAjaxRequest.call(this, 'post', window.location.pathname + '/removeOrder', data, packOrderHandler)
+    })
+}
+
+function packOrderHandler() {
+    if (this.status !== 200) return;
+    document.body.style.cursor = 'default';
+
+    if (document.getElementsByClassName('main-container')[0].children.length === 2) {
+        setCookie('error_info', 'Wave Completed !', 1);
+        window.location.assign('/clerk/pickingWaves');
+        return;
+    }
+
+    // remove orders;
+
+}
 
 // MODAL //
 
@@ -330,9 +398,9 @@ function deleteCookie(name) {
 
 function checkCookie() {
     let cookie = getCookie('error_info');
+    let div_message = document.getElementById('success-alert');
 
-    if (cookie !== null) {
-        let div_message = document.getElementById('success-alert');
+    if (cookie != null && div_message != null) {
         div_message.removeAttribute('hidden');
         div_message.innerHTML = cookie;
     }

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Dispatching;
+use App\Http\Middleware\JasminConnect;
 use App\Packing;
 use App\PickingWavesState;
+use App\Products;
 use App\SalesOrders;
 use DateTime;
 use Illuminate\Http\Request;
@@ -71,5 +74,60 @@ class DataPacking
         }
 
         return $sales_orders;
+    }
+
+    public static function packOrders(Request $request, $packing_id)
+    {
+        $orders_ids = explode(',', $request->input('data'));
+
+        foreach ($orders_ids as $order_id) {
+            self::generateDeliveryNote(str_replace('-', '.', $order_id));
+            Dispatching::insertDispatch($order_id);
+        }
+    }
+
+    public static function generateDeliveryNote($sale_order_id)
+    {
+        try {
+            $result = JasminConnect::callJasmin('/shipping/processOrders/1/1000?company=TP-INDUSTRIES', '', 'GET');
+        } catch (Exception $e) {
+            return;
+        }
+
+        $deliveryNotes = array();
+
+        foreach(json_decode($result->getBody(), true) as $deliveryNote) {
+            if($deliveryNote['sourceDocKey'] === $sale_order_id)
+                array_push($deliveryNotes, $deliveryNote);
+        }
+
+        foreach($deliveryNotes as $deliveryNote) {
+            $body = [
+                [
+                    'sourceDocKey' => $deliveryNote['sourceDocKey'],
+                    'sourceDocLineNumber' => $deliveryNote['sourceDocLineNumber'],
+                    'quantity' => $deliveryNote['quantity'],
+                    'selected' => true
+                ]
+            ];
+
+            try {
+                JasminConnect::callJasmin('/shipping/processOrders/TP-INDUSTRIES', '', 'POST', $body);
+            } catch (Exception $e) {
+                return;
+            }
+        }
+    }
+
+    public static function removeOrders(Request $request, $packing_id)
+    {
+        $orders_ids = explode(',', $request->input('orders_id'));
+        $products = explode(',', $request->input('products'));
+
+        for ($i = 0 ; $i < count($products) ; $i += 2) {
+            Products::updateStock($products[$i], Products::getProductStock($products[$i]) + intval($products[$i+1]));
+        }
+
+        SalesOrders::destroy($orders_ids);
     }
 }
