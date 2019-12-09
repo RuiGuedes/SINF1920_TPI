@@ -219,19 +219,21 @@ if (complete_route != null) {
 
         let products_rows = Array.from(document.getElementsByClassName('row text-center py-2'));
         let products = {};
+        let status = true;
         products_rows.forEach(row => {
             switch (row.lastElementChild.firstElementChild.selectedIndex) {
                 case 0:
                     activeModal('Already collected all products?',
                         '<p>Did not collect all products. The product ' + row.children[1].textContent +
                         ' have a <i>No Picked</i> status.</p>Collect all the existing products before complete the route.');
-                    return;
+                    status = false;
+                    break;
                 case 1:
                     if (row.children[3].textContent !== row.children[4].getElementsByClassName('input-text qty text')[0].value) {
                         activeModal('Wrong picked quantity',
                             '<p>The product ' + row.children[1].textContent +
                             ' have a wrong picked quantity.</p>Check the picked quantity to complete the route.');
-                        return;
+                        status = false;
                     }
                     break;
                 case 2:
@@ -242,8 +244,10 @@ if (complete_route != null) {
                 row.lastElementChild.firstElementChild.selectedIndex
             ];
         });
-        document.body.style.cursor = 'wait';
-        sendAjaxRequest.call(this, 'post', window.location.pathname + '/complete', products, redirectToWorkerPickingWavesPage)
+        if (status) {
+            document.body.style.cursor = 'wait';
+            sendAjaxRequest.call(this, 'post', window.location.pathname + '/complete', products, redirectToWorkerPickingWavesPage)
+        }
     })
 }
 
