@@ -37,8 +37,7 @@
 
         @include('partials.mainButton', [
             'text' => 'Next',
-            'action' => 'packing',
-            'param' => '1',
+            'id' => 'selected-packing-wave'
         ])
     </div>
 

@@ -43,8 +43,28 @@ class Packing extends Model
             ->get();
     }
 
-    public static function allAvailablePackingWaves()
+    public static function getPackingById($id)
     {
-        return self::where('user_id', null)->get();
+        return self::find($id);
+    }
+
+    public static function assignToUser($packing_id, $user_id)
+    {
+        $packing = self::find($packing_id);
+        $packing->user_id = $user_id;
+        $packing->save();
+    }
+
+    public static function checkIfWavesCompleted($packing_id)
+    {
+        $packing = self::find($packing_id);
+        $salesIds = SalesOrders::getSalesOrdersIdsByWaveId($packing->picking_wave_id);
+
+        foreach ($salesIds as $sale_id) {
+            if (!Dispatching::where('sales_order_id', $sale_id)->exists())
+                return false;
+        }
+
+        return true;
     }
 }
