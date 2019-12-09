@@ -7,6 +7,7 @@ use App\Http\Controllers\Data\DataWave;
 use App\Packing;
 use App\PickingWaves;
 use App\SalesOrders;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class ClerkController extends Controller
@@ -58,6 +59,11 @@ class ClerkController extends Controller
      */
     public function showPacking($packing_id)
     {
+        // Abort if the route is already completed
+        abort_if(Packing::checkIfWavesCompleted($packing_id), 403);
+
+        Packing::assignToUser($packing_id, Auth::user()->getAuthIdentifier());
+
         return View('clerk.packing', ['orders' => DataSalesOrders::salesOrderById(
             SalesOrders::getSalesOrdersIdsByWaveId(Packing::getPackingById($packing_id)->picking_wave_id))]);
     }
