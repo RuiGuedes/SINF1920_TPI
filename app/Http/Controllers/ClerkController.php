@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Data\DataPacking;
 use App\Http\Controllers\Data\DataSalesOrders;
 use App\Http\Controllers\Data\DataWave;
 use App\Packing;
@@ -48,7 +49,7 @@ class ClerkController extends Controller
      */
     public function showPackingWaves()
     {
-        return View('clerk.packingWaves', ['waves' => DataWave::allWorkerPackingWaves()]);
+        return View('clerk.packingWaves', ['waves' => DataPacking::allWorkerPackingWaves()]);
     }
 
     /**
