@@ -84,6 +84,8 @@ class DataPacking
             self::generateDeliveryNote(str_replace('-', '.', $order_id));
             Dispatching::insertDispatch($order_id);
         }
+
+        return $orders_ids;
     }
 
     public static function generateDeliveryNote($sale_order_id)
@@ -129,5 +131,7 @@ class DataPacking
         }
 
         SalesOrders::destroy($orders_ids);
+
+        return $orders_ids;
     }
 }

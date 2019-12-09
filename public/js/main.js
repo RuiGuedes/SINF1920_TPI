@@ -250,7 +250,7 @@ if (complete_route != null) {
 function redirectToWorkerPickingWavesPage() {
     if (this.status !== 200) return;
     document.body.style.cursor = 'default';
-    setCookie('error_info', 'Wave Completed !', 1);
+    setCookie('error_info', 'Picking Wave Completed !', 1);
     window.location.assign('/clerk/pickingWaves');
 }
 
@@ -331,14 +331,26 @@ function packOrderHandler() {
     if (this.status !== 200) return;
     document.body.style.cursor = 'default';
 
-    if (document.getElementsByClassName('main-container')[0].children.length === 2) {
-        setCookie('error_info', 'Wave Completed !', 1);
-        window.location.assign('/clerk/pickingWaves');
+    let orders_id = JSON.parse(this.responseText);
+
+    if (document.getElementsByClassName('main-container')[0].children.length - (orders_id.length * 2) === 2) {
+        setCookie('error_info', 'Packing Wave Completed !', 1);
+        window.location.assign('/clerk/packingWaves');
         return;
     }
 
-    // remove orders;
+    let all_buttons = Array.from(document.getElementsByClassName('btn btn-outline-secondary select-multiple'));
 
+    all_buttons.forEach(button => {
+        let order = button.parentElement.parentElement;
+        let id = order.firstElementChild.firstElementChild.firstElementChild.textContent;
+
+        if (orders_id.includes(id)) {
+            let collapse_id = order.firstElementChild.getAttribute('href').substring(1);
+            order.remove();
+            document.getElementById(collapse_id).remove();
+        }
+    })
 }
 
 // MODAL //
