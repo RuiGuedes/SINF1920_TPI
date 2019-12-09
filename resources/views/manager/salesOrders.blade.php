@@ -36,11 +36,9 @@
         @include('partials.tableContent', [         
             'orders' => $sales
         ])
-        
-        @include('partials.mainButton', [
-            'text' => 'Create Wave',
-            'id' => 'create_wave'
-        ])
 
+        <div class="text-right my-4">
+            <button id="create_wave" type="submit" class="btn btn-secondary">Create Wave</button>
+        </div>
     </div>
 @endsection

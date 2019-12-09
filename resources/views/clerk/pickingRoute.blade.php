@@ -76,10 +76,9 @@
 
             @include('partials.alertModal')
 
-            @include('partials.mainButton', [
-                'text' => 'Complete',
-                'id' => 'complete-route'
-            ])
+            <div class="text-right my-4">
+                <button id="complete-route" type="submit" class="btn btn-secondary">Complete</button>
+            </div>
         </div>
     </div>
     
