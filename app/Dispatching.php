@@ -29,10 +29,23 @@ class Dispatching extends Model
     /**
      * Get the sales orders that weren't dispatched yet.
      *
-     * @return Collection
+     * @return array
      */
     public static function undispatched() {
-        return DB::table('dispatching')
+        $res = [];
+
+        $orders = DB::table('dispatching')
             ->join('sales_orders', 'sales_order_id', '=', 'sales_orders.id')->get();
+
+        foreach ($orders as $order) {
+            array_push($res, [
+                'id' => $order->id,
+                'owner' => $order->client,
+                'date' => $order->date
+            ]);
+        }
+        
+        return $res;
+
     }
 }
