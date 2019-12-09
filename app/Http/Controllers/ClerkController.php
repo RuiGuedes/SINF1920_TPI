@@ -3,118 +3,71 @@
 namespace App\Http\Controllers;
 
 use App\Dispatching;
+use App\Http\Controllers\Data\DataPacking;
+use App\Http\Controllers\Data\DataSalesOrders;
 use App\Http\Controllers\Data\DataWave;
+use App\Packing;
 use App\PickingWaves;
-use App\PickingWavesState;
-use App\Products;
+use App\SalesOrders;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class ClerkController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function showPickingWaves()
     {
         return View('clerk.pickingWaves', ['waves' => DataWave::allWorkerPickingWaves()]);
     }
 
+    /**
+     * Retrieves picking wave route view
+     *
+     * @param $id_wave
+     * @return View
+     */
     public function showPickingRoute($id_wave)
     {
-        PickingWaves::assignToUser($id_wave, Auth::user()->getAuthIdentifier());
+        // Abort if the route is already completed
+        abort_if(PickingWaves::checkIfWavesCompleted($id_wave), 403);
 
-        $states = PickingWavesState::getPickingWaveStatesByWaveId($id_wave);
-        $zone_list = [];
-
-        foreach ($states as $state) {
-            $item = Products::getProductByID($state->product_id);
-            $product = [
-                'section' => $item->warehouse_section,
-                'product' => $item->description,
-                'quantity' => $state->desired_qnt
-            ];
-
-            $zone = $item->warehouse_section[0];
-            $section = $item->warehouse_section;
-
-            if (array_key_exists($zone, $zone_list)){
-                $zone_list[$zone]['products'][$section] = $product;
-            } else {
-                $zone_list[$zone] = [
-                    'zone' => $zone,
-                    'products' => [$section => $product]
-                ];
-            }
-        }
-
-        ksort($zone_list);
-
-        foreach ($zone_list as &$zone)
-            ksort($zone['products']);
-
-        return View('clerk.pickingRoute', [ 'zones_list' => array_values($zone_list) ]);
+        return View('clerk.pickingRoute', [ 'zones_list' => DataWave::pickingRoute($id_wave)]);
     }
 
+    /**
+     * Retrieves packing waves view
+     *
+     * @return View
+     */
     public function showPackingWaves()
     {
-        $waves = [
-            [
-                'id' => '2',
-                'num_orders' => '2',
-                'num_products' => '7',
-                'date' => '2019-10-24',
-            ],
-            [
-                'id' => '1',
-                'num_orders' => '1',
-                'num_products' => '9',
-                'date' => '2019-10-24',
-            ]
-        ];
-
-        return View('clerk.packingWaves', ['waves' => $waves]);
+        return View('clerk.packingWaves', ['waves' => DataPacking::allWorkerPackingWaves()]);
     }
 
-    public function showPacking($id_wave)
+    /**
+     * Retrieves packing wave information view
+     *
+     * @param $packing_id
+     * @return View
+     */
+    public function showPacking($packing_id)
     {
-        $orders = [
-            [
-                'id' => '4',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                'owner' => 'C0004',
-                'date' => '2019-07-24',
-                'items' => [
-                    [
-                        'id' => '56',
-                        'description' => 'AK-47',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ]
-                ]
-            ],
-            [
-                'id' => '7',
-                'order_id' => 'ay3s678-8df8d9-cvk2kfd4',
-                'owner' => 'C0004',
-                'date' => '2019-07-24',
-                'items' => [
-                    [
-                        'id' => '56',
-                        'description' => 'AK-47',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ],
-                    [
-                        'id' => '58',
-                        'description' => 'AK-48',
-                        'zone' => 'D4',
-                        'quantity' => '2',
-                        'stock' => '9'
-                    ]
-                ]
-            ]
-        ];
+        // Abort if the route is already completed
+        abort_if(Packing::checkIfWavesCompleted($packing_id), 403);
 
-        return View('clerk.packing', ['orders' => $orders]);
+        Packing::assignToUser($packing_id, Auth::user()->getAuthIdentifier());
+
+        return View('clerk.packing', ['orders' => DataSalesOrders::salesOrderById(
+            SalesOrders::getSalesOrdersIdsByWaveId(Packing::getPackingById($packing_id)->picking_wave_id))]);
     }
 
     public function showDispatchOrders()

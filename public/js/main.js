@@ -29,7 +29,6 @@ String.prototype.getDecimals || (String.prototype.getDecimals = function () {
 });
 
 let checkboxes = document.querySelectorAll("button.btn.btn-outline-secondary.select-multiple");
-
 checkboxes.forEach(checkbox => {
     checkbox.addEventListener('click', function (event) {
         let className = checkbox.className;
@@ -51,7 +50,6 @@ checkboxes.forEach(checkbox => {
 });
 
 let radio_boxes = document.querySelectorAll("button.btn.btn-outline-secondary.select-one");
-
 radio_boxes.forEach(radio_box => {
     radio_box.addEventListener('click', function (event) {
         let className = radio_box.className;
@@ -70,14 +68,12 @@ radio_boxes.forEach(radio_box => {
 });
 
 let mainButton = document.querySelector("div.main-container button.btn.btn-secondary");
-
 if (mainButton != null) {
     if (document.querySelectorAll("div.main-container > .row").length <= 1)
         mainButton.disabled = true;
 }
 
 let create_wave = document.getElementById('create_wave');
-
 if (create_wave != null) {
     create_wave.firstElementChild.addEventListener('click', function(event) {
         event.preventDefault();
@@ -85,7 +81,6 @@ if (create_wave != null) {
         let checked_buttons = document.getElementsByClassName('btn btn-outline-secondary select-multiple checked');
         let sales_Ids = [];
         let insufficient_stock = [];
-
         let all_products = [];
 
         for (let i = 0; i < checked_buttons.length; i++) {
@@ -125,7 +120,6 @@ if (create_wave != null) {
             insufficient_stock.forEach(id => {
                 body += '<li>' + id + '</li>'
             });
-
             body += '</ul>';
             activeModal('Insufficient Stock', body);
         }
@@ -140,7 +134,6 @@ function createPickingWaveHandler() {
 }
 
 let qntRangeLimit = document.getElementsByClassName('quantity buttons_added');
-
 for(let i = 0; i < qntRangeLimit.length; i++) {
     qntRangeLimit[i].children[1].addEventListener('change', function () {
         let minValue = parseInt(this.getAttribute('min'));
@@ -152,7 +145,6 @@ for(let i = 0; i < qntRangeLimit.length; i++) {
 }
 
 let createPO = document.getElementById('create-PO');
-
 if (createPO !== null) {
     for(let i = 0; i < createPO.length; i++) {
         createPO[i].addEventListener('click', function (event) {
@@ -179,7 +171,6 @@ function redirectToPurchaseOrdersPage() {
 }
 
 let allocate = document.getElementById('allocate');
-
 if (allocate !== null) {
     for(let j = 0; j < allocate.length; j++) {
         allocate[j].addEventListener('click', function (event) {
@@ -208,8 +199,7 @@ function redirectToReplenishmentPage() {
 }
 
 let init_picking_route = document.getElementById('init-picking-route');
-
-if (init_picking_route !== null) {
+if (init_picking_route != null) {
     init_picking_route.firstElementChild.addEventListener('click', function (event) {
         event.preventDefault();
 
@@ -225,6 +215,68 @@ if (init_picking_route !== null) {
     })
 }
 
+let complete_route = document.getElementById('complete-route');
+if (complete_route != null) {
+    complete_route.firstElementChild.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        let products_rows = Array.from(document.getElementsByClassName('row text-center py-2'));
+        let products = {};
+        products_rows.forEach(row => {
+            switch (row.lastElementChild.firstElementChild.selectedIndex) {
+                case 0:
+                    activeModal('Already collected all products?',
+                        '<p>Did not collect all products. The product ' + row.children[1].textContent +
+                        ' have a <i>No Picked</i> status.</p>Collect all the existing products before complete the route.');
+                    return;
+                case 1:
+                    if (row.children[3].textContent !== row.children[4].getElementsByClassName('input-text qty text')[0].value) {
+                        activeModal('Wrong picked quantity',
+                            '<p>The product ' + row.children[1].textContent +
+                            ' have a wrong picked quantity.</p>Check the picked quantity to complete the route.');
+                        return;
+                    }
+                    break;
+                case 2:
+                    break;
+            }
+            products[row.id] = [
+                row.children[4].getElementsByClassName('input-text qty text')[0].value,
+                row.lastElementChild.firstElementChild.selectedIndex
+            ];
+        });
+        document.body.style.cursor = 'wait';
+        sendAjaxRequest.call(this, 'post', window.location.pathname + '/complete', products, redirectToWorkerPickingWavesPage)
+    })
+}
+
+function redirectToWorkerPickingWavesPage() {
+    if (this.status !== 200) return;
+    document.body.style.cursor = 'default';
+    setCookie('error_info', 'Wave Completed !', 1);
+    window.location.assign('/clerk/pickingWaves');
+}
+
+
+let init_packing_wave = document.getElementById('selected-packing-wave');
+if(init_packing_wave != null) {
+    init_packing_wave.firstElementChild.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        let checked_button = document.getElementsByClassName('btn btn-outline-secondary select-one checked');
+
+        if (checked_button.length !== 1) {
+            activeModal('Selected Packing Wave','To continue you should select ' +
+                (checked_button.length > 1? 'only' : '') +' one Packing Wave');
+        } else {
+            window.location.assign('/clerk/packing/' +
+                checked_button[0].parentElement.parentElement.firstElementChild.firstElementChild.firstElementChild.textContent);
+        }
+    })
+}
+
+
+// MODAL //
 
 function activeModal(title, body) {
     let modal = $('#alert-modal');

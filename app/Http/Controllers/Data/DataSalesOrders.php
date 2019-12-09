@@ -109,8 +109,13 @@ class DataSalesOrders
             $products = [];
 
             foreach ($documentLines as $line) {
+                $product = Products::getProductByID($line['salesItem']);
+
                 array_push($products, [
                         'id' => $line['salesItem'],
+                        'description' => $product->description,
+                        'zone' => $product->warehouse_section,
+                        'stock' => $product->stock,
                         'quantity' => $line['quantity']
                     ]);
             }

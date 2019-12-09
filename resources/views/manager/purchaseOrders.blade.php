@@ -39,10 +39,9 @@
             'orders' => $purchases
         ])
 
-        @include('partials.mainButton', [
-            'text' => 'Allocate',
-            'id' => 'allocate'
-        ])
+        <div class="text-right my-4">
+            <button id="allocate" type="submit" class="btn btn-secondary">Allocate</button>
+        </div>
     </div>
 
 @endsection

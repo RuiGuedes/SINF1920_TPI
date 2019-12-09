@@ -21,7 +21,7 @@ Route::post('login', 'Auth\LoginController@login')->name('login-action');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::view('/','login', ['route' => 'picking-waves'])->name('login');
-Route::view('layout','layout')->name('layout');
+Route::view('layout','layout')->name('layout')->middleware('auth');
 
 Route::get('manager/salesOrders','ManagerController@showSalesOrders')->name('manager-sales-orders');
 Route::get('manager/purchaseOrders','ManagerController@showPurchaseOrders')->name('manager-purchase-orders');
@@ -32,8 +32,10 @@ Route::post('/manager/replenishment/create-purchase-order','Data\DataPurchaseOrd
 Route::post('/manager/replenishment/allocate-purchase-order','Data\DataPurchaseOrders@allocatePurchaseOrder');
 Route::post('/manager/createPickingWave','Data\DataWave@createPickingWave');
 
-Route::get('clerk/packingWaves','ClerkController@showPackingWaves')->name('packing-waves');
-Route::get('clerk/packing/{id_wave}','ClerkController@showPacking')->name('packing');
-Route::get('clerk/pickingWaves','ClerkController@showPickingWaves')->name('picking-waves');
-Route::get('clerk/dispatching','ClerkController@showDispatchOrders')->name('dispatching');
+Route::get('/clerk/pickingWaves','ClerkController@showPickingWaves')->name('picking-waves');
 Route::get('clerk/pickingRoute/{id_wave}','ClerkController@showPickingRoute')->name('picking-route');
+Route::get('clerk/packingWaves','ClerkController@showPackingWaves')->name('packing-waves');
+Route::get('clerk/packing/{packing_id}','ClerkController@showPacking')->name('packing');
+Route::get('clerk/dispatching','ClerkController@showDispatchOrders')->name('dispatching');
+
+Route::post('/clerk/pickingRoute/{id_wave}/complete','Data\DataWave@completePickingWave');

@@ -256,7 +256,7 @@ select {
     border-color: var(--light-grey);
     background-color: var(--semi-transparent-brand-color);
     border-radius: 0.25rem;
-    height: 30px;
+    height: 36px;
     width: 100%;
     padding: 2px 6px;
 }
@@ -270,7 +270,7 @@ option:not(selected) {
 /* QUANTITY BOX */
 .quantity {
     display: inline-block;
-    min-width: 160px;
+    width: 130px;
     font-size: medium;
 }
    

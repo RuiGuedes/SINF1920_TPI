@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Packing;
 use App\PickingWaves;
 use App\PickingWavesState;
 use App\Products;
@@ -10,6 +11,7 @@ use DateTime;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class DataWave
 {
@@ -31,7 +33,7 @@ class DataWave
 
             foreach ($saleOrder['items'] as $item) {
                 $item['picking_wave_id'] = $pickingWaveId;
-                PickingWavesState::updatePickingWaveState($item);
+                PickingWavesState::updateDesiredQntPickingWaveState($item);
             }
         }
 
@@ -50,10 +52,10 @@ class DataWave
 
         foreach ($pickingWaves as $pickingWave) {
             $orders = DataSalesOrders::salesOrderById(SalesOrders::getSalesOrdersIdsByWaveId($pickingWave->id));
-            $count_products = 0;
+            $countProducts = 0;
 
             foreach ($orders as &$order) {
-                $count_products += count($order['items']);
+                $countProducts += count($order['items']);
 
                 foreach ($order['items'] as &$item) {
                     $product = Products::getProductByID($item['id']);
@@ -76,7 +78,7 @@ class DataWave
             array_push($waves, [
                 'id' => $pickingWave->id,
                 'num_orders' => $pickingWave->num_orders,
-                'num_products' => $count_products,
+                'num_products' => $countProducts,
                 'date' => $date,
                 'orders' => $orders
             ]);
@@ -86,7 +88,9 @@ class DataWave
     }
 
     /**
+     * Retrieves all picking Waves properly ordered and formatted for worker view
      *
+     * @return array
      */
     public static function allWorkerPickingWaves()
     {
@@ -129,5 +133,75 @@ class DataWave
         }
 
         return $waves;
+    }
+
+    /**
+     * Retrieves picking route properly ordered and sectioned
+     *
+     * @param $waveId
+     * @return array
+     */
+    public static function pickingRoute($waveId): array
+    {
+        PickingWaves::assignToUser($waveId, Auth::user()->getAuthIdentifier());
+
+        $states = PickingWavesState::getPickingWaveStatesByWaveId($waveId);
+        $zone_list = [];
+
+        foreach ($states as $state) {
+            $item = Products::getProductByID($state->product_id);
+            $product = [
+                'product_id' => $state->product_id,
+                'section' => $item->warehouse_section,
+                'product' => $item->description,
+                'quantity' => $state->desired_qnt
+            ];
+
+            $zone = $item->warehouse_section[0];
+            $section = $item->warehouse_section;
+
+            if (array_key_exists($zone, $zone_list)) {
+                if (array_key_exists($section, $zone_list[$zone]['products']))
+                    array_push($zone_list[$zone]['products'][$section], $product);
+                else
+                    $zone_list[$zone]['products'][$section] = [$product];
+            } else {
+                $zone_list[$zone] = [
+                    'zone' => $zone,
+                    'products' => [$section => [$product]]
+                ];
+            }
+        }
+
+        ksort($zone_list);
+        foreach ($zone_list as &$zone)
+            ksort($zone['products']);
+
+        return array_values($zone_list);
+    }
+
+    /**
+     * Complete a picking wave route and create a packing wave
+     *
+     * @param Request $request
+     * @param $idWave
+     */
+    public static function completePickingWave(Request $request, $idWave)
+    {
+        $products = $request->input();
+
+        foreach ($products as $productId => $productInfo) {
+            $productInfo = explode(',', $productInfo);
+
+            PickingWavesState::updatePickedQntPickingWaveState($idWave, $productId, $productInfo[0]);
+
+            $newStock = Products::getProductStock($productId) - $productInfo[0];
+            if ($productInfo[1] == 2)
+                $newStock = 0;
+
+            Products::updateStock($productId, $newStock);
+        }
+
+        Packing::insertPackingWave($idWave);
     }
 }
