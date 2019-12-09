@@ -17,30 +17,22 @@ class DispatchingTableSeeder extends Seeder
      * Run the database seeds.
      *
      * @return void
+     * @throws Exception
      */
     public function run()
     {
-        $so = new SalesOrders();
-        $pw = new PickingWaves();
-        $salesOrders = DataSalesOrders::allSalesOrders();
-        $user_id = User::first()['id'];
+        $salesOrders = DataSalesOrders::openOrders();
 
-        foreach($salesOrders as $saleOrder) {
-            $pw->id = 1;
-            $pw->num_orders = 1;
-            $pw->save();
-
-            $so->create([
-                "id" => $saleOrder['id'],
-                "client" => $saleOrder['owner'],
-                "picking_wave_id" => 1,
-                "date" => $saleOrder['date']
+        foreach ($salesOrders as $saleOrder) {
+            SalesOrders::create([
+                'id' => $saleOrder['id'],
+                'client' => $saleOrder['owner'],
+                'date' => $saleOrder['date']
             ]);
 
-            $dispatching = new Dispatching;
-            $dispatching['sales_order_id'] = $saleOrder['id'];
-            $dispatching['user_id'] = $user_id;
-            $dispatching->save();
+            Dispatching::create([
+                'sales_order_id' => $saleOrder['id']
+            ]);
         }
 
         $this->command->info('Database dispatching table seeded!');
