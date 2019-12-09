@@ -30,6 +30,7 @@
         ])
 
         @include('partials.tableContent', [
+            'packing' => true,
             'orders' => $orders
         ])
         <div class="container my-4">
