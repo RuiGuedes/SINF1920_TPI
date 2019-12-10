@@ -50,4 +50,11 @@ class Dispatching extends Model
         return $res;
 
     }
+
+    public static function insertDispatch($sale_order_id)
+    {
+        $dispatch = new Dispatching();
+        $dispatch->sales_order_id = $sale_order_id;
+        $dispatch->save();
+    }
 }

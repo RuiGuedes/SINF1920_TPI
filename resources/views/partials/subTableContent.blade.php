@@ -28,7 +28,7 @@
                 <div class="col-4">Name</div>
                 <div class="col-2">Zone</div>
                 <div class="col-2">Quantity</div>
-                <div class="col-2">Stock</div>
+                <div class="col-2">@isset($packing) Qnt Picked @endisset @empty($packing) Stock @endempty</div>
             </div>
             
             @foreach ($items as $item)
@@ -37,9 +37,9 @@
                     <div class="col-4">{{ $item['description'] }}</div>
                     <div class="col-2">{{ $item['zone'] }}</div>
                     <div class="col-2">{{ $item['quantity'] }}</div>
-                    <div class="col-2">{{ $item['stock'] }}</div>
+                    <div class="col-2">@isset($packing){{ $item['picked_qnt'] }}@endisset @empty($packing){{ $item['stock'] }}@endempty</div>
                 </div>
             @endforeach
         </div>
     @endempty        
-</div>    
+</div>
