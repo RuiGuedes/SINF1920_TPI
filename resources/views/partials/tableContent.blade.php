@@ -12,12 +12,19 @@
                 <button class="btn btn-outline-secondary select-multiple"></button>
             </div>
         </div>
-        @empty($dispatch)
+        @isset($packing)
+            @include('partials.subTableContent', [
+                'packing' => true,
+                'items' => $order['items'],
+                'id' => $order['id']
+            ])
+        @endisset
+        @empty($dispatch) @empty($packing)
             @include('partials.subTableContent', [
                 'items' => $order['items'],
                 'id' => $order['id']
             ])
-        @endempty
+        @endempty @endempty
     @endforeach
 @endisset
 

@@ -75,7 +75,7 @@ if (mainButton != null) {
 
 let create_wave = document.getElementById('create_wave');
 if (create_wave != null) {
-    create_wave.firstElementChild.addEventListener('click', function(event) {
+    create_wave.addEventListener('click', function (event) {
         event.preventDefault();
 
         let checked_buttons = document.getElementsByClassName('btn btn-outline-secondary select-multiple checked');
@@ -113,7 +113,7 @@ if (create_wave != null) {
         if (insufficient_stock.length === 0 && sales_Ids.length > 0) {
             document.body.style.cursor = 'wait';
             sendAjaxRequest.call(this, 'post', '/manager/createPickingWave', {ids: sales_Ids}, createPickingWaveHandler);
-        } else if(insufficient_stock.length !== 0) {
+        } else if (insufficient_stock.length !== 0) {
             let body = '<p>The existing stock is insufficient for all the selected orders.</p> ' +
                 '<p>Lack of stock of:</p> <ul>';
 
@@ -134,33 +134,32 @@ function createPickingWaveHandler() {
 }
 
 let qntRangeLimit = document.getElementsByClassName('quantity buttons_added');
-for(let i = 0; i < qntRangeLimit.length; i++) {
+for (let i = 0; i < qntRangeLimit.length; i++) {
     qntRangeLimit[i].children[1].addEventListener('change', function () {
         let minValue = parseInt(this.getAttribute('min'));
         let maxValue = parseInt(this.getAttribute('max'));
 
-        if(this.value < minValue) this.value = minValue;
-        else if(this.value > maxValue) this.value = maxValue;
+        if (this.value < minValue) this.value = minValue;
+        else if (this.value > maxValue) this.value = maxValue;
     })
 }
 
 let createPO = document.getElementById('create-PO');
 if (createPO !== null) {
-    for(let i = 0; i < createPO.length; i++) {
-        createPO[i].addEventListener('click', function (event) {
-            event.preventDefault();
-            let data = {};
+    createPO.addEventListener('click', function (event) {
+        event.preventDefault();
+        let data = {};
 
-            for(let j = 0; j < qntRangeLimit.length; j++) {
-                if(qntRangeLimit[j].getAttribute('hidden') == null) {
-                    let productID = qntRangeLimit[j].parentElement.parentElement.children[0].textContent;
-                    data[productID] = parseInt(qntRangeLimit[j].children[1].value);
-                }
+        for (let j = 0; j < qntRangeLimit.length; j++) {
+            if (qntRangeLimit[j].getAttribute('hidden') == null) {
+                let productID = qntRangeLimit[j].parentElement.parentElement.children[0].textContent;
+                data[productID] = parseInt(qntRangeLimit[j].children[1].value);
             }
-            document.body.style.cursor = 'wait';
-            sendAjaxRequest.call(this, 'post', '/manager/replenishment/create-purchase-order', data, redirectToPurchaseOrdersPage)
-        });
-    }
+        }
+        document.body.style.cursor = 'wait';
+        sendAjaxRequest.call(this, 'post', '/manager/replenishment/create-purchase-order', data, redirectToPurchaseOrdersPage)
+    });
+
 }
 
 function redirectToPurchaseOrdersPage() {
@@ -172,23 +171,21 @@ function redirectToPurchaseOrdersPage() {
 
 let allocate = document.getElementById('allocate');
 if (allocate !== null) {
-    for(let j = 0; j < allocate.length; j++) {
-        allocate[j].addEventListener('click', function (event) {
-            event.preventDefault();
-            let data = [];
+    allocate.addEventListener('click', function (event) {
+        event.preventDefault();
+        let data = [];
 
-            let checked_buttons = document.getElementsByClassName('btn btn-outline-secondary select-multiple checked');
+        let checked_buttons = document.getElementsByClassName('btn btn-outline-secondary select-multiple checked');
 
-            for (let i = 0; i < checked_buttons.length; i++) {
-                let purchase = checked_buttons[i].parentElement.parentElement.firstElementChild;
-                let purchaseOrderId = purchase.firstElementChild.firstElementChild.textContent;
+        for (let i = 0; i < checked_buttons.length; i++) {
+            let purchase = checked_buttons[i].parentElement.parentElement.firstElementChild;
+            let purchaseOrderId = purchase.firstElementChild.firstElementChild.textContent;
 
-                data.push(purchaseOrderId);
-            }
-            document.body.style.cursor = 'wait';
-            sendAjaxRequest.call(this, 'post', '/manager/replenishment/allocate-purchase-order', {'purchase_orders' : data}, redirectToReplenishmentPage)
-        });
-    }
+            data.push(purchaseOrderId);
+        }
+        document.body.style.cursor = 'wait';
+        sendAjaxRequest.call(this, 'post', '/manager/replenishment/allocate-purchase-order', {'purchase_orders': data}, redirectToReplenishmentPage)
+    });
 }
 
 function redirectToReplenishmentPage() {
@@ -200,14 +197,14 @@ function redirectToReplenishmentPage() {
 
 let init_picking_route = document.getElementById('init-picking-route');
 if (init_picking_route != null) {
-    init_picking_route.firstElementChild.addEventListener('click', function (event) {
+    init_picking_route.addEventListener('click', function (event) {
         event.preventDefault();
 
         let checked_button = document.getElementsByClassName('btn btn-outline-secondary select-one checked')
 
         if (checked_button.length !== 1) {
-            activeModal('Selected Picking Wave','To continue you should select ' +
-            (checked_button.length > 1? 'only' : '') +' one Picking Wave');
+            activeModal('Selected Picking Wave', 'To continue you should select ' +
+                (checked_button.length > 1 ? 'only' : '') + ' one Picking Wave');
         } else {
             window.location.assign('/clerk/pickingRoute/' +
                 checked_button[0].parentElement.parentElement.firstElementChild.firstElementChild.firstElementChild.textContent);
@@ -217,24 +214,26 @@ if (init_picking_route != null) {
 
 let complete_route = document.getElementById('complete-route');
 if (complete_route != null) {
-    complete_route.firstElementChild.addEventListener('click', function (event) {
+    complete_route.addEventListener('click', function (event) {
         event.preventDefault();
 
         let products_rows = Array.from(document.getElementsByClassName('row text-center py-2'));
         let products = {};
+        let status = true;
         products_rows.forEach(row => {
             switch (row.lastElementChild.firstElementChild.selectedIndex) {
                 case 0:
                     activeModal('Already collected all products?',
                         '<p>Did not collect all products. The product ' + row.children[1].textContent +
                         ' have a <i>No Picked</i> status.</p>Collect all the existing products before complete the route.');
-                    return;
+                    status = false;
+                    break;
                 case 1:
                     if (row.children[3].textContent !== row.children[4].getElementsByClassName('input-text qty text')[0].value) {
                         activeModal('Wrong picked quantity',
                             '<p>The product ' + row.children[1].textContent +
                             ' have a wrong picked quantity.</p>Check the picked quantity to complete the route.');
-                        return;
+                        status = false;
                     }
                     break;
                 case 2:
@@ -245,29 +244,30 @@ if (complete_route != null) {
                 row.lastElementChild.firstElementChild.selectedIndex
             ];
         });
-        document.body.style.cursor = 'wait';
-        sendAjaxRequest.call(this, 'post', window.location.pathname + '/complete', products, redirectToWorkerPickingWavesPage)
+        if (status) {
+            document.body.style.cursor = 'wait';
+            sendAjaxRequest.call(this, 'post', window.location.pathname + '/complete', products, redirectToWorkerPickingWavesPage)
+        }
     })
 }
 
 function redirectToWorkerPickingWavesPage() {
     if (this.status !== 200) return;
     document.body.style.cursor = 'default';
-    setCookie('error_info', 'Wave Completed !', 1);
+    setCookie('error_info', 'Picking Wave Completed !', 1);
     window.location.assign('/clerk/pickingWaves');
 }
 
-
 let init_packing_wave = document.getElementById('selected-packing-wave');
-if(init_packing_wave != null) {
-    init_packing_wave.firstElementChild.addEventListener('click', function (event) {
+if (init_packing_wave != null) {
+    init_packing_wave.addEventListener('click', function (event) {
         event.preventDefault();
 
         let checked_button = document.getElementsByClassName('btn btn-outline-secondary select-one checked');
 
         if (checked_button.length !== 1) {
-            activeModal('Selected Packing Wave','To continue you should select ' +
-                (checked_button.length > 1? 'only' : '') +' one Packing Wave');
+            activeModal('Selected Packing Wave', 'To continue you should select ' +
+                (checked_button.length > 1 ? 'only' : '') + ' one Packing Wave');
         } else {
             window.location.assign('/clerk/packing/' +
                 checked_button[0].parentElement.parentElement.firstElementChild.firstElementChild.firstElementChild.textContent);
@@ -275,6 +275,87 @@ if(init_packing_wave != null) {
     })
 }
 
+let pack = document.getElementById('pack-order');
+if (pack != null) {
+    pack.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        let checked_button = Array.from(document.getElementsByClassName('btn btn-outline-secondary select-multiple checked'));
+        let data = [];
+        let status = false;
+        checked_button.forEach(button => {
+            let order_id = button.parentElement.parentElement.firstElementChild.firstElementChild.firstElementChild.textContent;
+            let products = Array.from(document.getElementById('row-id-' + order_id).
+            getElementsByClassName('row text-center py-2')).slice(1);
+
+            products.forEach(product => {
+                if (product.children[3] > product.children[4]){
+                    activeModal('Selected Order for Packing','To package an order, you must select an ' +
+                        'order whose products have the picked quantity equal to the desired quantity.');
+                    status = true;
+                }
+            });
+            data.push(order_id);
+        });
+
+        if (!status) {
+            document.body.style.cursor = 'wait';
+            sendAjaxRequest.call(this, 'post', window.location.pathname + '/pack', {'data': data}, packOrderHandler)
+        }
+    })
+}
+
+let remove_pack_order = document.getElementById('remove-packing-order');
+if (remove_pack_order != null) {
+    remove_pack_order.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        let checked_button = Array.from(document.getElementsByClassName('btn btn-outline-secondary select-multiple checked'));
+        let data = {
+            'orders_id': [],
+            'products': []
+        };
+        checked_button.forEach(button => {
+            let order_id = button.parentElement.parentElement.firstElementChild.firstElementChild.firstElementChild.textContent;
+            let products = Array.from(document.getElementById('row-id-' + order_id).
+            getElementsByClassName('row text-center py-2')).slice(1);
+
+            products.forEach(product => {
+                data.products.push(product.children[0].textContent, product.children[4].textContent);
+            });
+            data.orders_id.push(order_id);
+        });
+
+        document.body.style.cursor = 'wait';
+        sendAjaxRequest.call(this, 'post', window.location.pathname + '/removeOrder', data, packOrderHandler)
+    })
+}
+
+function packOrderHandler() {
+    if (this.status !== 200) return;
+    document.body.style.cursor = 'default';
+
+    let orders_id = JSON.parse(this.responseText);
+
+    if (document.getElementsByClassName('main-container')[0].children.length - (orders_id.length * 2) === 2) {
+        setCookie('error_info', 'Packing Wave Completed !', 1);
+        window.location.assign('/clerk/packingWaves');
+        return;
+    }
+
+    let all_buttons = Array.from(document.getElementsByClassName('btn btn-outline-secondary select-multiple'));
+
+    all_buttons.forEach(button => {
+        let order = button.parentElement.parentElement;
+        let id = order.firstElementChild.firstElementChild.firstElementChild.textContent;
+
+        if (orders_id.includes(id)) {
+            let collapse_id = order.firstElementChild.getAttribute('href').substring(1);
+            order.remove();
+            document.getElementById(collapse_id).remove();
+        }
+    })
+}
 
 // MODAL //
 
@@ -323,7 +404,7 @@ function getCookie(name) {
 
 function setCookie(name, value, days) {
     let d = new Date;
-    d.setTime(d.getTime() + 24*60*60*1000*days);
+    d.setTime(d.getTime() + 24 * 60 * 60 * 1000 * days);
     document.cookie = name + "=" + value + ";path=/;expires=" + d.toGMTString();
 }
 
@@ -333,9 +414,9 @@ function deleteCookie(name) {
 
 function checkCookie() {
     let cookie = getCookie('error_info');
+    let div_message = document.getElementById('success-alert');
 
-    if(cookie !== null) {
-        let div_message = document.getElementById('success-alert');
+    if (cookie != null && div_message != null) {
         div_message.removeAttribute('hidden');
         div_message.innerHTML = cookie;
     }
