@@ -38,8 +38,6 @@ Route::get('clerk/packingWaves','ClerkController@showPackingWaves')->name('packi
 Route::get('clerk/packing/{packing_id}','ClerkController@showPacking')->name('packing');
 Route::get('clerk/dispatching','ClerkController@showDispatchOrders')->name('dispatching');
 
-Route::get('clerk/pickingRoute/{id_wave}','ClerkController@showPickingRoute')->name('picking-route');
-
 Route::post('clerk/dispatching','ClerkController@dispatchOrder');
 
 Route::post('/clerk/pickingRoute/{id_wave}/complete','Data\DataWave@completePickingWave');
