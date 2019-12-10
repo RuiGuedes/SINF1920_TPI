@@ -7,6 +7,9 @@ use App\Http\Controllers\Data\DataPacking;
 use App\Http\Controllers\Data\DataWave;
 use App\Packing;
 use App\PickingWaves;
+use App\SalesOrders;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class ClerkController extends Controller
@@ -67,5 +70,21 @@ class ClerkController extends Controller
     public function showDispatchOrders()
     {
         return View('clerk.dispatching', ['orders' => Dispatching::undispatched()]);
+    }
+
+    /**
+     * Dispatches a sales order.
+     *
+     * @param Request $request
+     * @return array|string
+     */
+    public function dispatchOrder(Request $request) {
+        try {
+            DataSalesOrders::processOrders($request->ids);
+        } catch (\Exception $e) {
+            return json_encode($e);
+        }
+
+        return response('', 200, []);
     }
 }

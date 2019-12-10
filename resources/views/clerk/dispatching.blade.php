@@ -23,7 +23,7 @@
         ]
     ])
 
-    <div class="main-container dispatch container pt-5">
+    <div class="main-container dispatch container pt-5" id="dispatch-div">
         @include('partials.tableHeader', [
             'page' => 'orders',
             'type' => 'Client'
@@ -35,8 +35,10 @@
         ])
 
         <div class="text-right my-4">
-            <button id="dispatching" type="submit" class="btn btn-secondary">Dispatch</button>
+            <button id="dispatching-btn" type="submit" class="btn btn-secondary">Dispatch</button>
         </div>
     </div>
+
+    <script type="module" src="{{asset('js/dispatching.js')}}"></script>
     
 @endsection
