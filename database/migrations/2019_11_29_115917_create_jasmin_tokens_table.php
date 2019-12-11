@@ -17,6 +17,7 @@ class CreateJasminTokensTable extends Migration
             $table->bigIncrements('id');
             $table->longText('access_token');
             $table->string('token_type');
+            $table->string('expires_in');
             $table->timestamps();
         });
     }
