@@ -27,13 +27,13 @@ class DispatchingTableSeeder extends Seeder
             $salesOrder = $openOrder['salesOrder'];
             $date = substr($salesOrder->documentDate, 0, 10);
             SalesOrders::create([
-                'id' => $salesOrder->naturalKey,
+                'id' => str_replace('.','-',$salesOrder->naturalKey),
                 'client' => $salesOrder->buyerCustomerParty,
                 'date' => $date
             ]);
 
             Dispatching::create([
-                'sales_order_id' => $salesOrder->naturalKey
+                'sales_order_id' => str_replace('.','-',$salesOrder->naturalKey)
             ]);
         }
 

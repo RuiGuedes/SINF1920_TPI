@@ -58,6 +58,7 @@ class DataSalesOrders
         foreach (json_decode($result->getBody(), true) as $order) {
             if (!($order['documentStatus'] === 2 || ($order['serie'] === "2019" && $order['seriesNumber'] === 1))) {
                 $salesOrder = [
+                    'sort_key' => substr($order['naturalKey'], '9'),
                     'id' => str_replace('.', '-', $order['naturalKey']),
                     'owner' => $order['buyerCustomerParty'],
                     'date' => substr($order['documentDate'], 0, 10)
@@ -83,8 +84,9 @@ class DataSalesOrders
             }
         }
 
-        $salesOrders = array_reverse($salesOrders);
-
+        // Array sorting in ascending order
+        usort($salesOrders, function ($a, $b) {return $a['sort_key'] > $b['sort_key'];});
+        
         // Remove sales orders already in existing picking waves
         for ($i = 0; $i < count($salesOrders); $i++) {
             if (SalesOrders::getExists($salesOrders[$i]['id'])) {
