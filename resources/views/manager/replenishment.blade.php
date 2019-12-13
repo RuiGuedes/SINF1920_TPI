@@ -45,7 +45,13 @@
                     <div class="quantity buttons_added" hidden>
                         <input type="button" value="-" class="minus">
                         <input type="number" step="1" min="{{max(1, $product['min_stock'] - $product['stock'])}}" max="{{min($product['max_stock'], $product['max_stock'] - $product['stock'])}}"
-                        name="quantity" value="{{min($product['min_stock']*2 ,$product['max_stock'] - $product['stock'])}}" title="Qty" class="input-text qty text" size="4" pattern="" inputmode="">
+                        name="quantity"
+                               @if($product['min_stock'] > $product['stock'])
+                                    value="{{$product['min_stock']*2}}"
+                               @else
+                                    value="{{max(0, min(1, $product['max_stock'] - $product['stock']))}}"
+                               @endif
+                               title="Qty" class="input-text qty text" size="4" pattern="" inputmode="">
                         <input type="button" value="+" class="plus">
                     </div>
                 </div>
