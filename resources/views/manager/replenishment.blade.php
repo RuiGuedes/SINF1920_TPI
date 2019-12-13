@@ -10,21 +10,21 @@
     @include('partials.subNavbar', [
         'tabs' => [
             [
-                'route' => 'manager-sales-orders',
-                'name' => 'Sales Orders'
+                'route' => 'manager-replenishment',
+                'name' => 'Replenishment',
+                'active' => true
             ],
             [
                 'route' => 'manager-purchase-orders',
                 'name' => 'Purchase Orders'
             ],
             [
-                'route' => 'manager-picking-waves',
-                'name' => 'Picking Waves'
+                'route' => 'manager-sales-orders',
+                'name' => 'Sales Orders'
             ],
             [
-                'route' => 'manager-replenishment',
-                'name' => 'Replenishment',
-                'active' => true
+                'route' => 'manager-picking-waves',
+                'name' => 'Picking Waves'
             ]
         ]
     ])
