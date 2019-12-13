@@ -183,6 +183,7 @@ class DataSalesOrders
 
         foreach ($orders as $order) {
             $id = $order['salesOrder']->naturalKey;
+            $id = str_replace('.', '-', $id);
 
             if (in_array($id, $ids)) {
                 $res[$id] = $order;
@@ -210,6 +211,7 @@ class DataSalesOrders
 
         foreach ($billingOrderLines as $billingOrderLine) {
             $id = $billingOrderLine->orderKey;
+            $id = str_replace('.', '-', $id);
 
             if (array_key_exists($id, $res)) {
                 array_push($res[$id], $billingOrderLine);
@@ -238,7 +240,9 @@ class DataSalesOrders
         $res = [];
 
         foreach ($orders as $order) {
-            $res[$order->naturalKey] = $order;
+            $id = $order->naturalKey;
+            $id = str_replace('.', '-', $id);
+            $res[$id] = $order;
         }
 
         return $res;
@@ -255,10 +259,12 @@ class DataSalesOrders
         $billingOrderLines = $order['billingOrderLines'];
 
         $body = [];
+        $id = $order['salesOrder']->naturalKey;
+        $id = str_replace('-', '.', $id);
 
         foreach ($billingOrderLines as $billingOrderLine) {
             array_push($body, [
-                'orderKey' => $order['salesOrder']->naturalKey,
+                'orderKey' => $id,
                 'orderLineNumber' => $billingOrderLine->orderLineNumber,
                 'deliveryKey' => $billingOrderLine->deliveryKey,
                 'quantity' => $billingOrderLine->quantity,

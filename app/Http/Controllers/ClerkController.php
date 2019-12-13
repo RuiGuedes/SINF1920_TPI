@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Dispatching;
 use App\Http\Controllers\Data\DataPacking;
+use App\Http\Controllers\Data\DataSalesOrders;
 use App\Http\Controllers\Data\DataWave;
 use App\Packing;
 use App\PickingWaves;
