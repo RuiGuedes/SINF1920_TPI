@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\PickingWaves;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +19,11 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect('/home');
+            if(Auth::check() && Auth::id() === 1) return 'manager/salesOrders';
+            else if(Auth::check()){
+                $unfinished_wave = PickingWaves::getUserPickingWave(Auth::id());
+                return ($unfinished_wave == null) ? 'clerk/pickingWaves' : 'clerk/pickingRoute/'. $unfinished_wave->id;
+            }
         }
 
         return $next($request);

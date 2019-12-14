@@ -20,4 +20,3 @@ use Illuminate\Http\Request;
 Route::get('jasmin-getsalesorders', 'Data\DataSalesOrders@allSalesOrders');
 Route::get('jasmin-getsalesorders/{serieId}', 'Data\DataSalesOrders@saleOrderBySerieId');
 Route::get('jasmin-getpurchaseorders', 'Data\DataPurchaseOrders@allPurchaseOrders');
-//Route::get('jasmin-getstock', 'InventoryController@allStock');

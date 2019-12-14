@@ -61,6 +61,12 @@ class User extends Authenticatable
         $user->save();
     }
 
+    /**
+     * Check if a user is manager
+     *
+     * @param int $userId
+     * @return mixed
+     */
     public static function isManager(int $userId) {
         $user = User::where('id', $userId)->first();
         return $user->manager;

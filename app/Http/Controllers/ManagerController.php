@@ -6,6 +6,7 @@ use App\Http\Controllers\Data\DataPurchaseOrders;
 use App\Http\Controllers\Data\DataReplenishment;
 use App\Http\Controllers\Data\DataSalesOrders;
 use App\Http\Controllers\Data\DataWave;
+use App\JasminToken;
 use App\User;
 use Illuminate\View\View;
 

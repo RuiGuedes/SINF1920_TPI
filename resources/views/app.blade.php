@@ -32,7 +32,6 @@
     <title>TPI - @yield('title')</title>
 </head>
 
-
 <body class="bg-dark">
     @yield('body')
 
@@ -42,6 +41,5 @@
 <footer class="fixed-bottom px-3">
     COPYRIGHT © TPI 2019
 </footer>
-
 
 </html>

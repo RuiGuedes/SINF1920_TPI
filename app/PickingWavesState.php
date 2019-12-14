@@ -40,6 +40,8 @@ class PickingWavesState extends Model
     ];
 
     /**
+     * Insert a new Picking Wave State
+     *
      * @param $item
      */
     public static function insertPickingWaveState($item)
@@ -52,6 +54,8 @@ class PickingWavesState extends Model
     }
 
     /**
+     * Update the desired quantity
+     *
      * @param $item
      */
     public static function updateDesiredQntPickingWaveState($item): void
@@ -66,6 +70,12 @@ class PickingWavesState extends Model
         }
     }
 
+    /**
+     * Retrieve the picking wave states of a wave
+     *
+     * @param $waveId
+     * @return mixed
+     */
     public static function getPickingWaveStatesByWaveId($waveId)
     {
         return self::where('picking_wave_id', $waveId)->get();
