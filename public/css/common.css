@@ -51,7 +51,7 @@ div.login-fields input {
     border-color: var(--light-grey);
     text-align: center;
     color: var(--dark-grey);
-    font-size: 20px;
+    font-size: 16px;
 }
 
 /* NAVBAR */
@@ -75,11 +75,11 @@ nav.main-navbar a.company-name {
 nav.main-navbar a {
     color: var(--brand-color);
     font-style: italic;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 nav.sub-navbar {
-    font-size: 20px;
+    font-size: 16px;
 }
 
 nav.sub-navbar button.navbar-toggler, span.navbar-toggler-icon {
@@ -156,13 +156,13 @@ button.btn.btn-outline-secondary.checked {
 /* Main container */
 div.main-container {
     color: var(--light-grey);
-    font-size: 20px;
+    font-size: 16px;
 }
 
 div.main-container .header {
     font-style: italic;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 div.main-container a {
@@ -179,12 +179,12 @@ div.main-container.with-ground > .row:first-child {
     border-bottom: solid var(--dark-grey) 2px;
 }
 
-div.main-container.with-ground > .row {
+div.main-container.with-ground .row {
     background-color: var(--transparent-brand-color);
     border-bottom: none;
 }
 
-div.main-container.with-ground > .row:nth-last-child(-n+2) {
+div.main-container.with-ground .row:nth-last-child(-n+1) {
     border-bottom: solid var(--dark-grey) 2px;
 }
 
@@ -203,6 +203,10 @@ div.sub-container .sub-header {
 div.double-sub-container {
     background-color: var(--semi-transparent-brand-color);
     font-size: 18px;
+}
+
+span {
+    font-style: normal;
 }
 
 /* PICKING ROUTE */

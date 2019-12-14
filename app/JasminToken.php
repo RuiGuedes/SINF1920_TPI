@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class JasminToken extends Model
 {
-    protected $fillable = ['access_token', 'token_type'];
+    protected $fillable = ['access_token', 'token_type', 'expires_in'];
 
     /**
      * The table associated with the model.

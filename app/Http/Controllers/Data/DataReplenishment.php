@@ -13,16 +13,30 @@ class DataReplenishment
      */
     public static function getAllInventory()
     {
-        $products =  Products::getProducts();
+        $collection = Products::getProducts();
+        $products = [];
 
-        for ($i = 0; $i < count($products); $i++) {
-            if ($products[$i]['stock'] == 0)
-                $products[$i]['status'] = 'OUT OF STOCK';
-            else if ($products[$i]['stock'] < $products[$i]['min_stock'])
-                $products[$i]['status'] = 'LAST UNITS';
+        for ($i = 0; $i < count($collection); $i++) {
+            if ($collection[$i]['stock'] == 0)
+                $collection[$i]['status'] = 'OUT OF STOCK';
+            else if ($collection[$i]['stock'] < $collection[$i]['min_stock'])
+                $collection[$i]['status'] = 'LAST UNITS';
             else
-                $products[$i]['status'] = 'ALL GOOD';
+                $collection[$i]['status'] = 'ALL GOOD';
+
+            array_push($products, [
+                'product_id' => $collection[$i]['product_id'],
+                'description' => $collection[$i]['description'],
+                'min_stock' => $collection[$i]['min_stock'],
+                'max_stock' => $collection[$i]['max_stock'],
+                'stock' => $collection[$i]['stock'],
+                'warehouse_section' => $collection[$i]['warehouse_section'],
+                'status' => $collection[$i]['status']
+            ]);
         }
+
+        $status = array_column($products, 'status');
+        array_multisort($status, SORT_DESC, $products);
 
         return $products;
     }
