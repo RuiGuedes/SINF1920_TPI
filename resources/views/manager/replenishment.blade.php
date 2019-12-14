@@ -33,14 +33,14 @@
         @include('partials.tableHeader', [
             'page' => 'products'
         ])
-
+        <div class="products-list">
         @foreach ($products as $product)
             <div class="row text-center py-2 replenishment">
                 <div class="col-2">{{$product['product_id']}}</div>
-                <div class="col-3">{{$product['description']}}</div>
+                <div class="col-3 text-left">{{$product['description']}}</div>
                 <div class="col-1">{{$product['warehouse_section']}}</div>
                 <div class="col-1">{{$product['stock']}}</div>
-                <div class="col-2"> @isset($product['status']) {{$product['status']}} @endisset </div>
+                <div class="col-2">@isset($product['status']){{$product['status']}}@endisset</div>
                 <div class="col-2">
                     <div class="quantity buttons_added" hidden>
                         <input type="button" value="-" class="minus">
@@ -60,7 +60,7 @@
                 </div>
             </div>
         @endforeach
-
+        </div>
         <div class="text-right my-4">
             <button id="create-PO" type="submit" class="btn btn-secondary">Create PO</button>
         </div>

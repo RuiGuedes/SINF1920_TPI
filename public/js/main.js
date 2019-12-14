@@ -1,3 +1,4 @@
+// Quantity Input
 function wcqib_refresh_quantity_increments() {
     jQuery("div.quantity:not(.buttons_added), td.quantity:not(.buttons_added)").each(function (a, b) {
         var c = jQuery(b);
@@ -27,6 +28,17 @@ String.prototype.getDecimals || (String.prototype.getDecimals = function () {
         && b >= c ? a.val(c) : a.val((b + parseFloat(e)).toFixed(e.getDecimals())) : d
         && b <= d ? a.val(d) : b > 0 && a.val((b - parseFloat(e)).toFixed(e.getDecimals())), a.trigger("change")
 });
+
+let qntRangeLimit = document.getElementsByClassName('quantity buttons_added');
+for (let i = 0; i < qntRangeLimit.length; i++) {
+    qntRangeLimit[i].children[1].addEventListener('change', function () {
+        let minValue = parseInt(this.getAttribute('min'));
+        let maxValue = parseInt(this.getAttribute('max'));
+
+        if (this.value < minValue) this.value = minValue;
+        else if (this.value > maxValue) this.value = maxValue;
+    })
+}
 
 let checkboxes = document.querySelectorAll("button.btn.btn-outline-secondary.select-multiple");
 checkboxes.forEach(checkbox => {
@@ -131,17 +143,6 @@ function createPickingWaveHandler() {
     document.body.style.cursor = 'default';
     setCookie('error_info', 'New Picking Wave added !', 1);
     window.location.assign("/manager/pickingWaves");
-}
-
-let qntRangeLimit = document.getElementsByClassName('quantity buttons_added');
-for (let i = 0; i < qntRangeLimit.length; i++) {
-    qntRangeLimit[i].children[1].addEventListener('change', function () {
-        let minValue = parseInt(this.getAttribute('min'));
-        let maxValue = parseInt(this.getAttribute('max'));
-
-        if (this.value < minValue) this.value = minValue;
-        else if (this.value > maxValue) this.value = maxValue;
-    })
 }
 
 let createPO = document.getElementById('create-PO');
@@ -425,4 +426,61 @@ function checkCookie() {
 }
 
 checkCookie();
+
+////////////////
+// Table Sort //
+////////////////
+
+let replenishment_table = document.getElementsByClassName('products-list')[0];
+
+if (replenishment_table != null) {
+    let replenishment_header = Array.from(document.getElementsByClassName('header')[0].children).slice(0,5);
+    let replenishment_rows = Array.from(replenishment_table.getElementsByClassName('replenishment'));
+
+    for (let i = 0; i < replenishment_header.length; i++) {
+        replenishment_header[i].addEventListener('click', function (event) {
+            event.preventDefault();
+
+            let order_attribute = this.getAttribute('order');
+            if (order_attribute != null) {
+                this.setAttribute('order', (parseInt(order_attribute) + 1) % 2);
+                this.getElementsByTagName('span')[(parseInt(order_attribute) + 1) % 2].removeAttribute('hidden');
+                this.getElementsByTagName('span')[parseInt(order_attribute)].setAttribute('hidden', true);
+            }
+            else {
+                replenishment_header.forEach(row => {
+                    if (row.getAttribute('order') != null) {
+                        row.getElementsByTagName('span')[0].setAttribute('hidden', true);
+                        row.getElementsByTagName('span')[1].setAttribute('hidden', true);
+                        row.removeAttribute('order');
+                    }
+                });
+                this.setAttribute('order', 0);
+                this.getElementsByTagName('span')[0].removeAttribute('hidden');
+            }
+
+            let list_to_order = [];
+            for (let index = 0 ; index < replenishment_rows.length ; index++)
+                list_to_order.push([index, replenishment_rows[index].children[i].textContent]);
+
+
+            list_to_order.sort(function (a, b) {
+                if (a[1] > b[1]) return 1;
+                else if (a[1] < b[1]) return -1;
+                else return 0;
+            });
+
+            if (parseInt(this.getAttribute('order')))
+                list_to_order.reverse();
+
+            replenishment_table.innerHTML = '';
+            for (let j = 0 ; j < list_to_order.length ; j++) {
+                let row = replenishment_rows[list_to_order[j][0]];
+                replenishment_table.appendChild(row);
+            }
+
+            console.log(list_to_order);
+        })
+    }
+}
 

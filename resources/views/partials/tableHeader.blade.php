@@ -12,11 +12,11 @@
             <div class="col-3">Date</div>
             @break
         @case('products')
-            <div class="col-2">Product ID</div>
-            <div class="col-3">Name</div>
-            <div class="col-1">Zone</div>
-            <div class="col-1">Stock</div>
-            <div class="col-2">Status</div>
+            <div class="col-2">Product ID <span hidden>&darr;</span><span hidden>&uarr;</span></div>
+            <div class="col-3 text-left">Name <span hidden>&darr;</span><span hidden>&uarr;</span></div>
+            <div class="col-1">Zone <span hidden>&darr;</span><span hidden>&uarr;</span></div>
+            <div class="col-1">Stock <span hidden>&darr;</span><span hidden>&uarr;</span></div>
+            <div class="col-2" order="1">Status <span hidden>&darr;</span><span>&uarr;</span></div>
             <div class="col-2">Quantity</div>
             @break
         @case('picking-route')
@@ -27,7 +27,5 @@
             <div class="col-2">Qnt. Picked</div>
             <div class="col-2">Status</div>
             @break
-        @default
-            
     @endswitch
 </div>
