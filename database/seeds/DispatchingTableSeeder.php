@@ -2,14 +2,8 @@
 
 use App\Dispatching;
 use App\Http\Controllers\Data\DataSalesOrders;
-use App\Http\Middleware\JasminConnect;
-use App\PickingWaves;
-use App\Products;
 use App\SalesOrders;
-use App\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class DispatchingTableSeeder extends Seeder
 {

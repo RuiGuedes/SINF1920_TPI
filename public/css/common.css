@@ -347,3 +347,8 @@ option:not(selected) {
 #alert-modal {
     color: var(--bg-dark);
 }
+
+div.main-container.with-ground > div.header.row > div:nth-child(-n+5):hover {
+    color: var(--brand-color);
+    cursor: pointer;
+}

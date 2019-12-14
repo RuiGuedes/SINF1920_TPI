@@ -29,7 +29,7 @@ class LoginController extends Controller
      */
     protected function redirectTo()
     {
-        if(Auth::check() && Auth::id() === 1) return 'manager/salesOrders';
+        if(Auth::check() && Auth::id() === 1) return 'manager/replenishment';
         else if(Auth::check()){
             $unfinished_wave = PickingWaves::getUserPickingWave(Auth::id());
             return ($unfinished_wave == null) ? 'clerk/pickingWaves' : 'clerk/pickingRoute/'. $unfinished_wave->id;
