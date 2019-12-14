@@ -26,6 +26,8 @@ class SalesOrders extends Model
     public $incrementing = false;
 
     /**
+     * Insert a new Sale order
+     *
      * @param $saleOrder
      */
     public static function insertSaleOrder($saleOrder)
@@ -39,6 +41,8 @@ class SalesOrders extends Model
     }
 
     /**
+     * Check if a sales order with id exists in DB
+     *
      * @param $id
      * @return mixed
      */
@@ -47,6 +51,12 @@ class SalesOrders extends Model
         return SalesOrders::where('id', $id)->exists();
     }
 
+    /**
+     * Retrieve the sales orders of a picking wave
+     *
+     * @param $waveId
+     * @return array
+     */
     public static function getSalesOrdersIdsByWaveId($waveId)
     {
         $salesIds = self::select('id')->where('picking_wave_id', $waveId)->get();

@@ -8,9 +8,7 @@ use App\Http\Controllers\Data\DataSalesOrders;
 use App\Http\Controllers\Data\DataWave;
 use App\Packing;
 use App\PickingWaves;
-use App\SalesOrders;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class ClerkController extends Controller
