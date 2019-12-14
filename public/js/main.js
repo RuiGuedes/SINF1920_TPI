@@ -459,27 +459,28 @@ if (replenishment_table != null) {
                 this.getElementsByTagName('span')[0].removeAttribute('hidden');
             }
 
-            let list_to_order = [];
-            for (let index = 0 ; index < replenishment_rows.length ; index++)
-                list_to_order.push([index, replenishment_rows[index].children[i].textContent]);
+            let products_list = [];
+            for (let index = 0 ; index < replenishment_rows.length ; index++) {
+                if (i === 3)
+                    products_list.push([index, parseInt(replenishment_rows[index].children[i].textContent)]);
+                else
+                    products_list.push([index, replenishment_rows[index].children[i].textContent]);
+            }
 
-
-            list_to_order.sort(function (a, b) {
+            products_list.sort(function (a, b) {
                 if (a[1] > b[1]) return 1;
                 else if (a[1] < b[1]) return -1;
                 else return 0;
             });
 
             if (parseInt(this.getAttribute('order')))
-                list_to_order.reverse();
+                products_list.reverse();
 
             replenishment_table.innerHTML = '';
-            for (let j = 0 ; j < list_to_order.length ; j++) {
-                let row = replenishment_rows[list_to_order[j][0]];
+            for (let j = 0 ; j < products_list.length ; j++) {
+                let row = replenishment_rows[products_list[j][0]];
                 replenishment_table.appendChild(row);
             }
-
-            console.log(list_to_order);
         })
     }
 }
