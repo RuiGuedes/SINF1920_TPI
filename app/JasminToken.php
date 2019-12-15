@@ -21,16 +21,20 @@ class JasminToken extends Model
      * @return mixed
      */
     public static function getToken() {
-        $activeToken = self::find(1);
+        $activeToken = self::first();
 
         if (empty($activeToken) || ((strtotime(date('Y-m-d H:i:s', time())) - strtotime($activeToken['created_at'])) >= $activeToken['expires_in'])) {
+            if (!empty($activeToken)) {
+                self::destroy($activeToken->id);
+            }
+
             $new_token = JasminConnect::generateNewToken();
             JasminToken::create(['access_token' => $new_token['access_token'], 'token_type' => $new_token['token_type'], 'expires_in' => $new_token['expires_in']]);
         }
         else
             return $activeToken;
 
-        return self::find(1);
+        return self::first();
     }
 
 }
