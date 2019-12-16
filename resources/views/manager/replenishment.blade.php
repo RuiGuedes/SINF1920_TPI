@@ -47,7 +47,7 @@
                         <input type="number" step="1" min="{{max(1, $product['min_stock'] - $product['stock'])}}" max="{{min($product['max_stock'], $product['max_stock'] - $product['stock'])}}"
                         name="quantity"
                                @if($product['min_stock'] > $product['stock'])
-                                    value="{{min($product['min_stock']*2, $product['max_stock'])}}"
+                                    value="{{$product['min_stock']*2 - $product['stock']}}"
                                @else
                                     value="{{max(0, min(1, $product['max_stock'] - $product['stock']))}}"
                                @endif
