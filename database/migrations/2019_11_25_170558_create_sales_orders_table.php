@@ -14,7 +14,8 @@ class CreateSalesOrdersTable extends Migration
     public function up()
     {
         Schema::create('sales_orders', function (Blueprint $table) {
-            $table->string('id')->primary();
+            $table->bigIncrements('id');
+            $table->string('sales_id')->unique();
             $table->unsignedBigInteger('picking_wave_id')->nullable();
             $table->foreign('picking_wave_id')
                 ->references('id')

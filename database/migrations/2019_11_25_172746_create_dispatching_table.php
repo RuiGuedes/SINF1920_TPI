@@ -17,7 +17,7 @@ class CreateDispatchingTable extends Migration
             $table->bigIncrements('id');
             $table->string('sales_order_id');
             $table->foreign('sales_order_id')
-                ->references('id')
+                ->references('sales_id')
                 ->on('sales_orders')
                 ->onDelete('cascade');
             $table->unsignedBigInteger('user_id')->nullable();

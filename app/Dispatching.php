@@ -33,13 +33,13 @@ class Dispatching extends Model
         $res = [];
 
         $orders = DB::table('dispatching')
-            ->join('sales_orders', 'sales_order_id', '=', 'sales_orders.id')
+            ->join('sales_orders', 'sales_order_id', '=', 'sales_orders.sales_id')
             ->orderby('date', 'asc')
             ->get();
 
         foreach ($orders as $order) {
             array_push($res, [
-                'id' => $order->id,
+                'id' => $order->sales_id,
                 'owner' => $order->client,
                 'date' => $order->date
             ]);

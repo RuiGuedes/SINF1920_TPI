@@ -9,7 +9,7 @@ class SalesOrders extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['serie_id'];
+    protected $fillable = ['sales_id'];
 
     /**
      * The table associated with the model.
@@ -19,13 +19,6 @@ class SalesOrders extends Model
     protected $table = 'sales_orders';
 
     /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = false;
-
-    /**
      * Insert a new Sale order
      *
      * @param $saleOrder
@@ -33,7 +26,7 @@ class SalesOrders extends Model
     public static function insertSaleOrder($saleOrder)
     {
         $sale = new SalesOrders();
-        $sale->id = $saleOrder['id'];
+        $sale->sales_id = $saleOrder['id'];
         $sale->picking_wave_id = $saleOrder['picking_wave_id'];
         $sale->client = $saleOrder['owner'];
         $sale->date = $saleOrder['date'];
@@ -48,7 +41,7 @@ class SalesOrders extends Model
      */
     public static function getExists($id)
     {
-        return SalesOrders::where('id', $id)->exists();
+        return SalesOrders::where('sales_id', $id)->exists();
     }
 
     /**
@@ -59,11 +52,22 @@ class SalesOrders extends Model
      */
     public static function getSalesOrdersIdsByWaveId($waveId)
     {
-        $salesIds = self::select('id')->where('picking_wave_id', $waveId)->get();
+        $salesIds = self::select('sales_id')->where('picking_wave_id', $waveId)->get();
         $ids = [];
 
-        foreach ($salesIds as $saleId) array_push($ids, $saleId['id']);
+        foreach ($salesIds as $saleId) array_push($ids, $saleId['sales_id']);
 
         return $ids;
+    }
+
+    public static function removeSalesOrders($sales_ids)
+    {
+        $ids = [];
+
+        foreach ($sales_ids as $sales_id) {
+            array_push($ids, self::where('sales_id', $sales_id)->first()->id);
+        }
+
+        self::destroy($ids);
     }
 }

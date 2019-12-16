@@ -130,7 +130,7 @@ class DataPacking
             Products::updateStock($products[$i], Products::getProductStock($products[$i]) + intval($products[$i+1]));
         }
 
-        SalesOrders::destroy($orders_ids);
+        SalesOrders::removeSalesOrders($orders_ids);
 
         return $orders_ids;
     }

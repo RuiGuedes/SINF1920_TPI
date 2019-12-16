@@ -20,9 +20,10 @@ class DispatchingTableSeeder extends Seeder
         foreach ($openOrders as $openOrder) {
             $salesOrder = $openOrder['salesOrder'];
             $date = substr($salesOrder->documentDate, 0, 10);
-            SalesOrders::create([
+            SalesOrders::insertSaleOrder([
                 'id' => str_replace('.','-',$salesOrder->naturalKey),
-                'client' => $salesOrder->buyerCustomerParty,
+                'picking_wave_id' => null,
+                'owner' => $salesOrder->buyerCustomerParty,
                 'date' => $date
             ]);
 
