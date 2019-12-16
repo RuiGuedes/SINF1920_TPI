@@ -87,7 +87,7 @@ nav.sub-navbar button.navbar-toggler, span.navbar-toggler-icon {
     border-color: var(--brand-color);
 }
 
-nav.sub-navbar a {
+nav.sub-navbar a, nav.sub-navbar a:not([href]) {
     text-align: center;
     color: var(--dark-grey);
     border: solid var(--dark-grey) 1px;
@@ -95,6 +95,11 @@ nav.sub-navbar a {
     margin: 10px;
     padding: 4px 10px;
     min-width: 190px;
+}
+
+nav.sub-navbar a:not([href]):hover {
+    color: var(--dark-grey);
+    text-decoration: none;
 }
 
 nav.sub-navbar a.active {

@@ -5,7 +5,7 @@
     <div class="col-5 col-sm-3 col-md-3 col-xl-2 text-center">
         <a class="company-name"
             @if(\App\User::isManager(\Illuminate\Support\Facades\Auth::id()))
-                href="{{route('manager-sales-orders')}}"
+                href="{{route('manager-replenishment')}}"
             @else
                 href="{{route('picking-waves')}}"
             @endif

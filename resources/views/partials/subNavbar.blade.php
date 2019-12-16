@@ -6,7 +6,7 @@
     <div class="collapse navbar-collapse justify-content-center" id="navbarNavAltMarkup">
         <div class="navbar-nav">
             @foreach ($tabs as $tab)
-                <a class="nav-item nav-link @isset($tab['active']) {{ 'active' }} @endisset" href="{{ route($tab['route']) }}">{{$tab['name']}}</a>
+                <a class="nav-item nav-link @isset($tab['active']) {{ 'active' }} @endisset" @empty($blocked)href="{{ route($tab['route']) }}"@endempty>{{$tab['name']}}</a>
             @endforeach
         </div>
     </div>

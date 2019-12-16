@@ -290,7 +290,7 @@ if (pack != null) {
             getElementsByClassName('row text-center py-2')).slice(1);
 
             products.forEach(product => {
-                if (product.children[3] > product.children[4]){
+                if (parseInt(product.children[3].textContent) > parseInt(product.children[4].textContent)){
                     activeModal('Selected Order for Packing','To package an order, you must select an ' +
                         'order whose products have the picked quantity equal to the desired quantity.');
                     status = true;

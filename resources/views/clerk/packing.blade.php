@@ -6,18 +6,16 @@
     @include('partials.mainNavbar')
 
     @include('partials.subNavbar', [
+        'blocked' => true,
         'tabs' => [
             [
-                'route' => 'picking-waves',
                 'name' => 'Picking Waves'
             ],
             [
-                'route' => 'packing-waves',
                 'name' => 'Packing',
                 'active' => true
             ],
             [
-                'route' => 'dispatching',
                 'name' => 'Dispatching'
             ]
         ]
