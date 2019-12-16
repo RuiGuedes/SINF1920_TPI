@@ -63,8 +63,8 @@ class PickingWavesState extends Model
         $pickingWaveState = PickingWavesState::where([['picking_wave_id', $item['picking_wave_id']], ['product_id', $item['id']]])->first();
 
         if ($pickingWaveState != null) {
-            $pickingWaveState->desired_qnt += $item['quantity'];
-            $pickingWaveState->save();
+            PickingWavesState::where([['picking_wave_id', $item['picking_wave_id']], ['product_id', $item['id']]])
+                ->update(['desired_qnt' => $pickingWaveState->desired_qnt + $item['quantity']]);
         } else {
             self::insertPickingWaveState($item);
         }
